@@ -31,7 +31,7 @@ class JournalRepositoryImpl implements JournalRepository, InventoryRepository {
   }
 
   @override
-  Future<Either<Failure, List<Journal>>> searchByType(InventoryTypes type) {
+  Future<Either<Failure, List<Journal>>> searchByType(String type) {
     // TODO: implement searchByType
     throw UnimplementedError();
   }

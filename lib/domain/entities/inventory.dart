@@ -1,18 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-enum InventoryTypes {
-  Book,
-  Journal,
-  DVD,
-}
-
-enum InventoryStatus {
-  Available,
-  Reserved,
-  Loaned,
-  Lost,
-}
-
 /// [Inventory] class is abstract plain dart class.
 ///
 abstract class Inventory extends Equatable {
@@ -25,10 +12,8 @@ abstract class Inventory extends Equatable {
   final String publisher;
   final String language;
   final String publishDate;
-
-  final InventoryTypes type;
-
-  final InventoryStatus status;
+  final String type;
+  final String status;
 
   const Inventory({
     required this.id,
@@ -42,6 +27,4 @@ abstract class Inventory extends Equatable {
     required this.type,
     required this.status,
   });
-
-  InventoryStatus get inventoryStatus;
 }

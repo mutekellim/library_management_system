@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'entities.dart';
+import '../../data/models/models.dart';
+import '../../core/constants.dart';
 
 enum BookType {
   Textbook,
@@ -12,7 +16,7 @@ class Book extends Inventory {
 
   final List<String> authors;
 
-  final BookType bookType;
+  final String bookType;
 
   Book({
     required int id,
@@ -23,8 +27,8 @@ class Book extends Inventory {
     required String publisher,
     required String language,
     required String publishDate,
-    required InventoryTypes type,
-    required InventoryStatus status,
+    required String type,
+    required String status,
     required this.numberOfPages,
     required this.authors,
     required this.bookType,
@@ -63,6 +67,37 @@ class Book extends Inventory {
       'publishDate: $publishDate, type: $type, status:$status, numberOfPages: $numberOfPages, '
       'authors: $authors, bookType: $bookType}';
 
-  @override
-  InventoryStatus get inventoryStatus => status;
+
+  BookModel toModel() => BookModel(
+        id: id,
+        typeId: typeId,
+        numberOfPages: numberOfPages,
+        isbn: isbn,
+        title: title,
+        subject: subject,
+        publisher: publisher,
+        language: language,
+        publishDate: publishDate,
+        type: type,
+        status: status,
+        bookType: bookType,
+        authors: json.encode(authors),
+      );
+
+
+  static Book fromModel(BookModel model) => Book(
+        id: model.id,
+        typeId: model.typeId,
+        isbn: model.isbn,
+        title: model.title,
+        subject: model.subject,
+        publisher: model.publisher,
+        language: model.language,
+        publishDate: model.publishDate,
+        type: model.type,
+        status: model.status,
+        numberOfPages: model.numberOfPages,
+        authors: json.decode(model.authors),
+        bookType: model.bookType,
+      );
 }

@@ -15,8 +15,8 @@ class Journal extends Inventory {
     required String publisher,
     required String language,
     required String publishDate,
-    required InventoryTypes type,
-    required InventoryStatus status,
+    required String type,
+    required String status,
     required this.volume,
     required this.issue,
   }) : super(
@@ -52,6 +52,4 @@ class Journal extends Inventory {
       'Journal {id : $id, typeId : $typeId, isbn:$isbn, title:$title, subject: $subject, publisher: $publisher, '
           'publishDate: $publishDate, type: $type, status:$status, volume: $volume, issue: $issue}';
 
-  @override
-  InventoryStatus get inventoryStatus => status;
 }
