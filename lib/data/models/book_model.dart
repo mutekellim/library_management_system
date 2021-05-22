@@ -1,7 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:floor/floor.dart';
-
-import '../../domain/entities/entities.dart';
 
 /// [BookModel] represent tha data provided by our data providers.
 ///
@@ -18,29 +17,25 @@ class BookModel extends Equatable {
   final String publisher;
   final String language;
   final String publishDate;
-
-  final InventoryTypes type;
-
-  final InventoryStatus status;
-
-  final BookType bookType;
-
-  final List<String> authors;
+  final String type;
+  final String status;
+  final String bookType;
+  final String authors;
 
   BookModel({
-    this.id,
-    this.typeId,
-    this.numberOfPages,
-    this.isbn,
-    this.title,
-    this.subject,
-    this.publisher,
-    this.language,
-    this.publishDate,
-    this.type,
-    this.status,
-    this.bookType,
-    this.authors,
+    required this.id,
+    required this.typeId,
+    required this.numberOfPages,
+    required this.isbn,
+    required this.title,
+    required this.subject,
+    required this.publisher,
+    required this.language,
+    required this.publishDate,
+    required this.type,
+    required this.status,
+    required this.bookType,
+    required this.authors,
   });
 
   @override
