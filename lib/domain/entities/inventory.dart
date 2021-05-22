@@ -31,16 +31,16 @@ abstract class Inventory extends Equatable {
   final InventoryStatus status;
 
   const Inventory({
-    this.id,
-    this.typeId,
-    this.isbn,
-    this.title,
-    this.subject,
-    this.publisher,
-    this.language,
-    this.publishDate,
-    this.type,
-    this.status,
+    required this.id,
+    required this.typeId,
+    required this.isbn,
+    required this.title,
+    required this.subject,
+    required this.publisher,
+    required this.language,
+    required this.publishDate,
+    required this.type,
+    required this.status,
   });
 
   InventoryStatus get inventoryStatus;
