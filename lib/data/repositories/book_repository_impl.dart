@@ -12,8 +12,7 @@ import '../sources/dao/dao.dart';
 /// Gets data from an [SQLite] database.
 ///
 /// Returns [DatabaseFailure] when an error occurred.
-class BookRepositoryImpl implements BookRepository, InventoryRepository {
-
+class BookRepositoryImpl implements BookRepository {
   final BookModelDao localDataSource;
 
   BookRepositoryImpl({
@@ -21,10 +20,12 @@ class BookRepositoryImpl implements BookRepository, InventoryRepository {
   });
 
   @override
-  Future<Either<Failure, List<Book>>> searchByPubDate(String publishDate) async {
+  Future<Either<Failure, List<Book>>> searchByPubDate(
+      String publishDate) async {
     try {
       final bookList = await localDataSource.searchByPubDate(publishDate);
-      return Right(bookList.map((bookModel) => Book.fromModel(bookModel)).toList());
+      return Right(
+          bookList.map((bookModel) => Book.fromModel(bookModel)).toList());
     } catch (_) {
       return Left(DatabaseFailure());
     }
@@ -34,7 +35,8 @@ class BookRepositoryImpl implements BookRepository, InventoryRepository {
   Future<Either<Failure, List<Book>>> searchBySubject(String subject) async {
     try {
       final bookList = await localDataSource.searchBySubject(subject);
-      return Right(bookList.map((bookModel) => Book.fromModel(bookModel)).toList());
+      return Right(
+          bookList.map((bookModel) => Book.fromModel(bookModel)).toList());
     } catch (_) {
       return Left(DatabaseFailure());
     }
@@ -44,7 +46,8 @@ class BookRepositoryImpl implements BookRepository, InventoryRepository {
   Future<Either<Failure, List<Book>>> searchByTitle(String title) async {
     try {
       final bookList = await localDataSource.searchByTitle(title);
-      return Right(bookList.map((bookModel) => Book.fromModel(bookModel)).toList());
+      return Right(
+          bookList.map((bookModel) => Book.fromModel(bookModel)).toList());
     } catch (_) {
       return Left(DatabaseFailure());
     }
@@ -54,7 +57,8 @@ class BookRepositoryImpl implements BookRepository, InventoryRepository {
   Future<Either<Failure, List<Book>>> searchByType(String type) async {
     try {
       final bookList = await localDataSource.searchByType(type);
-      return Right(bookList.map((bookModel) => Book.fromModel(bookModel)).toList());
+      return Right(
+          bookList.map((bookModel) => Book.fromModel(bookModel)).toList());
     } catch (_) {
       return Left(DatabaseFailure());
     }

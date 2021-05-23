@@ -11,7 +11,7 @@ import '../../domain/repositories/repositories.dart';
 /// Gets data from an [SQLite] database.
 ///
 /// Returns [DatabaseFailure] when an error occurred.
-class JournalRepositoryImpl implements JournalRepository, InventoryRepository {
+class JournalRepositoryImpl implements JournalRepository {
   @override
   Future<Either<Failure, List<Journal>>> searchByPubDate(String publishDate) {
     // TODO: implement searchByPubDate
