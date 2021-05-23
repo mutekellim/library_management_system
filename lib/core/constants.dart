@@ -18,6 +18,14 @@ const String INVENTORY_STATUS_LOST = 'Lost';
 
 /// Book types
 
-const String BOOK_TYPE_TEXTBOOK = "Textbook";
+const String BOOK_TYPE_TEXTBOOK = 'Textbook';
 
-const String BOOK_TYPE_OTHERS = "Others";
+const String BOOK_TYPE_OTHERS = 'Others';
+
+/// Failure messages
+
+const String DATABASE_FAILURE_MESSAGE = 'Database Failure';
+
+/// Add success message
+
+const String ADD_SUCCESS = 'Successfully Added';
