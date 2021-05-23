@@ -65,10 +65,10 @@ class BookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Future<Either<Failure, void>> addBook(Book book) async {
+  Future<Either<Failure, Book>> addBook(Book book) async {
     try {
       await localDataSource.saveBook(book.toModel());
-      return Right(null);
+      return Right(book);
     } catch (_) {
       return Left(DatabaseFailure());
     }

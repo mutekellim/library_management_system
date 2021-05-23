@@ -12,13 +12,21 @@ class BookInitial extends BookState {}
 class AddBookSuccess extends BookState {
   final String message;
 
-  const AddBookSuccess({required this.message});
+  final int bookId;
+
+  const AddBookSuccess({
+    required this.message,
+    required this.bookId,
+  });
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [
+        message,
+        bookId,
+      ];
 
   @override
-  String toString() => 'AddBookSuccess : {message : $message}';
+  String toString() => 'AddBookSuccess : {message : $message, bookId: $bookId}';
 }
 
 class BookFailure extends BookState {

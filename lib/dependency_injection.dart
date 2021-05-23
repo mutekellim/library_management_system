@@ -10,14 +10,18 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   //Blocs
-  sl.registerFactory(() => BookBloc(
-        bookRepository: sl(),
-      ));
+  sl.registerFactory(
+    () => BookBloc(
+      bookRepository: sl(),
+    ),
+  );
 
   //Repositories
-  sl.registerLazySingleton<BookRepository>(() => BookRepositoryImpl(
-        localDataSource: sl(),
-      ));
+  sl.registerLazySingleton<BookRepository>(
+    () => BookRepositoryImpl(
+      localDataSource: sl(),
+    ),
+  );
 
   //Data sources
   final database =

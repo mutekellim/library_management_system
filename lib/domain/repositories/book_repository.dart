@@ -9,5 +9,5 @@ import '../../domain/entities/entities.dart';
 /// data layer and domain layer.
 ///
 abstract class BookRepository extends InventoryRepository {
-  Future<Either<Failure, void>> addBook(Book book);
+  Future<Either<Failure, Book>> addBook(Book book);
 }
