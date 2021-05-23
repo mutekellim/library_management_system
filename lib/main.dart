@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => HomeScreen(),
           AddInventoryScreen.routeName: (context) => AddInventoryScreen(),
-          AddBookScreen.routeName: (context) => AddBookScreen(),
         },
       ),
     );

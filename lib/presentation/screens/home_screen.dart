@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:library_management_system/presentation/screens/add_inventory_screen.dart';
 
 import 'screens.dart';
 
+//TODO 1- Kart numarasi girisi burada olacak.
+//TODO 2- Memberin yetkisine gore butonlar listelenecek.
 class HomeScreen extends StatefulWidget {
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
-// void _navigateScreens(BuildContext context, String routeName) {
-//   switch (routeName) {
-//     case AddBookScreen.routeName:
-//
-//       break;
-//   }
-// }
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
@@ -23,15 +18,18 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('Library Management System'),
       ),
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(AddBookScreen.routeName);
-            },
-            child: Center(child: Text('Add Inventory')),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AddInventoryScreen.routeName);
+              },
+              child: Center(child: Text('Add Inventory')),
+            ),
+          ],
+        ),
       ),
     );
   }
