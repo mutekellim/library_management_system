@@ -106,13 +106,33 @@ class _$AppDatabase extends AppDatabase {
 
 class _$BookModelDao extends BookModelDao {
   _$BookModelDao(this.database, this.changeListener)
-      : _queryAdapter = QueryAdapter(database);
+      : _queryAdapter = QueryAdapter(database),
+        _bookModelInsertionAdapter = InsertionAdapter(
+            database,
+            'BookModel',
+            (BookModel item) => <String, Object?>{
+                  'id': item.id,
+                  'typeId': item.typeId,
+                  'numberOfPages': item.numberOfPages,
+                  'isbn': item.isbn,
+                  'title': item.title,
+                  'subject': item.subject,
+                  'publisher': item.publisher,
+                  'language': item.language,
+                  'publishDate': item.publishDate,
+                  'type': item.type,
+                  'status': item.status,
+                  'bookType': item.bookType,
+                  'authors': item.authors
+                });
 
   final sqflite.DatabaseExecutor database;
 
   final StreamController<String> changeListener;
 
   final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<BookModel> _bookModelInsertionAdapter;
 
   @override
   Future<List<BookModel>> searchByPubDate(String publishDate) async {
@@ -195,6 +215,11 @@ class _$BookModelDao extends BookModelDao {
             bookType: row['bookType'] as String,
             authors: row['authors'] as String),
         arguments: [type]);
+  }
+
+  @override
+  Future<void> saveBook(BookModel game) async {
+    await _bookModelInsertionAdapter.insert(game, OnConflictStrategy.replace);
   }
 }
 

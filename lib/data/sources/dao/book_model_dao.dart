@@ -16,4 +16,7 @@ abstract class BookModelDao {
 
   @Query('SELECT * FROM BookModel WHERE type = :type')
   Future<List<BookModel>> searchByType(String type);
+
+  @Insert(onConflict: OnConflictStrategy.replace)
+  Future<void> saveBook(BookModel game);
 }

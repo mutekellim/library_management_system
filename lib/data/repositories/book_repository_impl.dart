@@ -59,4 +59,14 @@ class BookRepositoryImpl implements BookRepository, InventoryRepository {
       return Left(DatabaseFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, void>> addBook(Book book) async {
+    try {
+      await localDataSource.saveBook(book.toModel());
+      return Right(null);
+    } catch (_) {
+      return Left(DatabaseFailure());
+    }
+  }
 }
