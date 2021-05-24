@@ -1,2 +1,3 @@
 export 'book_model.dart';
 export 'journal_model.dart';
+export 'member_model.dart';
