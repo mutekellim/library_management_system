@@ -3,11 +3,6 @@ import 'dart:convert';
 import 'entities.dart';
 import '../../data/models/models.dart';
 
-enum BookType {
-  Textbook,
-  Others,
-}
-
 /// [Book] class is plain dart class which will be used in Flutter application.
 ///
 class Book extends Inventory {
