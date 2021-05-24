@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import '../../core/errors/failures.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/repositories/repositories.dart';
+import '../sources/dao/dao.dart';
 
 /// [JournalRepositoryImpl] class is an implementation of [JournalRepository] and
 /// implements [InventoryRepository] interface as well.
@@ -12,6 +13,12 @@ import '../../domain/repositories/repositories.dart';
 ///
 /// Returns [DatabaseFailure] when an error occurred.
 class JournalRepositoryImpl implements JournalRepository {
+  final JournalModelDao localDataSource;
+
+  JournalRepositoryImpl({
+    required this.localDataSource,
+  });
+
   @override
   Future<Either<Failure, List<Journal>>> searchByPubDate(String publishDate) {
     // TODO: implement searchByPubDate
@@ -34,5 +41,16 @@ class JournalRepositoryImpl implements JournalRepository {
   Future<Either<Failure, List<Journal>>> searchByType(String type) {
     // TODO: implement searchByType
     throw UnimplementedError();
+  }
+
+
+  @override
+  Future<Either<Failure, Journal>> addJournal(Journal journal) async {
+    try {
+      await localDataSource.saveJournal(journal.toModel());
+      return Right(journal);
+    } catch (_) {
+      return Left(DatabaseFailure());
+    }
   }
 }

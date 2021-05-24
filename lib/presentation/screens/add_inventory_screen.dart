@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/bloc/book/book.dart';
+import 'package:library_management_system/bloc/journal/journal.dart';
+import 'package:library_management_system/bloc/dvd/dvd.dart';
 import 'package:library_management_system/presentation/widgets/add_inventory_form.dart';
 
 import '../../core/constants.dart';
@@ -77,11 +79,55 @@ class _AddInventoryScreenState extends State<AddInventoryScreen> {
     );
   }
 
+  Widget addJournal() {
+    return BlocBuilder<JournalBloc, JournalState>(
+      builder: (context, state) {
+        if (state is JournalInitial || state is AddJournalSuccess) {
+          // Form widget to add book
+          return AddInventoryForm(
+            onSave: (addedJournal) {
+              BlocProvider.of<JournalBloc>(context)
+                  .add(AddJournal(journal: addedJournal));
+            },
+          );
+        } else if (state is JournalFailure) {
+          // Failure widget to show failure message
+          return Center(child: Text('${state.message}'));
+        }
+        return Center(child: Text('Unexpected Error!'));
+      },
+    );
+  }
+
+  Widget addDvd() {
+    return BlocBuilder<DvdBloc, DvdState>(
+      builder: (context, state) {
+        if (state is DvdInitial || state is AddDvdSuccess) {
+          // Form widget to add dvd
+          return AddInventoryForm(
+            onSave: (addedDvd) {
+              BlocProvider.of<DvdBloc>(context)
+                  .add(AddDvd(dvd: addedDvd));
+            },
+          );
+        } else if (state is DvdFailure) {
+          // Failure widget to show failure message
+          return Center(child: Text('${state.message}'));
+        }
+        return Center(child: Text('Unexpected Error!'));
+      },
+    );
+  }
+
   //TODO 4- Add others inventories
   Widget buildAddInventory(BuildContext context) {
     switch(chosenInventory) {
       case INVENTORY_TYPE_BOOK:
         return addBook();
+      case INVENTORY_TYPE_JOURNAL:
+        return addJournal();
+      case INVENTORY_TYPE_DVD:
+        return addDvd();
       default:
         return Center(child: Text('Please choose category!'),);
     }
