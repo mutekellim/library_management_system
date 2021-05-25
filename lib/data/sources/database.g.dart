@@ -64,6 +64,8 @@ class _$AppDatabase extends AppDatabase {
 
   JournalModelDao? _journalModelDaoInstance;
 
+  DvdModelDao? _dvdModelDaoInstance;
+
   MemberModelDao? _memberModelDaoInstance;
 
   Future<sqflite.Database> open(String path, List<Migration> migrations,
@@ -88,6 +90,8 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `JournalModel` (`id` INTEGER NOT NULL, `typeId` INTEGER NOT NULL, `isbn` TEXT NOT NULL, `title` TEXT NOT NULL, `subject` TEXT NOT NULL, `publisher` TEXT NOT NULL, `language` TEXT NOT NULL, `publishDate` TEXT NOT NULL, `type` TEXT NOT NULL, `status` TEXT NOT NULL, `volume` TEXT NOT NULL, `issue` TEXT NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
+            'CREATE TABLE IF NOT EXISTS `DvdModel` (`id` INTEGER NOT NULL, `typeId` INTEGER NOT NULL, `isbn` TEXT NOT NULL, `title` TEXT NOT NULL, `subject` TEXT NOT NULL, `publisher` TEXT NOT NULL, `language` TEXT NOT NULL, `publishDate` TEXT NOT NULL, `type` TEXT NOT NULL, `status` TEXT NOT NULL, `director` TEXT NOT NULL, `duration` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
             'CREATE TABLE IF NOT EXISTS `MemberModel` (`memberId` INTEGER NOT NULL, `balanceAmount` INTEGER NOT NULL, `noInvLoaned` INTEGER NOT NULL, `cardId` TEXT NOT NULL, `memberType` TEXT NOT NULL, `name` TEXT NOT NULL, `surname` TEXT NOT NULL, `phone` TEXT NOT NULL, `mail` TEXT NOT NULL, `faculty` TEXT NOT NULL, `department` TEXT NOT NULL, `dateOfMembership` TEXT NOT NULL, PRIMARY KEY (`memberId`))');
 
         await callback?.onCreate?.call(database, version);
@@ -105,6 +109,11 @@ class _$AppDatabase extends AppDatabase {
   JournalModelDao get journalModelDao {
     return _journalModelDaoInstance ??=
         _$JournalModelDao(database, changeListener);
+  }
+
+  @override
+  DvdModelDao get dvdModelDao {
+    return _dvdModelDaoInstance ??= _$DvdModelDao(database, changeListener);
   }
 
   @override
@@ -237,22 +246,22 @@ class _$JournalModelDao extends JournalModelDao {
   _$JournalModelDao(this.database, this.changeListener)
       : _queryAdapter = QueryAdapter(database),
         _journalModelInsertionAdapter = InsertionAdapter(
-      database,
-      'JournalModel',
-          (JournalModel item) => <String, Object?>{
-            'id': item.id,
-            'typeId': item.typeId,
-            'isbn': item.isbn,
-            'title': item.title,
-            'subject': item.subject,
-            'publisher': item.publisher,
-            'language': item.language,
-            'publishDate': item.publishDate,
-            'type': item.type,
-            'status': item.status,
-            'volume':item.volume,
-            'issue':item.issue,
-      });
+            database,
+            'JournalModel',
+            (JournalModel item) => <String, Object?>{
+                  'id': item.id,
+                  'typeId': item.typeId,
+                  'isbn': item.isbn,
+                  'title': item.title,
+                  'subject': item.subject,
+                  'publisher': item.publisher,
+                  'language': item.language,
+                  'publishDate': item.publishDate,
+                  'type': item.type,
+                  'status': item.status,
+                  'volume': item.volume,
+                  'issue': item.issue
+                });
 
   final sqflite.DatabaseExecutor database;
 
@@ -343,7 +352,121 @@ class _$JournalModelDao extends JournalModelDao {
 
   @override
   Future<void> saveJournal(JournalModel game) async {
-    await _journalModelInsertionAdapter.insert(game, OnConflictStrategy.replace);
+    await _journalModelInsertionAdapter.insert(
+        game, OnConflictStrategy.replace);
+  }
+}
+
+class _$DvdModelDao extends DvdModelDao {
+  _$DvdModelDao(this.database, this.changeListener)
+      : _queryAdapter = QueryAdapter(database),
+        _dvdModelInsertionAdapter = InsertionAdapter(
+            database,
+            'DvdModel',
+            (DvdModel item) => <String, Object?>{
+                  'id': item.id,
+                  'typeId': item.typeId,
+                  'isbn': item.isbn,
+                  'title': item.title,
+                  'subject': item.subject,
+                  'publisher': item.publisher,
+                  'language': item.language,
+                  'publishDate': item.publishDate,
+                  'type': item.type,
+                  'status': item.status,
+                  'director': item.director,
+                  'duration': item.duration
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<DvdModel> _dvdModelInsertionAdapter;
+
+  @override
+  Future<List<DvdModel>> searchByPubDate(String publishDate) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM DvdModel WHERE publishDate = ?1',
+        mapper: (Map<String, Object?> row) => DvdModel(
+            id: row['id'] as int,
+            typeId: row['typeId'] as int,
+            isbn: row['isbn'] as String,
+            title: row['title'] as String,
+            subject: row['subject'] as String,
+            publisher: row['publisher'] as String,
+            language: row['language'] as String,
+            publishDate: row['publishDate'] as String,
+            type: row['type'] as String,
+            status: row['status'] as String,
+            duration: row['duration'] as int,
+            director: row['director'] as String),
+        arguments: [publishDate]);
+  }
+
+  @override
+  Future<List<DvdModel>> searchBySubject(String subject) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM DvdModel WHERE subject LIKE ?1',
+        mapper: (Map<String, Object?> row) => DvdModel(
+            id: row['id'] as int,
+            typeId: row['typeId'] as int,
+            isbn: row['isbn'] as String,
+            title: row['title'] as String,
+            subject: row['subject'] as String,
+            publisher: row['publisher'] as String,
+            language: row['language'] as String,
+            publishDate: row['publishDate'] as String,
+            type: row['type'] as String,
+            status: row['status'] as String,
+            duration: row['duration'] as int,
+            director: row['director'] as String),
+        arguments: [subject]);
+  }
+
+  @override
+  Future<List<DvdModel>> searchByTitle(String title) async {
+    return _queryAdapter.queryList('SELECT * FROM DvdModel WHERE title LIKE ?1',
+        mapper: (Map<String, Object?> row) => DvdModel(
+            id: row['id'] as int,
+            typeId: row['typeId'] as int,
+            isbn: row['isbn'] as String,
+            title: row['title'] as String,
+            subject: row['subject'] as String,
+            publisher: row['publisher'] as String,
+            language: row['language'] as String,
+            publishDate: row['publishDate'] as String,
+            type: row['type'] as String,
+            status: row['status'] as String,
+            duration: row['duration'] as int,
+            director: row['director'] as String),
+        arguments: [title]);
+  }
+
+  @override
+  Future<List<DvdModel>> searchByType(String type) async {
+    return _queryAdapter.queryList('SELECT * FROM DvdModel WHERE type = ?1',
+        mapper: (Map<String, Object?> row) => DvdModel(
+            id: row['id'] as int,
+            typeId: row['typeId'] as int,
+            isbn: row['isbn'] as String,
+            title: row['title'] as String,
+            subject: row['subject'] as String,
+            publisher: row['publisher'] as String,
+            language: row['language'] as String,
+            publishDate: row['publishDate'] as String,
+            type: row['type'] as String,
+            status: row['status'] as String,
+            duration: row['duration'] as int,
+            director: row['director'] as String),
+        arguments: [type]);
+  }
+
+  @override
+  Future<void> saveDvd(DvdModel dvd) async {
+    await _dvdModelInsertionAdapter.insert(dvd, OnConflictStrategy.replace);
   }
 }
 

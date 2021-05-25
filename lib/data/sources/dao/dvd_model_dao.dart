@@ -18,5 +18,5 @@ abstract class DvdModelDao {
   Future<List<DvdModel>> searchByType(String type);
 
   @Insert(onConflict: OnConflictStrategy.replace)
-  Future<void> saveDvd(DvdModel game);
+  Future<void> saveDvd(DvdModel dvd);
 }

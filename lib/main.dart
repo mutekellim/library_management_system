@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:library_management_system/bloc/member/member.dart';
 import 'package:library_management_system/domain/entities/book.dart';
 import 'package:library_management_system/domain/entities/entities.dart';
 import 'package:library_management_system/presentation/screens/add_inventory_screen.dart';
@@ -35,15 +36,16 @@ class MyApp extends StatelessWidget {
         BlocProvider<DvdBloc>(
           create: (context) => di.sl<DvdBloc>(),
         ),
+        BlocProvider<MemberBloc>(
+          create: (context) => di.sl<MemberBloc>(),
+        ),
       ],
       child: MaterialApp(
         title: 'LMS',
         initialRoute: '/',
         routes: {
-          //'/': (context) => HomeScreen(),
           '/': (context) => LoginScreen(),
           AddInventoryScreen.routeName: (context) => AddInventoryScreen(),
-          LoginScreen.routeName: (context) => LoginScreen(),
           HomeScreen.routeName: (context) => HomeScreen(),
         },
       ),

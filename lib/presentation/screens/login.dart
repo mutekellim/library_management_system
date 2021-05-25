@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child:  ElevatedButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(HomeScreen.routeName);
+          Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
         },
         style: ElevatedButton.styleFrom(
           primary: Colors.white,
