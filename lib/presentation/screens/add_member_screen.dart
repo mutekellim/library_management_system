@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/bloc/member/member.dart';
 import 'package:library_management_system/presentation/widgets/add_inventory_form.dart';
+import 'package:library_management_system/presentation/widgets/add_member_form.dart';
 
 import '../../core/constants.dart';
 import 'screens.dart';
@@ -34,7 +35,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
       builder: (context, state) {
         if (state is MemberInitial || state is AddMemberSuccess) {
           // Form widget to add book
-          return AddInventoryForm(
+          return AddMemberForm(
             onSave: (member) {
               BlocProvider.of<MemberBloc>(context)
                   .add(AddMember(member: member));
