@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:library_management_system/presentation/screens/add_inventory_screen.dart';
-import 'package:library_management_system/presentation/screens/login.dart';
+
+import 'add_inventory_screen.dart';
+import 'add_member_screen.dart';
 
 import 'screens.dart';
 
@@ -20,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('Library Management System'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(0),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             ElevatedButton(
@@ -28,6 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.of(context).pushNamed(AddInventoryScreen.routeName);
               },
               child: Center(child: Text('Add Inventory')),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AddMemberScreen.routeName);
+              },
+              child: Center(child: Text('Add Member')),
             ),
           ],
 
