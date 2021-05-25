@@ -16,4 +16,7 @@ abstract class JournalModelDao {
 
   @Query('SELECT * FROM JournalModel WHERE type = :type')
   Future<List<JournalModel>> searchByType(String type);
+
+  @Insert(onConflict: OnConflictStrategy.replace)
+  Future<void> saveJournal(JournalModel game);
 }

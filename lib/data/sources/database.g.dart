@@ -64,8 +64,6 @@ class _$AppDatabase extends AppDatabase {
 
   JournalModelDao? _journalModelDaoInstance;
 
-  MemberModelDao? _memberModelDaoInstance;
-
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
@@ -87,8 +85,6 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `BookModel` (`id` INTEGER NOT NULL, `typeId` INTEGER NOT NULL, `numberOfPages` INTEGER NOT NULL, `isbn` TEXT NOT NULL, `title` TEXT NOT NULL, `subject` TEXT NOT NULL, `publisher` TEXT NOT NULL, `language` TEXT NOT NULL, `publishDate` TEXT NOT NULL, `type` TEXT NOT NULL, `status` TEXT NOT NULL, `bookType` TEXT NOT NULL, `authors` TEXT NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `JournalModel` (`id` INTEGER NOT NULL, `typeId` INTEGER NOT NULL, `isbn` TEXT NOT NULL, `title` TEXT NOT NULL, `subject` TEXT NOT NULL, `publisher` TEXT NOT NULL, `language` TEXT NOT NULL, `publishDate` TEXT NOT NULL, `type` TEXT NOT NULL, `status` TEXT NOT NULL, `volume` TEXT NOT NULL, `issue` TEXT NOT NULL, PRIMARY KEY (`id`))');
-        await database.execute(
-            'CREATE TABLE IF NOT EXISTS `MemberModel` (`memberId` INTEGER NOT NULL, `balanceAmount` INTEGER NOT NULL, `noInvLoaned` INTEGER NOT NULL, `cardId` TEXT NOT NULL, `memberType` TEXT NOT NULL, `name` TEXT NOT NULL, `surname` TEXT NOT NULL, `phone` TEXT NOT NULL, `mail` TEXT NOT NULL, `faculty` TEXT NOT NULL, `department` TEXT NOT NULL, `dateOfMembership` TEXT NOT NULL, PRIMARY KEY (`memberId`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -105,12 +101,6 @@ class _$AppDatabase extends AppDatabase {
   JournalModelDao get journalModelDao {
     return _journalModelDaoInstance ??=
         _$JournalModelDao(database, changeListener);
-  }
-
-  @override
-  MemberModelDao get memberModelDao {
-    return _memberModelDaoInstance ??=
-        _$MemberModelDao(database, changeListener);
   }
 }
 
@@ -235,13 +225,32 @@ class _$BookModelDao extends BookModelDao {
 
 class _$JournalModelDao extends JournalModelDao {
   _$JournalModelDao(this.database, this.changeListener)
-      : _queryAdapter = QueryAdapter(database);
+      : _queryAdapter = QueryAdapter(database),
+        _journalModelInsertionAdapter = InsertionAdapter(
+      database,
+      'JournalModel',
+          (JournalModel item) => <String, Object?>{
+            'id': item.id,
+            'typeId': item.typeId,
+            'isbn': item.isbn,
+            'title': item.title,
+            'subject': item.subject,
+            'publisher': item.publisher,
+            'language': item.language,
+            'publishDate': item.publishDate,
+            'type': item.type,
+            'status': item.status,
+            'volume':item.volume,
+            'issue':item.issue,
+      });
 
   final sqflite.DatabaseExecutor database;
 
   final StreamController<String> changeListener;
 
   final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<JournalModel> _journalModelInsertionAdapter;
 
   @override
   Future<List<JournalModel>> searchByPubDate(String publishDate) async {
@@ -321,37 +330,9 @@ class _$JournalModelDao extends JournalModelDao {
             issue: row['issue'] as String),
         arguments: [type]);
   }
-}
-
-class _$MemberModelDao extends MemberModelDao {
-  _$MemberModelDao(this.database, this.changeListener)
-      : _memberModelInsertionAdapter = InsertionAdapter(
-            database,
-            'MemberModel',
-            (MemberModel item) => <String, Object?>{
-                  'memberId': item.memberId,
-                  'balanceAmount': item.balanceAmount,
-                  'noInvLoaned': item.noInvLoaned,
-                  'cardId': item.cardId,
-                  'memberType': item.memberType,
-                  'name': item.name,
-                  'surname': item.surname,
-                  'phone': item.phone,
-                  'mail': item.mail,
-                  'faculty': item.faculty,
-                  'department': item.department,
-                  'dateOfMembership': item.dateOfMembership
-                });
-
-  final sqflite.DatabaseExecutor database;
-
-  final StreamController<String> changeListener;
-
-  final InsertionAdapter<MemberModel> _memberModelInsertionAdapter;
 
   @override
-  Future<void> saveMember(MemberModel member) async {
-    await _memberModelInsertionAdapter.insert(
-        member, OnConflictStrategy.replace);
+  Future<void> saveJournal(JournalModel game) async {
+    await _journalModelInsertionAdapter.insert(game, OnConflictStrategy.replace);
   }
 }

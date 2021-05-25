@@ -1,11 +1,17 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
+
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/domain/entities/book.dart';
+import 'package:library_management_system/domain/entities/entities.dart';
 import 'package:library_management_system/presentation/screens/add_inventory_screen.dart';
+import 'package:library_management_system/presentation/screens/login.dart';
 
 import 'bloc/book/book.dart';
+import 'bloc/journal/journal.dart';
+import 'bloc/dvd/dvd.dart';
 import 'dependency_injection.dart' as di;
 import 'presentation/screens/screens.dart';
 
@@ -23,13 +29,22 @@ class MyApp extends StatelessWidget {
         BlocProvider<BookBloc>(
           create: (context) => di.sl<BookBloc>(),
         ),
+        BlocProvider<JournalBloc>(
+          create: (context) => di.sl<JournalBloc>(),
+        ),
+        BlocProvider<DvdBloc>(
+          create: (context) => di.sl<DvdBloc>(),
+        ),
       ],
       child: MaterialApp(
         title: 'LMS',
         initialRoute: '/',
         routes: {
-          '/': (context) => HomeScreen(),
+          //'/': (context) => HomeScreen(),
+          '/': (context) => LoginScreen(),
           AddInventoryScreen.routeName: (context) => AddInventoryScreen(),
+          LoginScreen.routeName: (context) => LoginScreen(),
+          HomeScreen.routeName: (context) => HomeScreen(),
         },
       ),
     );

@@ -1,4 +1,5 @@
 import 'entities.dart';
+import '../../data/models/models.dart';
 
 /// [Journal] class is plain dart class which will be used in Flutter application.
 ///
@@ -19,6 +20,7 @@ class Journal extends Inventory {
     required String status,
     required this.volume,
     required this.issue,
+
   }) : super(
     id: id,
     typeId: typeId,
@@ -51,5 +53,21 @@ class Journal extends Inventory {
   String toString() =>
       'Journal {id : $id, typeId : $typeId, isbn:$isbn, title:$title, subject: $subject, publisher: $publisher, '
           'publishDate: $publishDate, type: $type, status:$status, volume: $volume, issue: $issue}';
+
+  JournalModel toModel() => JournalModel(
+    id: id,
+    typeId: typeId,
+    isbn: isbn,
+    title: title,
+    subject: subject,
+    publisher: publisher,
+    language: language,
+    publishDate: publishDate,
+    type: type,
+    status: status,
+    issue: issue,
+    volume: volume,
+
+  );
 
 }

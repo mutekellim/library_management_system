@@ -16,4 +16,7 @@ abstract class InventoryRepository {
   Future<Either<Failure, List<Inventory>>> searchByType(String type);
 
   Future<Either<Failure, List<Inventory>>> searchByPubDate(String publishDate);
+
 }
+
+

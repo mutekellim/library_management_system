@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../domain/entities/entities.dart';
 
-typedef OnSaveCallback = Function(Book addedBook);
+typedef OnSaveCallback<T> = Function(T value);
 
 class AddInventoryForm extends StatefulWidget {
   final OnSaveCallback onSave;
@@ -31,6 +31,14 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
   final _numberOfPagesController = TextEditingController();
   final _authorsController = TextEditingController();
   final _bookTypeController = TextEditingController();
+
+  //Journal Specifics
+  final _volumeController = TextEditingController();
+  final _issueController = TextEditingController();
+
+  //Dvd Specifics
+  final _durationController = TextEditingController();
+  final _directorController = TextEditingController();
 
   @override
   void initState() {
@@ -70,6 +78,40 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
       numberOfPages: int.parse(_numberOfPagesController.text.trim()),
       authors: _authorsController.text.split(','),
       bookType: _bookTypeController.text.trim(),
+    );
+  }
+
+  Journal _addJournal() {
+    return Journal(
+      id: int.parse(_idController.text.trim()),
+      typeId: int.parse(_typeIdController.text.trim()),
+      isbn: _isbnController.text.trim(),
+      title: _titleController.text.trim(),
+      subject: _subjectController.text.trim(),
+      publisher: _publisherController.text.trim(),
+      language: _languageController.text.trim(),
+      publishDate: _publishDateController.text.trim(),
+      type: _typeController.text.trim(),
+      status: _statusController.text.trim(),
+      volume: _volumeController.text.trim(),
+      issue: _issueController.text.trim(),
+    );
+  }
+
+  Dvd _addDvd() {
+    return Dvd(
+      id: int.parse(_idController.text.trim()),
+      typeId: int.parse(_typeIdController.text.trim()),
+      isbn: _isbnController.text.trim(),
+      title: _titleController.text.trim(),
+      subject: _subjectController.text.trim(),
+      publisher: _publisherController.text.trim(),
+      language: _languageController.text.trim(),
+      publishDate: _publishDateController.text.trim(),
+      type: _typeController.text.trim(),
+      status: _statusController.text.trim(),
+      duration:int.parse(_durationController.text.trim()),
+      director: _directorController.text.trim(),
     );
   }
 
@@ -189,6 +231,42 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
           controller: _bookTypeController,
           decoration: new InputDecoration(
             labelText: "Book Type",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
+            ),
+          ),
+        ),
+        TextFormField(
+          controller: _volumeController,
+          decoration: new InputDecoration(
+            labelText: "Volume",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
+            ),
+          ),
+        ),
+        TextFormField(
+          controller: _issueController,
+          decoration: new InputDecoration(
+            labelText: "Issue",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
+            ),
+          ),
+        ),
+        TextFormField(
+          controller: _durationController,
+          decoration: new InputDecoration(
+            labelText: "Duration",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
+            ),
+          ),
+        ),
+        TextFormField(
+          controller: _directorController,
+          decoration: new InputDecoration(
+            labelText: "Director",
             labelStyle: TextStyle(
               color: Colors.grey[900],
             ),
