@@ -33,7 +33,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
   Widget addMember(context) {
     return BlocBuilder<MemberBloc, MemberState>(
       builder: (context, state) {
-        if (state is MemberInitial || state is AddMemberSuccess) {
+        if (state is GetMemberSuccess || state is AddMemberSuccess) {
           // Form widget to add book
           return AddMemberForm(
             onSave: (member) {

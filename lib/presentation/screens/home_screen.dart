@@ -25,6 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: BlocBuilder<MemberBloc, MemberState>(builder: (context, state) {
+          if(state is MemberInitial) {
+            return CircularProgressIndicator();
+          }
           if (state is GetMemberSuccess) {
             if(state.member.cardId.startsWith('m')) {
               return Column(
@@ -36,6 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Center(child: Text('Add Inventory')),
                   ),
+                ],
+
+              );
+            } else if (state.member.cardId.startsWith('a')){
+              return Column(
+                children: [
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pushNamed(
