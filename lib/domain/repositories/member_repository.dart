@@ -9,4 +9,7 @@ import '../../domain/entities/entities.dart';
 ///
 abstract class MemberRepository {
   Future<Either<Failure, Member>> addMember(Member member);
+
+  Future<Either<Failure, Member>> getMemberByCardId(String cardId);
+
 }

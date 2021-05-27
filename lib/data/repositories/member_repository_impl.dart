@@ -22,4 +22,14 @@ class MemberRepositoryImpl extends MemberRepository {
       return Left(DatabaseFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, Member>> getMemberByCardId(String cardId) async {
+    try {
+      final member = await localDataSource.getMemberByCardId(cardId);
+      return Right(Member.fromModel(member!));
+    } catch (_) {
+      return Left(DatabaseFailure());
+    }
+  }
 }
