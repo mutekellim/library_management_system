@@ -472,7 +472,8 @@ class _$DvdModelDao extends DvdModelDao {
 
 class _$MemberModelDao extends MemberModelDao {
   _$MemberModelDao(this.database, this.changeListener)
-      : _memberModelInsertionAdapter = InsertionAdapter(
+      : _queryAdapter = QueryAdapter(database),
+        _memberModelInsertionAdapter = InsertionAdapter(
             database,
             'MemberModel',
             (MemberModel item) => <String, Object?>{
@@ -494,7 +495,28 @@ class _$MemberModelDao extends MemberModelDao {
 
   final StreamController<String> changeListener;
 
+  final QueryAdapter _queryAdapter;
+
   final InsertionAdapter<MemberModel> _memberModelInsertionAdapter;
+
+  @override
+  Future<MemberModel?> getMemberByCardId(String cardId) async {
+    return _queryAdapter.query('SELECT * FROM MemberModel WHERE cardId = ?1',
+        mapper: (Map<String, Object?> row) => MemberModel(
+            memberId: row['memberId'] as int,
+            balanceAmount: row['balanceAmount'] as int,
+            noInvLoaned: row['noInvLoaned'] as int,
+            cardId: row['cardId'] as String,
+            memberType: row['memberType'] as String,
+            name: row['name'] as String,
+            surname: row['surname'] as String,
+            phone: row['phone'] as String,
+            mail: row['mail'] as String,
+            faculty: row['faculty'] as String,
+            department: row['department'] as String,
+            dateOfMembership: row['dateOfMembership'] as String),
+        arguments: [cardId]);
+  }
 
   @override
   Future<void> saveMember(MemberModel member) async {
