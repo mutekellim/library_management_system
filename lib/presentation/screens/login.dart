@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:library_management_system/bloc/member/member.dart';
 import 'package:library_management_system/presentation/screens/home_screen.dart';
 
 import '../../styles/constants.dart';
@@ -12,8 +14,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _passCode = TextEditingController();
 
-  Widget _buildPasswordTF() {
+
+  @override
+  void dispose() {
+    super.dispose();
+    _passCode.dispose();
+  }
+
+  Widget _buildPasswordTF(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -27,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _passCode,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -48,12 +59,14 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildLoginBtn() {
+  Widget _buildLoginBtn(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20.0),
       width: double.infinity,
       child:  ElevatedButton(
         onPressed: () {
+          BlocProvider.of<MemberBloc>(context)
+              .add(GetMemberByCardId(cardId: _passCode.text.trim()));
           Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
         },
         style: ElevatedButton.styleFrom(
@@ -123,8 +136,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 30.0),
                       //_buildEmailTF(),
                       SizedBox( height: 30.0),
-                      _buildPasswordTF(),
-                      _buildLoginBtn(),
+                      _buildPasswordTF(context),
+                      _buildLoginBtn(context),
 
                     ],
                   ),
