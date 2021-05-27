@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../domain/entities/entities.dart';
+
 abstract class MemberState extends Equatable {
   const MemberState();
 
@@ -27,6 +29,22 @@ class AddMemberSuccess extends MemberState {
 
   @override
   String toString() => 'AddMemberSuccess : {message : $message, memberId: $memberId}';
+}
+
+class GetMemberSuccess extends MemberState {
+  final Member member;
+
+  const GetMemberSuccess({
+    required this.member,
+  });
+
+  @override
+  List<Object> get props => [
+    member,
+  ];
+
+  @override
+  String toString() => 'GetMemberSuccess : {member : $member}';
 }
 
 class MemberFailure extends MemberState {

@@ -22,3 +22,17 @@ class AddMember extends MemberEvent {
   @override
   String toString() => 'AddMember {member : $member}';
 }
+
+class GetMemberByCardId extends MemberEvent {
+  final String cardId;
+
+  const GetMemberByCardId({
+    required this.cardId,
+  });
+
+  @override
+  List<Object> get props => [cardId];
+
+  @override
+  String toString() => 'GetMemberByCardId {cardId : $cardId}';
+}

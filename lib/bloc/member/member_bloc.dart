@@ -18,6 +18,8 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
   Stream<MemberState> mapEventToState(MemberEvent event) async* {
     if (event is AddMember) {
       yield* _mapMemberAddToState(event);
+    } else if (event is GetMemberByCardId) {
+      yield* _mapGetMemberByCardIdToState(event);
     }
   }
 
@@ -27,6 +29,15 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
     yield failureOrMember.fold(
           (failure) => MemberFailure(message: DATABASE_FAILURE_MESSAGE),
           (member) => AddMemberSuccess(message: ADD_SUCCESS, memberId: member.memberId),
+    );
+  }
+
+  Stream<MemberState> _mapGetMemberByCardIdToState(GetMemberByCardId event) async* {
+    final Either<Failure, Member> failureOrMember =
+    await memberRepository.getMemberByCardId(event.cardId);
+    yield failureOrMember.fold(
+          (failure) => MemberFailure(message: DATABASE_FAILURE_MESSAGE),
+          (member) => GetMemberSuccess(member: member),
     );
   }
 }
