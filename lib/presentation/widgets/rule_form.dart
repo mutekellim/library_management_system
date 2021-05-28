@@ -4,18 +4,18 @@ import '../../domain/entities/entities.dart';
 
 typedef OnSaveCallback<T> = Function(T value);
 
-class AddMemberForm extends StatefulWidget {
+class RuleForm extends StatefulWidget {
   final OnSaveCallback onSave;
 
-  AddMemberForm({
+  RuleForm({
     required this.onSave,
   });
 
   @override
-  _AddMemberFormState createState() => _AddMemberFormState();
+  _RuleFormState createState() => _RuleFormState();
 }
 
-class _AddMemberFormState extends State<AddMemberForm> {
+class _RuleFormState extends State<RuleForm> {
   final _memberIdController = TextEditingController();
   final _balanceAmountController = TextEditingController();
   //final _noInvLoanedController = TextEditingController();

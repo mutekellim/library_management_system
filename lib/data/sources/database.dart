@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:floor/floor.dart';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
 import 'dao/dao.dart';
@@ -16,4 +17,6 @@ abstract class AppDatabase extends FloorDatabase {
   DvdModelDao get dvdModelDao;
 
   MemberModelDao get memberModelDao;
+
+  RuleModelDao get ruleModelDao;
 }

@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/bloc/member/member.dart';
-import 'package:library_management_system/domain/entities/book.dart';
-import 'package:library_management_system/domain/entities/entities.dart';
+import 'package:library_management_system/bloc/rule/rule.dart';
+
 import 'package:library_management_system/presentation/screens/add_inventory_screen.dart';
 import 'package:library_management_system/presentation/screens/add_member_screen.dart';
+import 'package:library_management_system/presentation/screens/rule_screen.dart';
 import 'package:library_management_system/presentation/screens/login.dart';
 
 import 'bloc/book/book.dart';
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<MemberBloc>(
           create: (context) => di.sl<MemberBloc>(),
         ),
+        BlocProvider<RuleBloc>(
+          create: (context) => di.sl<RuleBloc>(),
+        ),
       ],
       child: MaterialApp(
         title: 'LMS',
@@ -49,6 +53,7 @@ class MyApp extends StatelessWidget {
           HomeScreen.routeName: (context) => HomeScreen(),
           AddInventoryScreen.routeName: (context) => AddInventoryScreen(),
           AddMemberScreen.routeName: (context) => AddMemberScreen(),
+          RuleScreen.routeName: (context) => RuleScreen(),
         },
       ),
     );
