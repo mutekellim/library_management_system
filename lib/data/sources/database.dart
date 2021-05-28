@@ -8,7 +8,7 @@ import '../models/models.dart';
 
 part 'database.g.dart';
 
-@Database(version: 1, entities: [BookModel, JournalModel,DvdModel, MemberModel])
+@Database(version: 1, entities: [BookModel, JournalModel, DvdModel, MemberModel, RuleModel])
 abstract class AppDatabase extends FloorDatabase {
   BookModelDao get bookModelDao;
 

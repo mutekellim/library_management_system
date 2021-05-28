@@ -106,7 +106,8 @@ class _$AppDatabase extends AppDatabase {
 
   @override
   BookModelDao get bookModelDao {
-    return _bookModelDaoInstance ??= _$BookModelDao(database, changeListener);
+    return _bookModelDaoInstance ??=
+        _$BookModelDao(database, changeListener);
   }
 
   @override
@@ -117,7 +118,8 @@ class _$AppDatabase extends AppDatabase {
 
   @override
   DvdModelDao get dvdModelDao {
-    return _dvdModelDaoInstance ??= _$DvdModelDao(database, changeListener);
+    return _dvdModelDaoInstance ??=
+        _$DvdModelDao(database, changeListener);
   }
 
   @override
@@ -617,4 +619,5 @@ class _$RuleModelDao extends RuleModelDao {
     await _ruleModelUpdateAdapter.update(
         rule, OnConflictStrategy.replace);
   }
+
 }

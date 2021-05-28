@@ -49,11 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: BlocBuilder<MemberBloc, MemberState>(builder: (context, state) {
-          //print(state.toString());
-          if(state is AddMemberSuccess) {
-            return Container();
-          }
-          else if (state is GetMemberSuccess ) {
+          if (state is GetMemberSuccess ) {
             if(state.member.cardId.startsWith('m')) {
               return Column(
                 children: [
@@ -116,9 +112,8 @@ class _HomeScreenState extends State<HomeScreen> {
           }else if (state is MemberFailure){
             return Center(child: Text('${state.message}'));
           }
-          else {
-            return Container();
-          }
+
+          return Container();
         }),
       ),
     );

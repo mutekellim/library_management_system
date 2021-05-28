@@ -65,8 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child:  ElevatedButton(
         onPressed: () {
+
           BlocProvider.of<MemberBloc>(context)
               .add(GetMemberByCardId(cardId: _passCode.text.trim()));
+
           Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
         },
         style: ElevatedButton.styleFrom(

@@ -17,9 +17,9 @@ class RuleForm extends StatefulWidget {
 
 class _RuleFormState extends State<RuleForm> {
   final _ruleId = 1;
-  final _invBookController = TextEditingController();
-  final _invDvdController = TextEditingController();
-  final _invJournalTypeController = TextEditingController();
+  bool _invBook=true;
+  bool _invDvd=false;
+  bool _invJournal=true ;
 
   final _loanPeriodForAcademic = TextEditingController();
   final _loanPeriodForOfficer = TextEditingController();
@@ -42,36 +42,39 @@ class _RuleFormState extends State<RuleForm> {
   @override
   void dispose() {
     super.dispose();
-    _memberIdController.dispose();
-    _balanceAmountController.dispose();
-    //_noInvLoanedController.dispose();
-    _cardIdController.dispose();
-    _memberTypeController.dispose();
-    _nameController.dispose();
-    _surnameController.dispose();
-    _phoneController.dispose();
-    _mailController.dispose();
-    _facultyController.dispose();
-    _departmentController.dispose();
-    _dateOfMembershipController.dispose();
+    _loanPeriodForAcademic.dispose();
+    _loanPeriodForOfficer.dispose();
+    _loanPeriodForStudent.dispose();
+
+    _nOfLoanForAcademic.dispose();
+    _nOfLoanForOfficer.dispose();
+    _nOfLoanForStudent.dispose();
+
+    _penaltyAmountForAcademic.dispose();
+    _penaltyAmountForOfficer.dispose();
+    _penaltyAmountForStudent.dispose();
   }
 
-  Member _addMember() {
-    return Member(
-      memberId: int.parse(_memberIdController.text.trim()),
-      balanceAmount: int.parse(_balanceAmountController.text.trim()),
-      //noInvLoaned: int.parse(_noInvLoanedController.text.trim()),
-      noInvLoaned: 0,
-      cardId: _cardIdController.text.trim(),
-     //memberType: _memberTypeController.text.trim(),
-      memberType: _memberType,
-      name: _nameController.text.trim(),
-      surname: _surnameController.text.trim(),
-      phone: _phoneController.text.trim(),
-      mail: _mailController.text.trim(),
-      faculty:_facultyController.text.trim(),
-      department: _departmentController.text.trim(),
-      dateOfMembership: _dateOfMembershipController.text.trim(),
+  Rule _addOrUpdateRule() {
+    return Rule(
+      ruleId:_ruleId,
+      invBook:_invBook?1:0,
+      invDvd: _invDvd?1:0,
+      invJournal:_invJournal?1:0,
+
+      loanPeriodForAcademic:  int.parse(_loanPeriodForAcademic.text.trim()),
+      loanPeriodForOfficer:  int.parse(_loanPeriodForOfficer.text.trim()),
+      loanPeriodForStudent:  int.parse(_loanPeriodForStudent.text.trim()),
+
+      nOfLoanForAcademic:  int.parse(_nOfLoanForAcademic.text.trim()),
+      nOfLoanForOfficer:  int.parse(_nOfLoanForOfficer.text.trim()),
+      nOfLoanForStudent:  int.parse(_nOfLoanForStudent.text.trim()),
+
+      penaltyAmountForAcademic:  double.parse(_penaltyAmountForAcademic.text.trim()),
+      penaltyAmountForOfficer:  double.parse(_penaltyAmountForOfficer.text.trim()),
+      penaltyAmountForStudent:  double.parse(_penaltyAmountForStudent.text.trim()),
+
+
     );
   }
 
@@ -79,148 +82,127 @@ class _RuleFormState extends State<RuleForm> {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        TextFormField(
-          controller: _memberIdController,
-          decoration: new InputDecoration(
-            labelText: "Member Id",
-            labelStyle: TextStyle(
-              color: Colors.grey[900],
-            ),
-          ),
-        ),
-        TextFormField(
-          controller: _balanceAmountController,
-          decoration: new InputDecoration(
-            labelText: "Balance Amount",
-            labelStyle: TextStyle(
-              color: Colors.grey[900],
-            ),
-          ),
-        ),
-        /*
-        //Automatically assigned as 0
-        TextFormField(
-          controller: _noInvLoanedController,
-          decoration: new InputDecoration(
-            labelText: "No Inv Loaned",
-            labelStyle: TextStyle(
-              color: Colors.grey[900],
-            ),
-          ),
-        ),
-        */
-        TextFormField(
-          controller: _cardIdController,
-          decoration: new InputDecoration(
-            labelText: "Card Id",
-            labelStyle: TextStyle(
-              color: Colors.grey[900],
-            ),
-          ),
-        ),
-        /*
-        TextFormField(
-          controller: _memberTypeController,
-          decoration: new InputDecoration(
-            labelText: "Member Type",
-            labelStyle: TextStyle(
-              color: Colors.grey[900],
-            ),
-          ),
-        ),
-        */
-        DropdownButton<String>(
-            value: _memberType,
-            icon: const Icon(Icons.arrow_downward),
-            iconSize: 24,
-            elevation: 16,
-            style: const TextStyle(color: Colors.deepPurple),
-            underline: Container(
-            height: 2,
-            color: Colors.deepPurpleAccent,
-            ),
-            onChanged: (String? newValue) {
+        Switch(
+          value: _invBook,
+          onChanged: (value) {
             setState(() {
-              _memberType = newValue!;
+              _invBook = value;
             });
-            },
-            items: <String>['Academician', 'Officer', 'Student']
-                .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+          },
+          activeTrackColor: Colors.yellow,
+          activeColor: Colors.orangeAccent,
         ),
+        Switch(
+          value: _invJournal,
+          onChanged: (value) {
+            setState(() {
+              _invJournal = value;
+            });
+          },
+          activeTrackColor: Colors.yellow,
+          activeColor: Colors.orangeAccent,
+        ),
+        Switch(
+          value: _invDvd,
+          onChanged: (value) {
+            setState(() {
+              _invDvd = value;
+            });
+          },
+          activeTrackColor: Colors.yellow,
+          activeColor: Colors.orangeAccent,
+        ),
+
         TextFormField(
-          controller: _nameController,
+          controller: _loanPeriodForAcademic,
           decoration: new InputDecoration(
-            labelText: "Name",
+            labelText: "Loan Period for Academician",
             labelStyle: TextStyle(
               color: Colors.grey[900],
             ),
           ),
         ),
         TextFormField(
-          controller: _surnameController,
+          controller: _loanPeriodForOfficer,
           decoration: new InputDecoration(
-            labelText: "Surname",
+            labelText: "Loan Period for Officer",
             labelStyle: TextStyle(
               color: Colors.grey[900],
             ),
           ),
         ),
         TextFormField(
-          controller: _phoneController,
+          controller: _loanPeriodForStudent,
           decoration: new InputDecoration(
-            labelText: "Phone",
+            labelText: "Loan Period for Students",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
+            ),
+          ),
+        ),
+
+        TextFormField(
+          controller: _nOfLoanForAcademic,
+          decoration: new InputDecoration(
+            labelText: "# of loan for Academician",
             labelStyle: TextStyle(
               color: Colors.grey[900],
             ),
           ),
         ),
         TextFormField(
-          controller: _mailController,
+          controller: _nOfLoanForOfficer,
           decoration: new InputDecoration(
-            labelText: "Mail",
+            labelText: "# of loan for Officer",
             labelStyle: TextStyle(
               color: Colors.grey[900],
             ),
           ),
         ),
         TextFormField(
-          controller: _facultyController,
+          controller: _nOfLoanForStudent,
           decoration: new InputDecoration(
-            labelText: "Faculty",
+            labelText: "# of loan for Students",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
+            ),
+          ),
+        ),
+
+        TextFormField(
+          controller: _penaltyAmountForAcademic,
+          decoration: new InputDecoration(
+            labelText: "Penalty Price for Academician",
             labelStyle: TextStyle(
               color: Colors.grey[900],
             ),
           ),
         ),
         TextFormField(
-          controller: _departmentController,
+          controller: _penaltyAmountForOfficer,
           decoration: new InputDecoration(
-            labelText: "Department",
+            labelText: "Penalty Price for Officer",
             labelStyle: TextStyle(
               color: Colors.grey[900],
             ),
           ),
         ),
         TextFormField(
-          controller: _dateOfMembershipController,
+          controller: _penaltyAmountForStudent,
           decoration: new InputDecoration(
-            labelText: "Date",
+            labelText: "Penalty Price for Students",
             labelStyle: TextStyle(
               color: Colors.grey[900],
             ),
           ),
         ),
+
         SizedBox(
           height: 10,
         ),
         ElevatedButton(
           onPressed: () {
-            widget.onSave(_addMember());
+            //widget.onSave(_addMember());
             _clearControllers();
             ScaffoldMessenger.of(context)
               ..removeCurrentSnackBar()
@@ -236,17 +218,17 @@ class _RuleFormState extends State<RuleForm> {
   }
 
   void _clearControllers() {
-    _memberIdController.clear();
-    _balanceAmountController.clear();
-    //_noInvLoanedController.clear();
-    _cardIdController.clear();
-    _memberTypeController.clear();
-    _nameController.clear();
-    _surnameController.clear();
-    _phoneController.clear();
-    _mailController.clear();
-    _facultyController.clear();
-    _departmentController.clear();
-    _dateOfMembershipController.clear();
+    _loanPeriodForAcademic.clear();
+    _loanPeriodForOfficer.clear();
+    _loanPeriodForStudent.clear();
+
+    _nOfLoanForAcademic.clear();
+    _nOfLoanForOfficer.clear();
+    _nOfLoanForStudent.clear();
+
+    _penaltyAmountForAcademic.clear();
+    _penaltyAmountForOfficer.clear();
+    _penaltyAmountForStudent.clear();
+
   }
 }
