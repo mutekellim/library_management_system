@@ -16,19 +16,23 @@ class RuleForm extends StatefulWidget {
 }
 
 class _RuleFormState extends State<RuleForm> {
-  final _memberIdController = TextEditingController();
-  final _balanceAmountController = TextEditingController();
-  //final _noInvLoanedController = TextEditingController();
-  final _cardIdController = TextEditingController();
-  final _memberTypeController = TextEditingController();
-  final _nameController = TextEditingController();
-  final _surnameController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _mailController = TextEditingController();
-  final _facultyController = TextEditingController();
-  final _departmentController = TextEditingController();
-  final _dateOfMembershipController = TextEditingController();
-  String _memberType = "Academician";
+  final _ruleId = 1;
+  final _invBookController = TextEditingController();
+  final _invDvdController = TextEditingController();
+  final _invJournalTypeController = TextEditingController();
+
+  final _loanPeriodForAcademic = TextEditingController();
+  final _loanPeriodForOfficer = TextEditingController();
+  final _loanPeriodForStudent = TextEditingController();
+
+  final _nOfLoanForAcademic = TextEditingController();
+  final _nOfLoanForOfficer = TextEditingController();
+  final _nOfLoanForStudent = TextEditingController();
+
+  final _penaltyAmountForAcademic = TextEditingController();
+  final _penaltyAmountForOfficer = TextEditingController();
+  final _penaltyAmountForStudent = TextEditingController();
+
 
   @override
   void initState() {

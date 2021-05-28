@@ -32,10 +32,19 @@ class _RuleScreenState extends State<RuleScreen> {
   Widget setRule(context) {
     return BlocBuilder<RuleBloc, RuleState>(
       builder: (context, state) {
-
-        print(state.toString());
-
-        return Center(child: Text('Unexpected Error!'));
+        //print(state.toString());
+        if ( state is RuleInitial) {
+          return RuleForm(
+            onSave: (rule) {
+              if(state is AddRule){
+                BlocProvider.of<RuleBloc>(context)
+                    .add(AddRule(rule: rule));
+              }
+            },
+          );
+        }
+        else
+          return Center(child: Text('Unexpected Error!'));
       },
     );
   }
