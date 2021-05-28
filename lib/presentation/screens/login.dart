@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Scan Enterance Card',
+          'Scan Entrance Card',
           style: kLabelStyle,
         ),
         SizedBox(height: 10.0),
@@ -65,8 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child:  ElevatedButton(
         onPressed: () {
+
           BlocProvider.of<MemberBloc>(context)
               .add(GetMemberByCardId(cardId: _passCode.text.trim()));
+
           Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
         },
         style: ElevatedButton.styleFrom(

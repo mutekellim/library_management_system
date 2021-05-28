@@ -29,3 +29,7 @@ const String DATABASE_FAILURE_MESSAGE = 'Database Failure';
 /// Add success message
 
 const String ADD_SUCCESS = 'Successfully Added';
+
+/// Update success message
+///
+const String UPDATE_SUCCESS = 'Successfully Updated';
