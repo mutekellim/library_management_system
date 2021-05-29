@@ -8,7 +8,7 @@ import '../../data/models/models.dart';
 class Book extends Inventory {
   final int numberOfPages;
 
-  final List<String> authors;
+  final List<dynamic> authors;
 
   final String bookType;
 
@@ -91,7 +91,7 @@ class Book extends Inventory {
         type: model.type,
         status: model.status,
         numberOfPages: model.numberOfPages,
-        authors: json.decode(model.authors),
+        authors: json.decode(model.authors) as List<dynamic>,
         bookType: model.bookType,
       );
 }
