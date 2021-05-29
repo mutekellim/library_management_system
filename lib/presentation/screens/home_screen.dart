@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:library_management_system/bloc/book/book.dart';
 import 'package:library_management_system/bloc/member/member.dart';
-
+import 'package:library_management_system/bloc/rule/rule.dart';
 import 'add_inventory_screen.dart';
 import 'add_member_screen.dart';
 
@@ -17,22 +16,80 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String popupSelection = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Library Management System'),
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (String result) {
+              setState(() {
+                popupSelection = result;
+                if(result=='Logout')
+                  Navigator.of(context).pushReplacementNamed("/");
+              });
+            },
+
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'Logout',
+                child: Text('Logout'),
+              ),
+
+            ],
+          ),
+          SizedBox(
+            width: 10,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: BlocBuilder<MemberBloc, MemberState>(builder: (context, state) {
-          if(state is MemberInitial) {
-            return CircularProgressIndicator();
-          }
+          print(state.toString());
           if (state is GetMemberSuccess) {
             if(state.member.cardId.startsWith('m')) {
               return Column(
                 children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                      AddInventoryScreen.routeName);
+                    },
+                    child: Center(child: Text('Search an Inventory')),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                      AddInventoryScreen.routeName);
+                    },
+                    child: Center(child: Text('Return Inventory')),
+                  ),
+                ],
+              );
+            }
+            else if (state.member.cardId.startsWith('a')){
+              return Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      BlocProvider.of<RuleBloc>(context)
+                          .add(GetRule(ruleId:1));
+                      Navigator.of(context).pushNamed(
+                          RuleScreen.routeName);
+                    },
+
+                    child: Center(child: Text('Update Rules')),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                          AddMemberScreen.routeName);
+                    },
+                    child: Center(child: Text('Add Member')),
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pushNamed(
@@ -43,7 +100,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
 
               );
-            } else if (state.member.cardId.startsWith('a')){
+            }
+            else if (state.member.cardId.startsWith('l')){
               return Column(
                 children: [
                   ElevatedButton(
@@ -60,24 +118,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Center(child: Text('Add Inventory')),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      BlocProvider.of<BookBloc>(context)
-                          .add(SearchBook(queryData: 'a'));
-                      Navigator.of(context).pushNamed(
-                          SearchInventoryScreen.routeName);
-                    },
-                    child: Center(child: Text('Search Inventory')),
-                  ),
+                ],
+
+              );
+            }
+            else {
+              return Column(
+                children: [
+
                 ],
               );
-            } else {
-              return Container();
             }
           } else if(state is MemberFailure) {
-            return Container();
+            return Center(child: Text('${state.message}'));
           } else {
-            return Container();
+            return Column(
+              children: [
+
+              ],
+            );
           }
         }),
       ),
