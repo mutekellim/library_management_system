@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:library_management_system/bloc/dvd/dvd.dart';
 import 'package:library_management_system/bloc/journal/journal.dart';
 import 'package:library_management_system/bloc/member/member.dart';
+import 'package:library_management_system/bloc/rule/rule.dart';
+
 import 'package:library_management_system/data/sources/dao/dao.dart';
 
 import 'bloc/book/book.dart';
@@ -34,7 +36,11 @@ Future<void> init() async {
       memberRepository: sl(),
     ),
   );
-
+  sl.registerFactory(
+        () => RuleBloc(
+      ruleRepository: sl(),
+    ),
+  );
   //Repositories
   sl.registerLazySingleton<BookRepository>(
     () => BookRepositoryImpl(
@@ -56,7 +62,11 @@ Future<void> init() async {
       localDataSource: sl(),
     ),
   );
-
+  sl.registerLazySingleton<RuleRepository>(
+        () => RuleRepositoryImpl(
+      localDataSource: sl(),
+    ),
+  );
   //Data sources
   final database =
       await $FloorAppDatabase.databaseBuilder('library_database.db').build();
@@ -72,5 +82,8 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<MemberModelDao>(
         () => database.memberModelDao,
+  );
+  sl.registerLazySingleton<RuleModelDao>(
+        () => database.ruleModelDao,
   );
 }

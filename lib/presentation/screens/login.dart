@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Scan Enterance Card',
+          'Scan Entrance Card',
           style: kLabelStyle,
         ),
         SizedBox(height: 10.0),

@@ -68,6 +68,8 @@ class _$AppDatabase extends AppDatabase {
 
   MemberModelDao? _memberModelDaoInstance;
 
+  RuleModelDao? _ruleModelDaoInstance;
+
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
@@ -93,6 +95,8 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `DvdModel` (`id` INTEGER NOT NULL, `typeId` INTEGER NOT NULL, `isbn` TEXT NOT NULL, `title` TEXT NOT NULL, `subject` TEXT NOT NULL, `publisher` TEXT NOT NULL, `language` TEXT NOT NULL, `publishDate` TEXT NOT NULL, `type` TEXT NOT NULL, `status` TEXT NOT NULL, `director` TEXT NOT NULL, `duration` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `MemberModel` (`memberId` INTEGER NOT NULL, `balanceAmount` INTEGER NOT NULL, `noInvLoaned` INTEGER NOT NULL, `cardId` TEXT NOT NULL, `memberType` TEXT NOT NULL, `name` TEXT NOT NULL, `surname` TEXT NOT NULL, `phone` TEXT NOT NULL, `mail` TEXT NOT NULL, `faculty` TEXT NOT NULL, `department` TEXT NOT NULL, `dateOfMembership` TEXT NOT NULL, PRIMARY KEY (`memberId`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `RuleModel` (`ruleId` INTEGER NOT NULL, `invBook` INTEGER NOT NULL, `invDvd` INTEGER NOT NULL, `invJournal` INTEGER NOT NULL, `loanPeriodForAcademic` INTEGER NOT NULL, `loanPeriodForOfficer` INTEGER NOT NULL, `loanPeriodForStudent` INTEGER NOT NULL, `nOfLoanForAcademic` INTEGER NOT NULL, `nOfLoanForOfficer` INTEGER NOT NULL, `nOfLoanForStudent` INTEGER NOT NULL, `penaltyAmountForAcademic` REAL NOT NULL, `penaltyAmountForOfficer` REAL NOT NULL, `penaltyAmountForStudent` REAL NOT NULL, PRIMARY KEY (`ruleId`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -120,6 +124,11 @@ class _$AppDatabase extends AppDatabase {
   MemberModelDao get memberModelDao {
     return _memberModelDaoInstance ??=
         _$MemberModelDao(database, changeListener);
+  }
+
+  @override
+  RuleModelDao get ruleModelDao {
+    return _ruleModelDaoInstance ??= _$RuleModelDao(database, changeListener);
   }
 }
 
@@ -530,5 +539,87 @@ class _$MemberModelDao extends MemberModelDao {
   Future<void> saveMember(MemberModel member) async {
     await _memberModelInsertionAdapter.insert(
         member, OnConflictStrategy.replace);
+  }
+}
+
+class _$RuleModelDao extends RuleModelDao {
+  _$RuleModelDao(this.database, this.changeListener)
+      : _queryAdapter = QueryAdapter(database),
+        _ruleModelInsertionAdapter = InsertionAdapter(
+            database,
+            'RuleModel',
+            (RuleModel item) => <String, Object?>{
+                  'ruleId': item.ruleId,
+                  'invBook': item.invBook,
+                  'invDvd': item.invDvd,
+                  'invJournal': item.invJournal,
+                  'loanPeriodForAcademic': item.loanPeriodForAcademic,
+                  'loanPeriodForOfficer': item.loanPeriodForOfficer,
+                  'loanPeriodForStudent': item.loanPeriodForStudent,
+                  'nOfLoanForAcademic': item.nOfLoanForAcademic,
+                  'nOfLoanForOfficer': item.nOfLoanForOfficer,
+                  'nOfLoanForStudent': item.nOfLoanForStudent,
+                  'penaltyAmountForAcademic': item.penaltyAmountForAcademic,
+                  'penaltyAmountForOfficer': item.penaltyAmountForOfficer,
+                  'penaltyAmountForStudent': item.penaltyAmountForStudent
+                }),
+        _ruleModelUpdateAdapter = UpdateAdapter(
+            database,
+            'RuleModel',
+            ['ruleId'],
+            (RuleModel item) => <String, Object?>{
+                  'ruleId': item.ruleId,
+                  'invBook': item.invBook,
+                  'invDvd': item.invDvd,
+                  'invJournal': item.invJournal,
+                  'loanPeriodForAcademic': item.loanPeriodForAcademic,
+                  'loanPeriodForOfficer': item.loanPeriodForOfficer,
+                  'loanPeriodForStudent': item.loanPeriodForStudent,
+                  'nOfLoanForAcademic': item.nOfLoanForAcademic,
+                  'nOfLoanForOfficer': item.nOfLoanForOfficer,
+                  'nOfLoanForStudent': item.nOfLoanForStudent,
+                  'penaltyAmountForAcademic': item.penaltyAmountForAcademic,
+                  'penaltyAmountForOfficer': item.penaltyAmountForOfficer,
+                  'penaltyAmountForStudent': item.penaltyAmountForStudent
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<RuleModel> _ruleModelInsertionAdapter;
+
+  final UpdateAdapter<RuleModel> _ruleModelUpdateAdapter;
+
+  @override
+  Future<RuleModel?> getRule(int ruleId) async {
+    return _queryAdapter.query('SELECT * FROM RuleModel WHERE ruleId = ?1',
+        mapper: (Map<String, Object?> row) => RuleModel(
+            ruleId: row['ruleId'] as int,
+            invBook: row['invBook'] as int,
+            invDvd: row['invDvd'] as int,
+            invJournal: row['invJournal'] as int,
+            loanPeriodForAcademic: row['loanPeriodForAcademic'] as int,
+            loanPeriodForOfficer: row['loanPeriodForOfficer'] as int,
+            loanPeriodForStudent: row['loanPeriodForStudent'] as int,
+            nOfLoanForAcademic: row['nOfLoanForAcademic'] as int,
+            nOfLoanForOfficer: row['nOfLoanForOfficer'] as int,
+            nOfLoanForStudent: row['nOfLoanForStudent'] as int,
+            penaltyAmountForAcademic: row['penaltyAmountForAcademic'] as double,
+            penaltyAmountForOfficer: row['penaltyAmountForOfficer'] as double,
+            penaltyAmountForStudent: row['penaltyAmountForStudent'] as double),
+        arguments: [ruleId]);
+  }
+
+  @override
+  Future<void> addRule(RuleModel rule) async {
+    await _ruleModelInsertionAdapter.insert(rule, OnConflictStrategy.replace);
+  }
+
+  @override
+  Future<void> updateRule(RuleModel rule) async {
+    await _ruleModelUpdateAdapter.update(rule, OnConflictStrategy.replace);
   }
 }
