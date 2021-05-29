@@ -65,7 +65,6 @@ class _AddInventoryScreenState extends State<AddInventoryScreen> {
         if (state is BookInitial || state is AddBookSuccess) {
           // Form widget to add book
           return AddInventoryForm(
-            activeForm: INVENTORY_TYPE_BOOK,
             onSave: (addedBook) {
               BlocProvider.of<BookBloc>(context)
                   .add(AddBook(book: addedBook));
@@ -86,7 +85,6 @@ class _AddInventoryScreenState extends State<AddInventoryScreen> {
         if (state is JournalInitial || state is AddJournalSuccess) {
           // Form widget to add book
           return AddInventoryForm(
-            activeForm: INVENTORY_TYPE_JOURNAL,
             onSave: (addedJournal) {
               BlocProvider.of<JournalBloc>(context)
                   .add(AddJournal(journal: addedJournal));
@@ -107,7 +105,6 @@ class _AddInventoryScreenState extends State<AddInventoryScreen> {
         if (state is DvdInitial || state is AddDvdSuccess) {
           // Form widget to add dvd
           return AddInventoryForm(
-            activeForm: INVENTORY_TYPE_DVD,
             onSave: (addedDvd) {
               BlocProvider.of<DvdBloc>(context)
                   .add(AddDvd(dvd: addedDvd));

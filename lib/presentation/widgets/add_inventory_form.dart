@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:library_management_system/core/constants.dart';
 
 import '../../domain/entities/entities.dart';
 
@@ -7,9 +6,8 @@ typedef OnSaveCallback<T> = Function(T value);
 
 class AddInventoryForm extends StatefulWidget {
   final OnSaveCallback onSave;
-  final String activeForm;
+
   AddInventoryForm({
-    required this.activeForm,
     required this.onSave,
   });
 
@@ -19,7 +17,7 @@ class AddInventoryForm extends StatefulWidget {
 
 class _AddInventoryFormState extends State<AddInventoryForm> {
   final _idController = TextEditingController();
-  //final _typeIdController = TextEditingController();
+  final _typeIdController = TextEditingController();
   final _isbnController = TextEditingController();
   final _titleController = TextEditingController();
   final _subjectController = TextEditingController();
@@ -51,7 +49,7 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
   void dispose() {
     super.dispose();
     _idController.dispose();
-    //_typeIdController.dispose();
+    _typeIdController.dispose();
     _isbnController.dispose();
     _titleController.dispose();
     _subjectController.dispose();
@@ -68,8 +66,7 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
   Book _addBook() {
     return Book(
       id: int.parse(_idController.text.trim()),
-      //typeId: int.parse(_typeIdController.text.trim()),
-      typeId: 1,
+      typeId: int.parse(_typeIdController.text.trim()),
       isbn: _isbnController.text.trim(),
       title: _titleController.text.trim(),
       subject: _subjectController.text.trim(),
@@ -87,8 +84,7 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
   Journal _addJournal() {
     return Journal(
       id: int.parse(_idController.text.trim()),
-      //typeId: int.parse(_typeIdController.text.trim()),
-      typeId:2,
+      typeId: int.parse(_typeIdController.text.trim()),
       isbn: _isbnController.text.trim(),
       title: _titleController.text.trim(),
       subject: _subjectController.text.trim(),
@@ -105,8 +101,7 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
   Dvd _addDvd() {
     return Dvd(
       id: int.parse(_idController.text.trim()),
-      //typeId: int.parse(_typeIdController.text.trim()),
-      typeId:3,
+      typeId: int.parse(_typeIdController.text.trim()),
       isbn: _isbnController.text.trim(),
       title: _titleController.text.trim(),
       subject: _subjectController.text.trim(),
@@ -133,8 +128,6 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
             ),
           ),
         ),
-        /*
-        // Automatically added on _addBook, _addDvd_, _addJournal
         TextFormField(
           controller: _typeIdController,
           decoration: new InputDecoration(
@@ -144,7 +137,6 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
             ),
           ),
         ),
-        */
         TextFormField(
           controller: _isbnController,
           decoration: new InputDecoration(
@@ -217,91 +209,66 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
             ),
           ),
         ),
-
-        //book specifics
-        Visibility(
-          visible: widget.activeForm==INVENTORY_TYPE_BOOK?true:false,
-          child: TextFormField(
-            controller: _numberOfPagesController,
-            decoration: new InputDecoration(
-              labelText: "Page number",
-              labelStyle: TextStyle(
-                color: Colors.grey[900],
-              ),
+        TextFormField(
+          controller: _numberOfPagesController,
+          decoration: new InputDecoration(
+            labelText: "Page number",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
             ),
           ),
         ),
-        Visibility(
-          visible: widget.activeForm==INVENTORY_TYPE_BOOK?true:false,
-          child: TextFormField(
-            controller: _authorsController,
-            decoration: new InputDecoration(
-              labelText: "Authors",
-              labelStyle: TextStyle(
-                color: Colors.grey[900],
-              ),
+        TextFormField(
+          controller: _authorsController,
+          decoration: new InputDecoration(
+            labelText: "Authors",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
             ),
           ),
         ),
-        Visibility(
-          visible: widget.activeForm==INVENTORY_TYPE_BOOK?true:false,
-          child: TextFormField(
-            controller: _bookTypeController,
-            decoration: new InputDecoration(
-              labelText: "Book Type",
-              labelStyle: TextStyle(
-                color: Colors.grey[900],
-              ),
+        TextFormField(
+          controller: _bookTypeController,
+          decoration: new InputDecoration(
+            labelText: "Book Type",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
             ),
           ),
         ),
-        //journal specifics
-        Visibility(
-          visible: widget.activeForm==INVENTORY_TYPE_JOURNAL?true:false,
-          child: TextFormField(
-            controller: _volumeController,
-            decoration: new InputDecoration(
-              labelText: "Volume",
-              labelStyle: TextStyle(
-                color: Colors.grey[900],
-              ),
+        TextFormField(
+          controller: _volumeController,
+          decoration: new InputDecoration(
+            labelText: "Volume",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
             ),
           ),
         ),
-        Visibility(
-          visible: widget.activeForm==INVENTORY_TYPE_JOURNAL?true:false,
-          child: TextFormField(
-            controller: _issueController,
-            decoration: new InputDecoration(
-              labelText: "Issue",
-              labelStyle: TextStyle(
-                color: Colors.grey[900],
-              ),
+        TextFormField(
+          controller: _issueController,
+          decoration: new InputDecoration(
+            labelText: "Issue",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
             ),
           ),
         ),
-        //dvd specifics
-        Visibility(
-          visible: widget.activeForm==INVENTORY_TYPE_DVD?true:false,
-          child: TextFormField(
-            controller: _durationController,
-            decoration: new InputDecoration(
-              labelText: "Duration",
-              labelStyle: TextStyle(
-                color: Colors.grey[900],
-              ),
+        TextFormField(
+          controller: _durationController,
+          decoration: new InputDecoration(
+            labelText: "Duration",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
             ),
           ),
         ),
-        Visibility(
-          visible: widget.activeForm==INVENTORY_TYPE_DVD?true:false,
-          child: TextFormField(
-            controller: _directorController,
-            decoration: new InputDecoration(
-              labelText: "Director",
-              labelStyle: TextStyle(
-                color: Colors.grey[900],
-              ),
+        TextFormField(
+          controller: _directorController,
+          decoration: new InputDecoration(
+            labelText: "Director",
+            labelStyle: TextStyle(
+              color: Colors.grey[900],
             ),
           ),
         ),
@@ -310,16 +277,7 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
         ),
         ElevatedButton(
           onPressed: () {
-            switch(widget.activeForm){
-              case INVENTORY_TYPE_BOOK:
-                _addBook();
-                break;
-              case INVENTORY_TYPE_JOURNAL:
-                _addJournal();
-                break;
-              case INVENTORY_TYPE_DVD:
-                _addDvd();
-            }
+            widget.onSave(_addBook());
             _clearControllers();
             ScaffoldMessenger.of(context)
               ..removeCurrentSnackBar()
@@ -336,7 +294,7 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
 
   void _clearControllers() {
     _idController.clear();
-    //_typeIdController.clear();
+    _typeIdController.clear();
     _isbnController.clear();
     _titleController.clear();
     _subjectController.clear();
