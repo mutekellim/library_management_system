@@ -18,7 +18,7 @@ class AddMemberForm extends StatefulWidget {
 class _AddMemberFormState extends State<AddMemberForm> {
   final _memberIdController = TextEditingController();
   final _balanceAmountController = TextEditingController();
-  //final _noInvLoanedController = TextEditingController();
+  final _noInvLoanedController = TextEditingController();
   final _cardIdController = TextEditingController();
   final _memberTypeController = TextEditingController();
   final _nameController = TextEditingController();
@@ -28,7 +28,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
   final _facultyController = TextEditingController();
   final _departmentController = TextEditingController();
   final _dateOfMembershipController = TextEditingController();
-  String _memberType = "Academician";
 
   @override
   void initState() {
@@ -40,7 +39,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
     super.dispose();
     _memberIdController.dispose();
     _balanceAmountController.dispose();
-    //_noInvLoanedController.dispose();
+    _noInvLoanedController.dispose();
     _cardIdController.dispose();
     _memberTypeController.dispose();
     _nameController.dispose();
@@ -56,11 +55,9 @@ class _AddMemberFormState extends State<AddMemberForm> {
     return Member(
       memberId: int.parse(_memberIdController.text.trim()),
       balanceAmount: int.parse(_balanceAmountController.text.trim()),
-      //noInvLoaned: int.parse(_noInvLoanedController.text.trim()),
-      noInvLoaned: 0,
+      noInvLoaned: int.parse(_noInvLoanedController.text.trim()),
       cardId: _cardIdController.text.trim(),
-     //memberType: _memberTypeController.text.trim(),
-      memberType: _memberType,
+      memberType: _memberTypeController.text.trim(),
       name: _nameController.text.trim(),
       surname: _surnameController.text.trim(),
       phone: _phoneController.text.trim(),
@@ -93,8 +90,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
             ),
           ),
         ),
-        /*
-        //Automatically assigned as 0
         TextFormField(
           controller: _noInvLoanedController,
           decoration: new InputDecoration(
@@ -104,7 +99,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
             ),
           ),
         ),
-        */
         TextFormField(
           controller: _cardIdController,
           decoration: new InputDecoration(
@@ -114,7 +108,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
             ),
           ),
         ),
-        /*
         TextFormField(
           controller: _memberTypeController,
           decoration: new InputDecoration(
@@ -123,30 +116,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
               color: Colors.grey[900],
             ),
           ),
-        ),
-        */
-        DropdownButton<String>(
-            value: _memberType,
-            icon: const Icon(Icons.arrow_downward),
-            iconSize: 24,
-            elevation: 16,
-            style: const TextStyle(color: Colors.deepPurple),
-            underline: Container(
-            height: 2,
-            color: Colors.deepPurpleAccent,
-            ),
-            onChanged: (String? newValue) {
-            setState(() {
-              _memberType = newValue!;
-            });
-            },
-            items: <String>['Academician', 'Officer', 'Student']
-                .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
         ),
         TextFormField(
           controller: _nameController,
@@ -234,7 +203,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
   void _clearControllers() {
     _memberIdController.clear();
     _balanceAmountController.clear();
-    //_noInvLoanedController.clear();
+    _noInvLoanedController.clear();
     _cardIdController.clear();
     _memberTypeController.clear();
     _nameController.clear();
