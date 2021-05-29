@@ -39,7 +39,10 @@ class _SearchInventoryScreenState extends State<SearchInventoryScreen> {
             shrinkWrap: true,
             itemCount: state.bookList.length,
             itemBuilder: (context, index) {
-              return ListItem(selectedInventory: state.bookList[index]);
+              return ListItem(
+                bookId: state.bookList[index].id,
+                selectedInventory: state.bookList[index],
+              );
             },
           );
         } else {

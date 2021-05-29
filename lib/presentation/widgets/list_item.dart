@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:library_management_system/presentation/screens/details_screen.dart';
 
 import '../../domain/entities/entities.dart';
 
 class ListItem extends StatelessWidget {
-  final Inventory selectedInventory;
+  final int bookId;
+  final Book selectedInventory;
 
   ListItem({
+    required this.bookId,
     required this.selectedInventory,
   });
 
@@ -25,7 +28,7 @@ class ListItem extends StatelessWidget {
               selectedInventory.title,
             ),
             onTap: () {
-              //navigateDetails(context);
+              navigateDetails(context);
             },
             contentPadding: EdgeInsets.all(5),
           ),
@@ -34,7 +37,7 @@ class ListItem extends StatelessWidget {
     );
   }
 
-  // void navigateDetails(BuildContext context) {
-  //   Navigator.of(context).pushNamed(DetailsScreen.routeName, arguments: id);
-  // }
+  void navigateDetails(BuildContext context) {
+    Navigator.of(context).pushNamed(DetailsScreen.routeName, arguments: bookId);
+  }
 }

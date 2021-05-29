@@ -8,6 +8,7 @@ import 'package:library_management_system/domain/entities/book.dart';
 import 'package:library_management_system/domain/entities/entities.dart';
 import 'package:library_management_system/presentation/screens/add_inventory_screen.dart';
 import 'package:library_management_system/presentation/screens/add_member_screen.dart';
+import 'package:library_management_system/presentation/screens/details_screen.dart';
 import 'package:library_management_system/presentation/screens/login.dart';
 import 'package:library_management_system/presentation/screens/search_inventory_screen.dart';
 
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
           AddInventoryScreen.routeName: (context) => AddInventoryScreen(),
           AddMemberScreen.routeName: (context) => AddMemberScreen(),
           SearchInventoryScreen.routeName: (context) => SearchInventoryScreen(),
+          DetailsScreen.routeName: (context) => DetailsScreen(),
         },
       ),
     );
