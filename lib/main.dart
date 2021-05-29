@@ -1,7 +1,6 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
 
-
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/bloc/member/member.dart';
@@ -10,6 +9,7 @@ import 'package:library_management_system/domain/entities/entities.dart';
 import 'package:library_management_system/presentation/screens/add_inventory_screen.dart';
 import 'package:library_management_system/presentation/screens/add_member_screen.dart';
 import 'package:library_management_system/presentation/screens/login.dart';
+import 'package:library_management_system/presentation/screens/search_inventory_screen.dart';
 
 import 'bloc/book/book.dart';
 import 'bloc/journal/journal.dart';
@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<BookBloc>(
-          create: (context) => di.sl<BookBloc>(),
+          create: (context) =>
+              di.sl<BookBloc>()..add(SearchBook(queryData: 'a')),
         ),
         BlocProvider<JournalBloc>(
           create: (context) => di.sl<JournalBloc>(),
@@ -38,7 +39,22 @@ class MyApp extends StatelessWidget {
           create: (context) => di.sl<DvdBloc>(),
         ),
         BlocProvider<MemberBloc>(
-          create: (context) => di.sl<MemberBloc>(),
+          create: (context) => di.sl<MemberBloc>()
+            ..add(AddMember(
+              member: Member(
+                  memberId: 1,
+                  balanceAmount: 1,
+                  noInvLoaned: 0,
+                  cardId: 'a9',
+                  memberType: 'memberType',
+                  name: 'name',
+                  surname: 'surname',
+                  phone: 'phone',
+                  mail: 'mail',
+                  faculty: 'faculty',
+                  department: 'department',
+                  dateOfMembership: 'dateOfMembership'),
+            )),
         ),
       ],
       child: MaterialApp(
@@ -49,6 +65,7 @@ class MyApp extends StatelessWidget {
           HomeScreen.routeName: (context) => HomeScreen(),
           AddInventoryScreen.routeName: (context) => AddInventoryScreen(),
           AddMemberScreen.routeName: (context) => AddMemberScreen(),
+          SearchInventoryScreen.routeName: (context) => SearchInventoryScreen(),
         },
       ),
     );

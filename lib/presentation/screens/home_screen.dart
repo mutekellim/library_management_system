@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:library_management_system/bloc/book/book.dart';
 import 'package:library_management_system/bloc/member/member.dart';
 
 import 'add_inventory_screen.dart';
@@ -52,8 +53,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Center(child: Text('Add Member')),
                   ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                          AddInventoryScreen.routeName);
+                    },
+                    child: Center(child: Text('Add Inventory')),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      BlocProvider.of<BookBloc>(context)
+                          .add(SearchBook(queryData: 'a'));
+                      Navigator.of(context).pushNamed(
+                          SearchInventoryScreen.routeName);
+                    },
+                    child: Center(child: Text('Search Inventory')),
+                  ),
                 ],
-
               );
             } else {
               return Container();
