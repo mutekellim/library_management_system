@@ -237,6 +237,14 @@ class _$BookModelDao extends BookModelDao {
   }
 
   @override
+  Future<List<BookModel>> searchBook(String queryData) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM BookModel WHERE title LIKE ?1 OR type LIKE ?1 OR subject LIKE ?1 OR publishDate LIKE ?1',
+        mapper: (Map<String, Object?> row) => BookModel(id: row['id'] as int, typeId: row['typeId'] as int, numberOfPages: row['numberOfPages'] as int, isbn: row['isbn'] as String, title: row['title'] as String, subject: row['subject'] as String, publisher: row['publisher'] as String, language: row['language'] as String, publishDate: row['publishDate'] as String, type: row['type'] as String, status: row['status'] as String, bookType: row['bookType'] as String, authors: row['authors'] as String),
+        arguments: [queryData]);
+  }
+
+  @override
   Future<void> saveBook(BookModel game) async {
     await _bookModelInsertionAdapter.insert(game, OnConflictStrategy.replace);
   }
