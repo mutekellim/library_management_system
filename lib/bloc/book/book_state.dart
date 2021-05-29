@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:library_management_system/domain/entities/entities.dart';
 
 abstract class BookState extends Equatable {
   const BookState();
@@ -8,6 +9,8 @@ abstract class BookState extends Equatable {
 }
 
 class BookInitial extends BookState {}
+
+class BookLoadProgress extends BookState {}
 
 class AddBookSuccess extends BookState {
   final String message;
@@ -29,6 +32,22 @@ class AddBookSuccess extends BookState {
   String toString() => 'AddBookSuccess : {message : $message, bookId: $bookId}';
 }
 
+class BookLoadSuccess extends BookState {
+  final List<Book> bookList;
+
+  const BookLoadSuccess({
+    required this.bookList,
+  });
+
+  @override
+  List<Object> get props => [
+        bookList,
+      ];
+
+  @override
+  String toString() => 'BookLoadSuccess : {bookList : $bookList}';
+}
+
 class BookFailure extends BookState {
   final String message;
 
@@ -38,5 +57,5 @@ class BookFailure extends BookState {
   List<Object> get props => [message];
 
   @override
-  String toString() => 'AddBookFailure : {message : $message}';
+  String toString() => 'BookFailure : {message : $message}';
 }

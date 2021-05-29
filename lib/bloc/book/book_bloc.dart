@@ -1,5 +1,6 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:dartz/dartz.dart';
+
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,6 +19,8 @@ class BookBloc extends Bloc<BookEvent, BookState> {
   Stream<BookState> mapEventToState(BookEvent event) async* {
     if (event is AddBook) {
       yield* _mapBookAddToState(event);
+    } else if (event is SearchBook) {
+      yield* _mapSearchBookToState(event);
     }
   }
 
@@ -27,6 +30,16 @@ class BookBloc extends Bloc<BookEvent, BookState> {
     yield failureOrBook.fold(
       (failure) => BookFailure(message: DATABASE_FAILURE_MESSAGE),
       (book) => AddBookSuccess(message: ADD_SUCCESS, bookId: book.id),
+    );
+  }
+
+  Stream<BookState> _mapSearchBookToState(SearchBook event) async* {
+    yield BookLoadProgress();
+    final Either<Failure, List<Book>> failureOrBookList =
+        await bookRepository.searchBook(event.queryData);
+    yield failureOrBookList.fold(
+      (failure) => BookFailure(message: DATABASE_FAILURE_MESSAGE),
+      (bookList) => BookLoadSuccess(bookList: bookList),
     );
   }
 }
