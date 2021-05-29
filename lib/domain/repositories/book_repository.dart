@@ -10,4 +10,6 @@ import '../../domain/entities/entities.dart';
 ///
 abstract class BookRepository extends InventoryRepository {
   Future<Either<Failure, Book>> addBook(Book book);
+
+  Future<Either<Failure, List<Book>>> searchBook(String queryData);
 }
