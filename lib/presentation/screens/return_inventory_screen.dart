@@ -5,6 +5,7 @@ import 'package:library_management_system/bloc/book/book.dart';
 import 'package:library_management_system/bloc/member/member.dart';
 import 'package:library_management_system/bloc/rule/rule.dart';
 import 'package:library_management_system/core/constants.dart';
+import 'package:library_management_system/domain/entities/entities.dart';
 import 'add_inventory_screen.dart';
 import 'add_member_screen.dart';
 
@@ -26,7 +27,7 @@ class _ReturnInventoryScreenState extends State<ReturnInventoryScreen> {
     searchController.dispose();
   }
 
-  Widget _buildBookListBody(List<dynamic> bookList) {
+  Widget _buildBookListBody(BuildContext context, List<dynamic> bookList) {
     if (bookList.length > 0) {
       return ListView.builder(
         shrinkWrap: true,
@@ -85,15 +86,14 @@ class _ReturnInventoryScreenState extends State<ReturnInventoryScreen> {
                         iconSize: 54.0,
                         onPressed: () {
                           if (searchController.text.isNotEmpty) {
-                            // TODO : date hesaplanarak balance update edilecek.
-                            // TODO : girilen id member in listesinden silinir.
+                            //TODO : date hesaplanarak balance update edilecek.
                             BlocProvider.of<AuthorizationBloc>(context).add(
                                 UpdateMember(
                                     inventoryId:
                                         int.parse(searchController.text.trim()),
                                     action: ACTION_RETURN));
                             searchController.clear();
-                            } else {
+                          } else {
                             // give an alert to enter a search term.
                           }
                         },
@@ -104,11 +104,7 @@ class _ReturnInventoryScreenState extends State<ReturnInventoryScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                SingleChildScrollView(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Container(
-                        child: _buildBookListBody(
-                            state.member.reservedInventoryList))),
+                _buildBookListBody(context, state.member.borrowedInventoryList),
               ],
             );
           } else if (state is AuthorizationFailure) {
