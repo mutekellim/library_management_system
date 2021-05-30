@@ -4,6 +4,7 @@ import 'package:library_management_system/bloc/authorization/authorization.dart'
 import 'package:library_management_system/bloc/book/book.dart';
 import 'package:library_management_system/bloc/member/member.dart';
 import 'package:library_management_system/bloc/rule/rule.dart';
+import 'package:library_management_system/core/constants.dart';
 import 'add_inventory_screen.dart';
 import 'add_member_screen.dart';
 
@@ -57,6 +58,10 @@ class _ReturnInventoryScreenState extends State<ReturnInventoryScreen> {
           if (state is AuthorizationSuccess) {
             return Column(
               children: [
+                Text('Balance : ${state.member.balanceAmount}'),
+                SizedBox(
+                  height: 15,
+                ),
                 Row(
                   children: [
                     Expanded(
@@ -68,7 +73,7 @@ class _ReturnInventoryScreenState extends State<ReturnInventoryScreen> {
                             controller: searchController,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: 'Enter a search term'),
+                                hintText: 'Enter an id to return'),
                           ),
                         ),
                       ),
@@ -82,7 +87,13 @@ class _ReturnInventoryScreenState extends State<ReturnInventoryScreen> {
                           if (searchController.text.isNotEmpty) {
                             // TODO : date hesaplanarak balance update edilecek.
                             // TODO : girilen id member in listesinden silinir.
-                          } else {
+                            BlocProvider.of<AuthorizationBloc>(context).add(
+                                UpdateMember(
+                                    inventoryId:
+                                        int.parse(searchController.text.trim()),
+                                    action: ACTION_RETURN));
+                            searchController.clear();
+                            } else {
                             // give an alert to enter a search term.
                           }
                         },

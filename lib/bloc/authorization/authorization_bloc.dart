@@ -57,6 +57,9 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
     } else if (action == ACTION_LOANED) {
       return _member?.copyWith(
           borrowedInventoryList: _member!.borrowedInventoryList..add(id));
+    } else if (action == ACTION_RETURN) {
+      return _member?.copyWith(
+          borrowedInventoryList: _member!.reservedInventoryList..remove(id));
     }
   }
 }

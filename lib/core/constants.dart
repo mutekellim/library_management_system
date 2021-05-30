@@ -40,3 +40,5 @@ const String UPDATE_SUCCESS = 'Successfully Updated';
 const String ACTION_RESERVED = 'Reserved';
 
 const String ACTION_LOANED = 'Loaned';
+
+const String ACTION_RETURN = 'Returned';
