@@ -39,6 +39,41 @@ class Member extends Equatable {
     required this.borrowedInventoryList,
   });
 
+  Member copyWith({
+    int? memberId,
+    int? balanceAmount,
+    int? noInvLoaned,
+    String? cardId,
+    String? memberType,
+    String? name,
+    String? surname,
+    String? phone,
+    String? mail,
+    String? faculty,
+    String? department,
+    String? dateOfMembership,
+    List<dynamic>? reservedInventoryList,
+    List<dynamic>? borrowedInventoryList,
+  }) =>
+      Member(
+        memberId: memberId ?? this.memberId,
+        balanceAmount: balanceAmount ?? this.balanceAmount,
+        noInvLoaned: noInvLoaned ?? this.noInvLoaned,
+        cardId: cardId ?? this.cardId,
+        memberType: memberType ?? this.memberType,
+        name: name ?? this.name,
+        surname: surname ?? this.surname,
+        phone: phone ?? this.phone,
+        mail: mail ?? this.mail,
+        faculty: faculty ?? this.faculty,
+        department: department ?? this.department,
+        dateOfMembership: dateOfMembership ?? this.dateOfMembership,
+        reservedInventoryList:
+            reservedInventoryList ?? this.reservedInventoryList,
+        borrowedInventoryList:
+            borrowedInventoryList ?? this.borrowedInventoryList,
+      );
+
   @override
   List<Object> get props => [
         memberId,

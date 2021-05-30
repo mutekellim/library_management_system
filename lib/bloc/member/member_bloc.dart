@@ -1,5 +1,6 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:dartz/dartz.dart';
+
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,19 +26,20 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
 
   Stream<MemberState> _mapMemberAddToState(AddMember event) async* {
     final Either<Failure, Member> failureOrMember =
-    await memberRepository.addMember(event.member);
-    yield failureOrMember.fold(
-          (failure) => MemberFailure(message: DATABASE_FAILURE_MESSAGE),
-          (member) => AddMemberSuccess(message: ADD_SUCCESS, memberId: member.memberId),
+        await memberRepository.addMember(event.member);
+    yield failureOrMember
+        .fold((failure) => MemberFailure(message: DATABASE_FAILURE_MESSAGE),
+            (member)  => AddMemberSuccess(message: ADD_SUCCESS, memberId: member.memberId),
     );
   }
 
-  Stream<MemberState> _mapGetMemberByCardIdToState(GetMemberByCardId event) async* {
+  Stream<MemberState> _mapGetMemberByCardIdToState(
+      GetMemberByCardId event) async* {
     final Either<Failure, Member> failureOrMember =
-    await memberRepository.getMemberByCardId(event.cardId);
+        await memberRepository.getMemberByCardId(event.cardId);
     yield failureOrMember.fold(
-          (failure) => MemberFailure(message: DATABASE_FAILURE_MESSAGE),
-          (member) => GetMemberSuccess(member: member),
+      (failure) => MemberFailure(message: DATABASE_FAILURE_MESSAGE),
+      (member) => GetMemberSuccess(member: member),
     );
   }
 }

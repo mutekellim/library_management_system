@@ -12,6 +12,7 @@ import 'authorization.dart';
 
 class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
   final MemberRepository memberRepository;
+  Member? _member;
 
   AuthorizationBloc({required this.memberRepository})
       : super(AuthorizationInitial());
@@ -22,6 +23,8 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
       yield* _mapAuthorizationByCardToState(event);
     } else if (event is AuthorizationInit) {
       yield AuthorizationInitial();
+    } else if (event is UpdateMember) {
+      yield* _mapUpdateMemberToState(event);
     }
   }
 
@@ -30,8 +33,30 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
     final Either<Failure, Member> failureOrMember =
         await memberRepository.getMemberByCardId(event.cardId);
     yield failureOrMember.fold(
+        (failure) => AuthorizationFailure(message: DATABASE_FAILURE_MESSAGE),
+        (member) {
+      _member = member;
+      return AuthorizationSuccess(member: member);
+    });
+  }
+
+  Stream<AuthorizationState> _mapUpdateMemberToState(
+      UpdateMember event) async* {
+    final Either<Failure, Member> failureOrMember = await memberRepository
+        .addMember(updateMember(event.action, event.inventoryId)!);
+    yield failureOrMember.fold(
       (failure) => AuthorizationFailure(message: DATABASE_FAILURE_MESSAGE),
       (member) => AuthorizationSuccess(member: member),
     );
+  }
+
+  Member? updateMember(String action, int id) {
+    if (action == ACTION_RESERVED) {
+      return _member?.copyWith(
+          reservedInventoryList: _member!.reservedInventoryList..add(id));
+    } else if (action == ACTION_LOANED) {
+      return _member?.copyWith(
+          borrowedInventoryList: _member!.borrowedInventoryList..add(id));
+    }
   }
 }

@@ -33,3 +33,10 @@ const String ADD_SUCCESS = 'Successfully Added';
 /// Update success message
 ///
 const String UPDATE_SUCCESS = 'Successfully Updated';
+
+/// Member update actions
+///
+
+const String ACTION_RESERVED = 'Reserved';
+
+const String ACTION_LOANED = 'Loaned';

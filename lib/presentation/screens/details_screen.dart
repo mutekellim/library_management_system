@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:library_management_system/bloc/authorization/authorization.dart';
+import 'package:library_management_system/bloc/authorization/authorization_bloc.dart';
 import 'package:library_management_system/bloc/book/book.dart';
 
 import '../../domain/entities/entities.dart';
@@ -111,20 +113,38 @@ class DetailsScreen extends StatelessWidget {
                     // TODO : make active if status is not available
                     Expanded(
                         child: ElevatedButton(
-                            onPressed: !getBookStatus(selectedInventory.status) ? () {
-                              BlocProvider.of<BookBloc>(context).add(UpdateBook(book: selectedInventory, status: INVENTORY_STATUS_RESERVED));
-                              //Memberin reserve listine ekle
-                            } : null, child: Text('Reserve'))),
+                            onPressed: !getBookStatus(selectedInventory.status)
+                                ? () {
+                                    BlocProvider.of<AuthorizationBloc>(context)
+                                        .add(UpdateMember(
+                                            inventoryId: selectedInventory.id,
+                                            action: ACTION_RESERVED));
+                                    BlocProvider.of<BookBloc>(context).add(
+                                        UpdateBook(
+                                            book: selectedInventory,
+                                            status: INVENTORY_STATUS_RESERVED));
+                                  }
+                                : null,
+                            child: Text('Reserve'))),
                     SizedBox(
                       width: 20,
                     ),
                     // TODO : make active if status is available
                     Expanded(
                         child: ElevatedButton(
-                            onPressed: getBookStatus(selectedInventory.status) ? () {
-                              BlocProvider.of<BookBloc>(context).add(UpdateBook(book: selectedInventory, status: INVENTORY_STATUS_LOANED));
-                              //Memberin borrow listine ekle
-                            } : null, child: Text('Borrow'))),
+                            onPressed: getBookStatus(selectedInventory.status)
+                                ? () {
+                                    BlocProvider.of<AuthorizationBloc>(context)
+                                        .add(UpdateMember(
+                                            inventoryId: selectedInventory.id,
+                                            action: ACTION_LOANED));
+                                    BlocProvider.of<BookBloc>(context).add(
+                                        UpdateBook(
+                                            book: selectedInventory,
+                                            status: INVENTORY_STATUS_LOANED));
+                                  }
+                                : null,
+                            child: Text('Borrow'))),
                   ],
                 )
               ],
