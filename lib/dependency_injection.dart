@@ -6,6 +6,7 @@ import 'package:library_management_system/bloc/rule/rule.dart';
 
 import 'package:library_management_system/data/sources/dao/dao.dart';
 
+import 'bloc/authorization/authorization_bloc.dart';
 import 'bloc/book/book.dart';
 import 'domain/repositories/repositories.dart';
 import 'data/repositories/repositories.dart';
@@ -41,6 +42,12 @@ Future<void> init() async {
       ruleRepository: sl(),
     ),
   );
+  sl.registerFactory(
+        () => AuthorizationBloc(
+      memberRepository: sl(),
+    ),
+  );
+
   //Repositories
   sl.registerLazySingleton<BookRepository>(
     () => BookRepositoryImpl(
