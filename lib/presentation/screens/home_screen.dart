@@ -4,6 +4,7 @@ import 'package:library_management_system/bloc/authorization/authorization.dart'
 import 'package:library_management_system/bloc/book/book.dart';
 import 'package:library_management_system/bloc/member/member.dart';
 import 'package:library_management_system/bloc/rule/rule.dart';
+import 'package:library_management_system/presentation/screens/return_inventory_screen.dart';
 import 'add_inventory_screen.dart';
 import 'add_member_screen.dart';
 
@@ -105,6 +106,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           .pushNamed(SearchInventoryScreen.routeName);
                     },
                     child: Center(child: Text('Search Inventory')),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(ReturnInventoryScreen.routeName);
+                    },
+                    child: Center(child: Text('Return Inventory')),
                   ),
                 ],
               );
