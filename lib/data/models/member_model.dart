@@ -17,6 +17,8 @@ class MemberModel extends Equatable {
   final String faculty;
   final String department;
   final String dateOfMembership;
+  final String reservedInventoryList;
+  final String borrowedInventoryList;
 
   MemberModel({
     required this.memberId,
@@ -31,6 +33,8 @@ class MemberModel extends Equatable {
     required this.faculty,
     required this.department,
     required this.dateOfMembership,
+    required this.reservedInventoryList,
+    required this.borrowedInventoryList,
   });
 
   @override
@@ -47,6 +51,8 @@ class MemberModel extends Equatable {
     faculty,
     department,
     dateOfMembership,
+    reservedInventoryList,
+    borrowedInventoryList,
   ];
 
   @override
@@ -54,5 +60,6 @@ class MemberModel extends Equatable {
       'MemberModel {memberId: $memberId, balanceAmount: $balanceAmount, '
           'noInvLoaned: $noInvLoaned, cardId: $cardId, memberType: $memberType, name: $name, '
           'surname: $surname, phone: $phone, mail: $mail, faculty: $faculty, '
-          'department: $department, dateOfMembership: $dateOfMembership}';
+          'department: $department, dateOfMembership: $dateOfMembership '
+          'reservedInventoryList: $reservedInventoryList, borrowedInventoryList: $borrowedInventoryList}';
 }

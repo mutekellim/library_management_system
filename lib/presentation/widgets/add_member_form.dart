@@ -56,10 +56,8 @@ class _AddMemberFormState extends State<AddMemberForm> {
     return Member(
       memberId: int.parse(_memberIdController.text.trim()),
       balanceAmount: int.parse(_balanceAmountController.text.trim()),
-      //noInvLoaned: int.parse(_noInvLoanedController.text.trim()),
       noInvLoaned: 0,
       cardId: _cardIdController.text.trim(),
-     //memberType: _memberTypeController.text.trim(),
       memberType: _memberType,
       name: _nameController.text.trim(),
       surname: _surnameController.text.trim(),
@@ -68,6 +66,8 @@ class _AddMemberFormState extends State<AddMemberForm> {
       faculty:_facultyController.text.trim(),
       department: _departmentController.text.trim(),
       dateOfMembership: _dateOfMembershipController.text.trim(),
+      reservedInventoryList: [],
+      borrowedInventoryList: [],
     );
   }
 

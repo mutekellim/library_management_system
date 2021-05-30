@@ -39,6 +39,38 @@ class Book extends Inventory {
           status: status,
         );
 
+  Book copyWith({
+    int? id,
+    int? typeId,
+    String? isbn,
+    String? title,
+    String? subject,
+    String? publisher,
+    String? language,
+    String? publishDate,
+    String? type,
+    String? status,
+    int? numberOfPages,
+    List<dynamic>? authors,
+    String? bookType,
+  }) {
+    return Book(
+      id: id ?? this.id,
+      typeId: typeId ?? this.typeId,
+      isbn: isbn ?? this.isbn,
+      title: title ?? this.title,
+      subject: subject ?? this.subject,
+      publisher: publisher ?? this.publisher,
+      language: language ?? this.language,
+      publishDate: publishDate ?? this.publishDate,
+      type: type ?? this.type,
+      status: status ?? this.status,
+      numberOfPages: numberOfPages ?? this.numberOfPages,
+      authors: authors ?? this.authors,
+      bookType: bookType ?? this.bookType,
+    );
+  }
+
   @override
   List<Object> get props => [
         id,
@@ -61,7 +93,6 @@ class Book extends Inventory {
       'publishDate: $publishDate, type: $type, status:$status, numberOfPages: $numberOfPages, '
       'authors: $authors, bookType: $bookType}';
 
-
   BookModel toModel() => BookModel(
         id: id,
         typeId: typeId,
@@ -77,7 +108,6 @@ class Book extends Inventory {
         bookType: bookType,
         authors: json.encode(authors),
       );
-
 
   static Book fromModel(BookModel model) => Book(
         id: model.id,

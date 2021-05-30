@@ -94,7 +94,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `DvdModel` (`id` INTEGER NOT NULL, `typeId` INTEGER NOT NULL, `isbn` TEXT NOT NULL, `title` TEXT NOT NULL, `subject` TEXT NOT NULL, `publisher` TEXT NOT NULL, `language` TEXT NOT NULL, `publishDate` TEXT NOT NULL, `type` TEXT NOT NULL, `status` TEXT NOT NULL, `director` TEXT NOT NULL, `duration` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `MemberModel` (`memberId` INTEGER NOT NULL, `balanceAmount` INTEGER NOT NULL, `noInvLoaned` INTEGER NOT NULL, `cardId` TEXT NOT NULL, `memberType` TEXT NOT NULL, `name` TEXT NOT NULL, `surname` TEXT NOT NULL, `phone` TEXT NOT NULL, `mail` TEXT NOT NULL, `faculty` TEXT NOT NULL, `department` TEXT NOT NULL, `dateOfMembership` TEXT NOT NULL, PRIMARY KEY (`memberId`))');
+            'CREATE TABLE IF NOT EXISTS `MemberModel` (`memberId` INTEGER NOT NULL, `balanceAmount` INTEGER NOT NULL, `noInvLoaned` INTEGER NOT NULL, `cardId` TEXT NOT NULL, `memberType` TEXT NOT NULL, `name` TEXT NOT NULL, `surname` TEXT NOT NULL, `phone` TEXT NOT NULL, `mail` TEXT NOT NULL, `faculty` TEXT NOT NULL, `department` TEXT NOT NULL, `dateOfMembership` TEXT NOT NULL, `reservedInventoryList` TEXT NOT NULL, `borrowedInventoryList` TEXT NOT NULL, PRIMARY KEY (`memberId`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `RuleModel` (`ruleId` INTEGER NOT NULL, `invBook` INTEGER NOT NULL, `invDvd` INTEGER NOT NULL, `invJournal` INTEGER NOT NULL, `loanPeriodForAcademic` INTEGER NOT NULL, `loanPeriodForOfficer` INTEGER NOT NULL, `loanPeriodForStudent` INTEGER NOT NULL, `nOfLoanForAcademic` INTEGER NOT NULL, `nOfLoanForOfficer` INTEGER NOT NULL, `nOfLoanForStudent` INTEGER NOT NULL, `penaltyAmountForAcademic` REAL NOT NULL, `penaltyAmountForOfficer` REAL NOT NULL, `penaltyAmountForStudent` REAL NOT NULL, PRIMARY KEY (`ruleId`))');
 
@@ -505,7 +505,9 @@ class _$MemberModelDao extends MemberModelDao {
                   'mail': item.mail,
                   'faculty': item.faculty,
                   'department': item.department,
-                  'dateOfMembership': item.dateOfMembership
+                  'dateOfMembership': item.dateOfMembership,
+                  'reservedInventoryList': item.reservedInventoryList,
+                  'borrowedInventoryList': item.borrowedInventoryList
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -531,7 +533,9 @@ class _$MemberModelDao extends MemberModelDao {
             mail: row['mail'] as String,
             faculty: row['faculty'] as String,
             department: row['department'] as String,
-            dateOfMembership: row['dateOfMembership'] as String),
+            dateOfMembership: row['dateOfMembership'] as String,
+            reservedInventoryList: row['reservedInventoryList'] as String,
+            borrowedInventoryList: row['borrowedInventoryList'] as String),
         arguments: [cardId]);
   }
 

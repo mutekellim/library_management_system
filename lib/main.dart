@@ -43,22 +43,7 @@ class MyApp extends StatelessWidget {
           create: (context) => di.sl<DvdBloc>(),
         ),
         BlocProvider<MemberBloc>(
-          create: (context) => di.sl<MemberBloc>()
-            ..add(AddMember(
-              member: Member(
-                  memberId: 1,
-                  balanceAmount: 1,
-                  noInvLoaned: 0,
-                  cardId: 'a9',
-                  memberType: 'memberType',
-                  name: 'name',
-                  surname: 'surname',
-                  phone: 'phone',
-                  mail: 'mail',
-                  faculty: 'faculty',
-                  department: 'department',
-                  dateOfMembership: 'dateOfMembership'),
-            )),
+          create: (context) => di.sl<MemberBloc>(),
         ),
         BlocProvider<AuthorizationBloc>(
           create: (context) => di.sl<AuthorizationBloc>(),

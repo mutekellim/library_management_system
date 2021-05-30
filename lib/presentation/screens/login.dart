@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/bloc/authorization/authorization.dart';
 import 'package:library_management_system/bloc/member/member.dart';
+import 'package:library_management_system/domain/entities/entities.dart';
 import 'package:library_management_system/presentation/screens/home_screen.dart';
 
 import '../../styles/constants.dart';
@@ -10,13 +11,13 @@ import 'screens.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = '/login-screen';
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   final _passCode = TextEditingController();
-
 
   @override
   void dispose() {
@@ -64,8 +65,25 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20.0),
       width: double.infinity,
-      child:  ElevatedButton(
+      child: ElevatedButton(
         onPressed: () {
+          // BlocProvider.of<MemberBloc>(context).add(AddMember(
+          //     member: Member(
+          //   memberId: 1,
+          //   balanceAmount: 1,
+          //   noInvLoaned: 0,
+          //   cardId: 'a9',
+          //   memberType: 'memberType',
+          //   name: 'name',
+          //   surname: 'surname',
+          //   phone: 'phone',
+          //   mail: 'mail',
+          //   faculty: 'faculty',
+          //   department: 'department',
+          //   dateOfMembership: 'dateOfMembership',
+          //   reservedInventoryList: [],
+          //   borrowedInventoryList: [],
+          // )));
           BlocProvider.of<AuthorizationBloc>(context)
               .add(AuthorizationByCard(cardId: _passCode.text.trim()));
           Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
@@ -136,10 +154,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: 30.0),
                       //_buildEmailTF(),
-                      SizedBox( height: 30.0),
+                      SizedBox(height: 30.0),
                       _buildPasswordTF(context),
                       _buildLoginBtn(context),
-
                     ],
                   ),
                 ),

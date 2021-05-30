@@ -10,6 +10,9 @@ import '../../core/constants.dart';
 class DetailsScreen extends StatelessWidget {
   static const routeName = '/details-screen';
 
+  bool getBookStatus(String status) =>
+      status == INVENTORY_STATUS_AVAILABLE ? true : false;
+
   @override
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context)!.settings.arguments as int;
@@ -85,13 +88,13 @@ class DetailsScreen extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     child: Container(
-                      color: Colors.black,
+                      // color: Colors.black,
 //                      color: Color.fromRGBO(58, 66, 86, 1.0),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           'Subject',
-                          style: TextStyle(fontSize: 24, color: Colors.white),
+                          style: TextStyle(fontSize: 24, color: Colors.black),
                         ),
                       ),
                     ),
@@ -108,14 +111,20 @@ class DetailsScreen extends StatelessWidget {
                     // TODO : make active if status is not available
                     Expanded(
                         child: ElevatedButton(
-                            onPressed: () {}, child: Text('Reserve'))),
+                            onPressed: !getBookStatus(selectedInventory.status) ? () {
+                              BlocProvider.of<BookBloc>(context).add(UpdateBook(book: selectedInventory, status: INVENTORY_STATUS_RESERVED));
+                              //Memberin reserve listine ekle
+                            } : null, child: Text('Reserve'))),
                     SizedBox(
                       width: 20,
                     ),
                     // TODO : make active if status is available
                     Expanded(
                         child: ElevatedButton(
-                            onPressed: () {}, child: Text('Borrow'))),
+                            onPressed: getBookStatus(selectedInventory.status) ? () {
+                              BlocProvider.of<BookBloc>(context).add(UpdateBook(book: selectedInventory, status: INVENTORY_STATUS_LOANED));
+                              //Memberin borrow listine ekle
+                            } : null, child: Text('Borrow'))),
                   ],
                 )
               ],

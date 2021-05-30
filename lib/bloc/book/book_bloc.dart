@@ -21,6 +21,8 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       yield* _mapBookAddToState(event);
     } else if (event is SearchBook) {
       yield* _mapSearchBookToState(event);
+    } else if (event is UpdateBook) {
+      yield* _mapUpdateBookToState(event);
     }
   }
 
@@ -41,5 +43,10 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       (failure) => BookFailure(message: DATABASE_FAILURE_MESSAGE),
       (bookList) => BookLoadSuccess(bookList: bookList),
     );
+  }
+
+  Stream<BookState> _mapUpdateBookToState(UpdateBook event) async* {
+    await bookRepository.addBook(event.book.copyWith(status: event.status));
+    yield* _mapSearchBookToState(SearchBook(queryData: event.book.title));
   }
 }

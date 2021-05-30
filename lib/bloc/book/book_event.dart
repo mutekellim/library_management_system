@@ -16,7 +16,6 @@ class AddBook extends BookEvent {
     required this.book,
   });
 
-
   @override
   List<Object> get props => [book];
 
@@ -31,10 +30,28 @@ class SearchBook extends BookEvent {
     required this.queryData,
   });
 
-
   @override
   List<Object> get props => [queryData];
 
   @override
   String toString() => 'SearchBook {queryData : $queryData}';
+}
+
+class UpdateBook extends BookEvent {
+  final Book book;
+  final String status;
+
+  const UpdateBook({
+    required this.book,
+    required this.status,
+  });
+
+  @override
+  List<Object> get props => [
+        book,
+        status,
+      ];
+
+  @override
+  String toString() => 'UpdateBook {book : $book, status: $status}';
 }

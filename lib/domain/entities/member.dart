@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
 import '../../data/models/models.dart';
@@ -17,6 +19,9 @@ class Member extends Equatable {
   final String department;
   final String dateOfMembership;
 
+  final List<dynamic> reservedInventoryList;
+  final List<dynamic> borrowedInventoryList;
+
   Member({
     required this.memberId,
     required this.balanceAmount,
@@ -30,6 +35,8 @@ class Member extends Equatable {
     required this.faculty,
     required this.department,
     required this.dateOfMembership,
+    required this.reservedInventoryList,
+    required this.borrowedInventoryList,
   });
 
   @override
@@ -46,6 +53,8 @@ class Member extends Equatable {
         faculty,
         department,
         dateOfMembership,
+        reservedInventoryList,
+        borrowedInventoryList,
       ];
 
   @override
@@ -53,7 +62,8 @@ class Member extends Equatable {
       'Member {memberId: $memberId, balanceAmount: $balanceAmount, '
       'noInvLoaned: $noInvLoaned, cardId: $cardId, memberType: $memberType, name: $name, '
       'surname: $surname, phone: $phone, mail: $mail, faculty: $faculty, '
-      'department: $department, dateOfMembership: $dateOfMembership}';
+      'department: $department, dateOfMembership: $dateOfMembership, '
+      'reservedInventoryList: $reservedInventoryList, borrowedInventoryList: $borrowedInventoryList}';
 
   MemberModel toModel() => MemberModel(
         memberId: memberId,
@@ -68,6 +78,8 @@ class Member extends Equatable {
         faculty: faculty,
         department: department,
         dateOfMembership: dateOfMembership,
+        reservedInventoryList: jsonEncode(reservedInventoryList),
+        borrowedInventoryList: jsonEncode(borrowedInventoryList),
       );
 
   static Member fromModel(MemberModel model) => Member(
@@ -83,5 +95,9 @@ class Member extends Equatable {
         faculty: model.faculty,
         department: model.department,
         dateOfMembership: model.dateOfMembership,
+        reservedInventoryList:
+            json.decode(model.reservedInventoryList) as List<dynamic>,
+        borrowedInventoryList:
+            json.decode(model.borrowedInventoryList) as List<dynamic>,
       );
 }
