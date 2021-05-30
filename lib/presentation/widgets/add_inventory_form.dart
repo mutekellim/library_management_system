@@ -312,13 +312,13 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
           onPressed: () {
             switch(widget.activeForm){
               case INVENTORY_TYPE_BOOK:
-                _addBook();
+                widget.onSave(_addBook());
                 break;
               case INVENTORY_TYPE_JOURNAL:
-                _addJournal();
+                widget.onSave(_addJournal());
                 break;
               case INVENTORY_TYPE_DVD:
-                _addDvd();
+                widget.onSave(_addDvd());
             }
             _clearControllers();
             ScaffoldMessenger.of(context)

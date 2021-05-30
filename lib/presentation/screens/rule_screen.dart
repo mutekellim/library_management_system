@@ -15,7 +15,6 @@ class RuleScreen extends StatefulWidget {
 }
 
 class _RuleScreenState extends State<RuleScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,32 +32,24 @@ class _RuleScreenState extends State<RuleScreen> {
     return BlocBuilder<RuleBloc, RuleState>(
       builder: (context, state) {
         //print(state.toString());
-        if ( state is GetRuleSuccess) {
+        if (state is GetRuleSuccess) {
           return RuleForm(
-            rule:state.rule,
+            rule: state.rule,
             onSave: (rule) {
-              if(state.rule == null){
-                BlocProvider.of<RuleBloc>(context)
-                    .add(AddRule(rule: rule));
-              }else{
-                BlocProvider.of<RuleBloc>(context)
-                    .add(UpdateRule(rule: rule));
-              }
+              BlocProvider.of<RuleBloc>(context).add(
+                UpdateRule(rule: rule),
+              );
             },
           );
-
-        } else if(state is AddRuleSuccess || state is UpdateRuleSuccess){
-          BlocProvider.of<RuleBloc>(context)
-              .add(GetRule(ruleId:1));
+        } else if (state is AddRuleSuccess || state is UpdateRuleSuccess) {
+          BlocProvider.of<RuleBloc>(context).add(GetRule(ruleId: 1));
           return RuleForm(
             rule: null,
             onSave: (rule) {
-              BlocProvider.of<RuleBloc>(context)
-                  .add(UpdateRule(rule: rule));
+              BlocProvider.of<RuleBloc>(context).add(UpdateRule(rule: rule));
             },
           );
-        }
-        else
+        } else
           return Center(child: Text('Unexpected Error!'));
       },
     );

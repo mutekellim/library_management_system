@@ -16,6 +16,7 @@ import 'bloc/book/book.dart';
 import 'bloc/journal/journal.dart';
 import 'bloc/dvd/dvd.dart';
 import 'bloc/rule/rule_bloc.dart';
+import 'bloc/authorization/authorization.dart';
 
 import 'dependency_injection.dart' as di;
 import 'presentation/screens/screens.dart';
@@ -43,7 +44,6 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<MemberBloc>(
           create: (context) => di.sl<MemberBloc>()
-            /*
             ..add(AddMember(
               member: Member(
                   memberId: 1,
@@ -59,9 +59,10 @@ class MyApp extends StatelessWidget {
                   department: 'department',
                   dateOfMembership: 'dateOfMembership'),
             )),
-          */
         ),
-
+        BlocProvider<AuthorizationBloc>(
+          create: (context) => di.sl<AuthorizationBloc>(),
+        ),
         BlocProvider<RuleBloc>(
           create: (context) => di.sl<RuleBloc>(),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:library_management_system/bloc/authorization/authorization.dart';
 import 'package:library_management_system/bloc/member/member.dart';
 import 'package:library_management_system/presentation/screens/home_screen.dart';
 
@@ -65,8 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child:  ElevatedButton(
         onPressed: () {
-          BlocProvider.of<MemberBloc>(context)
-              .add(GetMemberByCardId(cardId: _passCode.text.trim()));
+          BlocProvider.of<AuthorizationBloc>(context)
+              .add(AuthorizationByCard(cardId: _passCode.text.trim()));
           Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
         },
         style: ElevatedButton.styleFrom(

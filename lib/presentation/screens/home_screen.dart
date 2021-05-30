@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:library_management_system/bloc/authorization/authorization.dart';
+import 'package:library_management_system/bloc/book/book.dart';
 import 'package:library_management_system/bloc/member/member.dart';
 import 'package:library_management_system/bloc/rule/rule.dart';
 import 'add_inventory_screen.dart';
@@ -11,12 +13,14 @@ import 'screens.dart';
 //TODO 2- Memberin yetkisine gore butonlar listelenecek.
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home-screen';
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   String popupSelection = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,17 +31,17 @@ class _HomeScreenState extends State<HomeScreen> {
             onSelected: (String result) {
               setState(() {
                 popupSelection = result;
-                if(result=='Logout')
-                  Navigator.of(context).pushReplacementNamed("/");
+                if (result == 'Logout')
+                  BlocProvider.of<AuthorizationBloc>(context)
+                      .add(AuthorizationInit());
+                Navigator.of(context).pushReplacementNamed("/");
               });
             },
-
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               const PopupMenuItem<String>(
                 value: 'Logout',
                 child: Text('Logout'),
               ),
-
             ],
           ),
           SizedBox(
@@ -47,95 +51,92 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: BlocBuilder<MemberBloc, MemberState>(builder: (context, state) {
+        child: BlocBuilder<AuthorizationBloc, AuthorizationState>(
+            builder: (context, state) {
           print(state.toString());
-          if (state is GetMemberSuccess) {
-            if(state.member.cardId.startsWith('m')) {
+          if (state is AuthorizationSuccess) {
+            if (state.member.cardId.startsWith('m')) {
               return Column(
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(
-                      AddInventoryScreen.routeName);
+                      Navigator.of(context)
+                          .pushNamed(AddInventoryScreen.routeName);
                     },
                     child: Center(child: Text('Search an Inventory')),
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(
-                      AddInventoryScreen.routeName);
+                      Navigator.of(context)
+                          .pushNamed(AddInventoryScreen.routeName);
                     },
                     child: Center(child: Text('Return Inventory')),
                   ),
                 ],
               );
-            }
-            else if (state.member.cardId.startsWith('a')){
+            } else if (state.member.cardId.startsWith('a')) {
               return Column(
                 children: [
                   ElevatedButton(
                     onPressed: () {
                       BlocProvider.of<RuleBloc>(context)
-                          .add(GetRule(ruleId:1));
-                      Navigator.of(context).pushNamed(
-                          RuleScreen.routeName);
+                          .add(GetRule(ruleId: 1));
+                      Navigator.of(context).pushNamed(RuleScreen.routeName);
                     },
-
                     child: Center(child: Text('Update Rules')),
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(
-                          AddMemberScreen.routeName);
+                      Navigator.of(context)
+                          .pushNamed(AddMemberScreen.routeName);
                     },
                     child: Center(child: Text('Add Member')),
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(
-                          AddInventoryScreen.routeName);
+                      Navigator.of(context)
+                          .pushNamed(AddInventoryScreen.routeName);
                     },
                     child: Center(child: Text('Add Inventory')),
                   ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(SearchInventoryScreen.routeName);
+                    },
+                    child: Center(child: Text('Search Inventory')),
+                  ),
                 ],
-
               );
-            }
-            else if (state.member.cardId.startsWith('l')){
+            } else if (state.member.cardId.startsWith('l')) {
               return Column(
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(
-                          AddMemberScreen.routeName);
+                      Navigator.of(context)
+                          .pushNamed(AddMemberScreen.routeName);
                     },
                     child: Center(child: Text('Add Member')),
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(
-                          AddInventoryScreen.routeName);
+                      Navigator.of(context)
+                          .pushNamed(AddInventoryScreen.routeName);
                     },
                     child: Center(child: Text('Add Inventory')),
                   ),
                 ],
-
               );
-            }
-            else {
+            } else {
               return Column(
-                children: [
-
-                ],
+                children: [],
               );
             }
-          } else if(state is MemberFailure) {
+          } else if (state is AuthorizationFailure) {
             return Center(child: Text('${state.message}'));
           } else {
             return Column(
-              children: [
-
-              ],
+              children: [],
             );
           }
         }),
