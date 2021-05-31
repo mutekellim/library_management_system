@@ -88,15 +88,15 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `BookModel` (`id` INTEGER NOT NULL, `typeId` INTEGER NOT NULL, `numberOfPages` INTEGER NOT NULL, `isbn` TEXT NOT NULL, `title` TEXT NOT NULL, `subject` TEXT NOT NULL, `publisher` TEXT NOT NULL, `language` TEXT NOT NULL, `publishDate` TEXT NOT NULL, `type` TEXT NOT NULL, `status` TEXT NOT NULL, `bookType` TEXT NOT NULL, `authors` TEXT NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `BookModel` (`id` INTEGER NOT NULL, `typeId` INTEGER NOT NULL, `numberOfPages` INTEGER NOT NULL, `isbn` TEXT NOT NULL, `title` TEXT NOT NULL, `subject` TEXT NOT NULL, `publisher` TEXT NOT NULL, `language` TEXT NOT NULL, `publishDate` TEXT NOT NULL, `status` TEXT NOT NULL, `bookType` TEXT NOT NULL, `authors` TEXT NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `JournalModel` (`id` INTEGER NOT NULL, `typeId` INTEGER NOT NULL, `isbn` TEXT NOT NULL, `title` TEXT NOT NULL, `subject` TEXT NOT NULL, `publisher` TEXT NOT NULL, `language` TEXT NOT NULL, `publishDate` TEXT NOT NULL, `type` TEXT NOT NULL, `status` TEXT NOT NULL, `volume` TEXT NOT NULL, `issue` TEXT NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `JournalModel` (`id` INTEGER NOT NULL, `typeId` INTEGER NOT NULL, `isbn` TEXT NOT NULL, `title` TEXT NOT NULL, `subject` TEXT NOT NULL, `publisher` TEXT NOT NULL, `language` TEXT NOT NULL, `publishDate` TEXT NOT NULL, `status` TEXT NOT NULL, `volume` TEXT NOT NULL, `issue` TEXT NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `DvdModel` (`id` INTEGER NOT NULL, `typeId` INTEGER NOT NULL, `isbn` TEXT NOT NULL, `title` TEXT NOT NULL, `subject` TEXT NOT NULL, `publisher` TEXT NOT NULL, `language` TEXT NOT NULL, `publishDate` TEXT NOT NULL, `type` TEXT NOT NULL, `status` TEXT NOT NULL, `director` TEXT NOT NULL, `duration` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `DvdModel` (`id` INTEGER NOT NULL, `typeId` INTEGER NOT NULL, `isbn` TEXT NOT NULL, `title` TEXT NOT NULL, `subject` TEXT NOT NULL, `publisher` TEXT NOT NULL, `language` TEXT NOT NULL, `publishDate` TEXT NOT NULL, `status` TEXT NOT NULL, `director` TEXT NOT NULL, `duration` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `MemberModel` (`memberId` INTEGER NOT NULL, `balanceAmount` INTEGER NOT NULL, `noInvLoaned` INTEGER NOT NULL, `cardId` TEXT NOT NULL, `memberType` TEXT NOT NULL, `name` TEXT NOT NULL, `surname` TEXT NOT NULL, `phone` TEXT NOT NULL, `mail` TEXT NOT NULL, `faculty` TEXT NOT NULL, `department` TEXT NOT NULL, `dateOfMembership` TEXT NOT NULL, `reservedInventoryList` TEXT NOT NULL, `borrowedInventoryList` TEXT NOT NULL, PRIMARY KEY (`memberId`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `RuleModel` (`ruleId` INTEGER NOT NULL, `invBook` INTEGER NOT NULL, `invDvd` INTEGER NOT NULL, `invJournal` INTEGER NOT NULL, `loanPeriodForAcademic` INTEGER NOT NULL, `loanPeriodForOfficer` INTEGER NOT NULL, `loanPeriodForStudent` INTEGER NOT NULL, `nOfLoanForAcademic` INTEGER NOT NULL, `nOfLoanForOfficer` INTEGER NOT NULL, `nOfLoanForStudent` INTEGER NOT NULL, `penaltyAmountForAcademic` REAL NOT NULL, `penaltyAmountForOfficer` REAL NOT NULL, `penaltyAmountForStudent` REAL NOT NULL, PRIMARY KEY (`ruleId`))');
+            'CREATE TABLE IF NOT EXISTS `RuleModel` (`ruleId` INTEGER NOT NULL, `invBook` INTEGER NOT NULL, `invDvd` INTEGER NOT NULL, `invJournal` INTEGER NOT NULL, `loanPeriodForAcademic` INTEGER NOT NULL, `loanPeriodForOfficer` INTEGER NOT NULL, `loanPeriodForStudent` INTEGER NOT NULL, `nOfLoanForAcademic` INTEGER NOT NULL, `nOfLoanForOfficer` INTEGER NOT NULL, `nOfLoanForStudent` INTEGER NOT NULL, `penaltyPrice` REAL NOT NULL, PRIMARY KEY (`ruleId`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -148,7 +148,6 @@ class _$BookModelDao extends BookModelDao {
                   'publisher': item.publisher,
                   'language': item.language,
                   'publishDate': item.publishDate,
-                  'type': item.type,
                   'status': item.status,
                   'bookType': item.bookType,
                   'authors': item.authors
@@ -176,7 +175,6 @@ class _$BookModelDao extends BookModelDao {
             publisher: row['publisher'] as String,
             language: row['language'] as String,
             publishDate: row['publishDate'] as String,
-            type: row['type'] as String,
             status: row['status'] as String,
             bookType: row['bookType'] as String,
             authors: row['authors'] as String),
@@ -197,7 +195,6 @@ class _$BookModelDao extends BookModelDao {
             publisher: row['publisher'] as String,
             language: row['language'] as String,
             publishDate: row['publishDate'] as String,
-            type: row['type'] as String,
             status: row['status'] as String,
             bookType: row['bookType'] as String,
             authors: row['authors'] as String),
@@ -218,7 +215,6 @@ class _$BookModelDao extends BookModelDao {
             publisher: row['publisher'] as String,
             language: row['language'] as String,
             publishDate: row['publishDate'] as String,
-            type: row['type'] as String,
             status: row['status'] as String,
             bookType: row['bookType'] as String,
             authors: row['authors'] as String),
@@ -226,30 +222,10 @@ class _$BookModelDao extends BookModelDao {
   }
 
   @override
-  Future<List<BookModel>> searchByType(String type) async {
-    return _queryAdapter.queryList('SELECT * FROM BookModel WHERE type = ?1',
-        mapper: (Map<String, Object?> row) => BookModel(
-            id: row['id'] as int,
-            typeId: row['typeId'] as int,
-            numberOfPages: row['numberOfPages'] as int,
-            isbn: row['isbn'] as String,
-            title: row['title'] as String,
-            subject: row['subject'] as String,
-            publisher: row['publisher'] as String,
-            language: row['language'] as String,
-            publishDate: row['publishDate'] as String,
-            type: row['type'] as String,
-            status: row['status'] as String,
-            bookType: row['bookType'] as String,
-            authors: row['authors'] as String),
-        arguments: [type]);
-  }
-
-  @override
   Future<List<BookModel>> searchBook(String queryData) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM BookModel WHERE title LIKE ?1 OR type LIKE ?1 OR subject LIKE ?1 OR publishDate LIKE ?1',
-        mapper: (Map<String, Object?> row) => BookModel(id: row['id'] as int, typeId: row['typeId'] as int, numberOfPages: row['numberOfPages'] as int, isbn: row['isbn'] as String, title: row['title'] as String, subject: row['subject'] as String, publisher: row['publisher'] as String, language: row['language'] as String, publishDate: row['publishDate'] as String, type: row['type'] as String, status: row['status'] as String, bookType: row['bookType'] as String, authors: row['authors'] as String),
+        'SELECT * FROM BookModel WHERE title LIKE ?1 OR subject LIKE ?1 OR publishDate LIKE ?1',
+        mapper: (Map<String, Object?> row) => BookModel(id: row['id'] as int, typeId: row['typeId'] as int, numberOfPages: row['numberOfPages'] as int, isbn: row['isbn'] as String, title: row['title'] as String, subject: row['subject'] as String, publisher: row['publisher'] as String, language: row['language'] as String, publishDate: row['publishDate'] as String, status: row['status'] as String, bookType: row['bookType'] as String, authors: row['authors'] as String),
         arguments: [queryData]);
   }
 
@@ -274,7 +250,6 @@ class _$JournalModelDao extends JournalModelDao {
                   'publisher': item.publisher,
                   'language': item.language,
                   'publishDate': item.publishDate,
-                  'type': item.type,
                   'status': item.status,
                   'volume': item.volume,
                   'issue': item.issue
@@ -301,7 +276,6 @@ class _$JournalModelDao extends JournalModelDao {
             publisher: row['publisher'] as String,
             language: row['language'] as String,
             publishDate: row['publishDate'] as String,
-            type: row['type'] as String,
             status: row['status'] as String,
             volume: row['volume'] as String,
             issue: row['issue'] as String),
@@ -321,7 +295,6 @@ class _$JournalModelDao extends JournalModelDao {
             publisher: row['publisher'] as String,
             language: row['language'] as String,
             publishDate: row['publishDate'] as String,
-            type: row['type'] as String,
             status: row['status'] as String,
             volume: row['volume'] as String,
             issue: row['issue'] as String),
@@ -341,7 +314,6 @@ class _$JournalModelDao extends JournalModelDao {
             publisher: row['publisher'] as String,
             language: row['language'] as String,
             publishDate: row['publishDate'] as String,
-            type: row['type'] as String,
             status: row['status'] as String,
             volume: row['volume'] as String,
             issue: row['issue'] as String),
@@ -349,22 +321,11 @@ class _$JournalModelDao extends JournalModelDao {
   }
 
   @override
-  Future<List<JournalModel>> searchByType(String type) async {
-    return _queryAdapter.queryList('SELECT * FROM JournalModel WHERE type = ?1',
-        mapper: (Map<String, Object?> row) => JournalModel(
-            id: row['id'] as int,
-            typeId: row['typeId'] as int,
-            isbn: row['isbn'] as String,
-            title: row['title'] as String,
-            subject: row['subject'] as String,
-            publisher: row['publisher'] as String,
-            language: row['language'] as String,
-            publishDate: row['publishDate'] as String,
-            type: row['type'] as String,
-            status: row['status'] as String,
-            volume: row['volume'] as String,
-            issue: row['issue'] as String),
-        arguments: [type]);
+  Future<List<JournalModel>> searchJournal(String queryData) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM JournalModel WHERE title LIKE ?1 OR subject LIKE ?1 OR publishDate LIKE ?1',
+        mapper: (Map<String, Object?> row) => JournalModel(id: row['id'] as int, typeId: row['typeId'] as int, isbn: row['isbn'] as String, title: row['title'] as String, subject: row['subject'] as String, publisher: row['publisher'] as String, language: row['language'] as String, publishDate: row['publishDate'] as String, status: row['status'] as String, volume: row['volume'] as String, issue: row['issue'] as String),
+        arguments: [queryData]);
   }
 
   @override
@@ -389,7 +350,6 @@ class _$DvdModelDao extends DvdModelDao {
                   'publisher': item.publisher,
                   'language': item.language,
                   'publishDate': item.publishDate,
-                  'type': item.type,
                   'status': item.status,
                   'director': item.director,
                   'duration': item.duration
@@ -416,7 +376,6 @@ class _$DvdModelDao extends DvdModelDao {
             publisher: row['publisher'] as String,
             language: row['language'] as String,
             publishDate: row['publishDate'] as String,
-            type: row['type'] as String,
             status: row['status'] as String,
             duration: row['duration'] as int,
             director: row['director'] as String),
@@ -436,7 +395,6 @@ class _$DvdModelDao extends DvdModelDao {
             publisher: row['publisher'] as String,
             language: row['language'] as String,
             publishDate: row['publishDate'] as String,
-            type: row['type'] as String,
             status: row['status'] as String,
             duration: row['duration'] as int,
             director: row['director'] as String),
@@ -455,7 +413,6 @@ class _$DvdModelDao extends DvdModelDao {
             publisher: row['publisher'] as String,
             language: row['language'] as String,
             publishDate: row['publishDate'] as String,
-            type: row['type'] as String,
             status: row['status'] as String,
             duration: row['duration'] as int,
             director: row['director'] as String),
@@ -463,22 +420,11 @@ class _$DvdModelDao extends DvdModelDao {
   }
 
   @override
-  Future<List<DvdModel>> searchByType(String type) async {
-    return _queryAdapter.queryList('SELECT * FROM DvdModel WHERE type = ?1',
-        mapper: (Map<String, Object?> row) => DvdModel(
-            id: row['id'] as int,
-            typeId: row['typeId'] as int,
-            isbn: row['isbn'] as String,
-            title: row['title'] as String,
-            subject: row['subject'] as String,
-            publisher: row['publisher'] as String,
-            language: row['language'] as String,
-            publishDate: row['publishDate'] as String,
-            type: row['type'] as String,
-            status: row['status'] as String,
-            duration: row['duration'] as int,
-            director: row['director'] as String),
-        arguments: [type]);
+  Future<List<DvdModel>> searchDvd(String queryData) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM DvdModel WHERE title LIKE ?1 OR subject LIKE ?1 OR publishDate LIKE ?1',
+        mapper: (Map<String, Object?> row) => DvdModel(id: row['id'] as int, typeId: row['typeId'] as int, isbn: row['isbn'] as String, title: row['title'] as String, subject: row['subject'] as String, publisher: row['publisher'] as String, language: row['language'] as String, publishDate: row['publishDate'] as String, status: row['status'] as String, duration: row['duration'] as int, director: row['director'] as String),
+        arguments: [queryData]);
   }
 
   @override
@@ -563,9 +509,7 @@ class _$RuleModelDao extends RuleModelDao {
                   'nOfLoanForAcademic': item.nOfLoanForAcademic,
                   'nOfLoanForOfficer': item.nOfLoanForOfficer,
                   'nOfLoanForStudent': item.nOfLoanForStudent,
-                  'penaltyAmountForAcademic': item.penaltyAmountForAcademic,
-                  'penaltyAmountForOfficer': item.penaltyAmountForOfficer,
-                  'penaltyAmountForStudent': item.penaltyAmountForStudent
+                  'penaltyPrice': item.penaltyPrice
                 }),
         _ruleModelUpdateAdapter = UpdateAdapter(
             database,
@@ -582,9 +526,7 @@ class _$RuleModelDao extends RuleModelDao {
                   'nOfLoanForAcademic': item.nOfLoanForAcademic,
                   'nOfLoanForOfficer': item.nOfLoanForOfficer,
                   'nOfLoanForStudent': item.nOfLoanForStudent,
-                  'penaltyAmountForAcademic': item.penaltyAmountForAcademic,
-                  'penaltyAmountForOfficer': item.penaltyAmountForOfficer,
-                  'penaltyAmountForStudent': item.penaltyAmountForStudent
+                  'penaltyPrice': item.penaltyPrice
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -611,9 +553,7 @@ class _$RuleModelDao extends RuleModelDao {
             nOfLoanForAcademic: row['nOfLoanForAcademic'] as int,
             nOfLoanForOfficer: row['nOfLoanForOfficer'] as int,
             nOfLoanForStudent: row['nOfLoanForStudent'] as int,
-            penaltyAmountForAcademic: row['penaltyAmountForAcademic'] as double,
-            penaltyAmountForOfficer: row['penaltyAmountForOfficer'] as double,
-            penaltyAmountForStudent: row['penaltyAmountForStudent'] as double),
+            penaltyPrice: row['penaltyPrice'] as double),
         arguments: [ruleId]);
   }
 

@@ -18,7 +18,6 @@ class AddMemberForm extends StatefulWidget {
 class _AddMemberFormState extends State<AddMemberForm> {
   final _memberIdController = TextEditingController();
   final _balanceAmountController = TextEditingController();
-  //final _noInvLoanedController = TextEditingController();
   final _cardIdController = TextEditingController();
   final _memberTypeController = TextEditingController();
   final _nameController = TextEditingController();
@@ -40,7 +39,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
     super.dispose();
     _memberIdController.dispose();
     _balanceAmountController.dispose();
-    //_noInvLoanedController.dispose();
     _cardIdController.dispose();
     _memberTypeController.dispose();
     _nameController.dispose();
@@ -93,18 +91,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
             ),
           ),
         ),
-        /*
-        //Automatically assigned as 0
-        TextFormField(
-          controller: _noInvLoanedController,
-          decoration: new InputDecoration(
-            labelText: "No Inv Loaned",
-            labelStyle: TextStyle(
-              color: Colors.grey[900],
-            ),
-          ),
-        ),
-        */
         TextFormField(
           controller: _cardIdController,
           decoration: new InputDecoration(
@@ -114,17 +100,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
             ),
           ),
         ),
-        /*
-        TextFormField(
-          controller: _memberTypeController,
-          decoration: new InputDecoration(
-            labelText: "Member Type",
-            labelStyle: TextStyle(
-              color: Colors.grey[900],
-            ),
-          ),
-        ),
-        */
         DropdownButton<String>(
             value: _memberType,
             icon: const Icon(Icons.arrow_downward),

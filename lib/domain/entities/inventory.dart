@@ -12,7 +12,6 @@ abstract class Inventory extends Equatable {
   final String publisher;
   final String language;
   final String publishDate;
-  final String type;
   final String status;
 
   const Inventory({
@@ -24,7 +23,6 @@ abstract class Inventory extends Equatable {
     required this.publisher,
     required this.language,
     required this.publishDate,
-    required this.type,
     required this.status,
   });
 }

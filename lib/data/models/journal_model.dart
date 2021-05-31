@@ -15,7 +15,6 @@ class JournalModel extends Equatable {
   final String publisher;
   final String language;
   final String publishDate;
-  final String type;
   final String status;
   final String volume;
   final String issue;
@@ -30,7 +29,6 @@ class JournalModel extends Equatable {
     required this.publisher,
     required this.language,
     required this.publishDate,
-    required this.type,
     required this.status,
     required this.volume,
     required this.issue,
@@ -46,7 +44,6 @@ class JournalModel extends Equatable {
     publisher,
     language,
     publishDate,
-    type,
     status,
     volume,
     issue,
@@ -55,6 +52,6 @@ class JournalModel extends Equatable {
   @override
   String toString() => 'BookModel {id: $id, typeId: $typeId, '
       'isbn: $isbn, title:$title, subject: $subject, publisher: $publisher, '
-      'language: $language, publishDate:$publishDate, type:$type, status:$status, '
+      'language: $language, publishDate:$publishDate, status:$status, '
       'bookType: $volume, authors: $issue}';
 }

@@ -18,9 +18,8 @@ class RuleModel extends Equatable {
   final int nOfLoanForOfficer;
   final int nOfLoanForStudent;
 
-  final double penaltyAmountForAcademic;
-  final double penaltyAmountForOfficer;
-  final double penaltyAmountForStudent;
+  final double penaltyPrice;
+
 
   RuleModel({
     required this.ruleId,
@@ -37,9 +36,7 @@ class RuleModel extends Equatable {
     required this.nOfLoanForOfficer,
     required this.nOfLoanForStudent,
 
-    required this.penaltyAmountForAcademic,
-    required this.penaltyAmountForOfficer,
-    required this.penaltyAmountForStudent,
+    required this.penaltyPrice,
   });
 
   @override
@@ -54,9 +51,8 @@ class RuleModel extends Equatable {
     nOfLoanForAcademic,
     nOfLoanForOfficer,
     nOfLoanForStudent,
-    penaltyAmountForAcademic,
-    penaltyAmountForOfficer,
-    penaltyAmountForStudent,
+    penaltyPrice,
+
   ];
 
   @override
@@ -65,5 +61,5 @@ class RuleModel extends Equatable {
           'invBook: $invBook, invDvd: $invDvd, invJournal: $invJournal, '
           'loanPeriodForAcademic: $loanPeriodForAcademic, loanPeriodForOfficer: $loanPeriodForOfficer, loanPeriodForStudent: $loanPeriodForStudent, '
           'nOfLoanForAcademic: $nOfLoanForAcademic, nOfLoanForOfficer: $nOfLoanForOfficer, nOfLoanForStudent:, $nOfLoanForStudent, '
-          'penaltyAmountForAcademic: $penaltyAmountForAcademic, penaltyAmountForOfficer: $penaltyAmountForOfficer, penaltyAmountForStudent: $penaltyAmountForStudent }';
+          'penaltyPrice: $penaltyPrice }';
 }

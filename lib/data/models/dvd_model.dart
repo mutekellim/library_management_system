@@ -14,7 +14,6 @@ class DvdModel extends Equatable {
   final String publisher;
   final String language;
   final String publishDate;
-  final String type;
   final String status;
   final String director;
   final int duration;
@@ -28,7 +27,6 @@ class DvdModel extends Equatable {
     required this.publisher,
     required this.language,
     required this.publishDate,
-    required this.type,
     required this.status,
     required this.duration,
     required this.director,
@@ -44,7 +42,6 @@ class DvdModel extends Equatable {
         publisher,
         language,
         publishDate,
-        type,
         status,
         duration,
         director,
@@ -53,6 +50,6 @@ class DvdModel extends Equatable {
   @override
   String toString() => 'DvdModel {id: $id, typeId: $typeId, '
       'isbn: $isbn, title:$title, subject: $subject, publisher: $publisher, '
-      'language: $language, publishDate:$publishDate, type:$type, status:$status, '
+      'language: $language, publishDate:$publishDate, status:$status, '
       'duration: $duration, direction: $director}';
 }

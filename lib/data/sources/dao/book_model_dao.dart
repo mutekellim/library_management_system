@@ -14,10 +14,7 @@ abstract class BookModelDao {
   @Query('SELECT * FROM BookModel WHERE title LIKE :title')
   Future<List<BookModel>> searchByTitle(String title);
 
-  @Query('SELECT * FROM BookModel WHERE type = :type')
-  Future<List<BookModel>> searchByType(String type);
-
-  @Query('SELECT * FROM BookModel WHERE title LIKE :queryData OR type LIKE :queryData OR subject LIKE :queryData OR publishDate LIKE :queryData')
+  @Query('SELECT * FROM BookModel WHERE title LIKE :queryData OR subject LIKE :queryData OR publishDate LIKE :queryData')
   Future<List<BookModel>> searchBook(String queryData);
 
   @Insert(onConflict: OnConflictStrategy.replace)

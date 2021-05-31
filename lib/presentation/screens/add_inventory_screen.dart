@@ -83,7 +83,7 @@ class _AddInventoryScreenState extends State<AddInventoryScreen> {
   Widget addJournal() {
     return BlocBuilder<JournalBloc, JournalState>(
       builder: (context, state) {
-        if (state is JournalInitial || state is AddJournalSuccess) {
+        if (state is JournalInitial || state is AddJournalSuccess || state is JournalLoadSuccess) {
           // Form widget to add book
           return AddInventoryForm(
             activeForm: INVENTORY_TYPE_JOURNAL,
@@ -104,7 +104,7 @@ class _AddInventoryScreenState extends State<AddInventoryScreen> {
   Widget addDvd() {
     return BlocBuilder<DvdBloc, DvdState>(
       builder: (context, state) {
-        if (state is DvdInitial || state is AddDvdSuccess) {
+        if (state is DvdInitial || state is AddDvdSuccess || state is DvdLoadSuccess) {
           // Form widget to add dvd
           return AddInventoryForm(
             activeForm: INVENTORY_TYPE_DVD,

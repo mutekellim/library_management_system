@@ -10,4 +10,8 @@ import '../../domain/entities/entities.dart';
 ///
 abstract class DvdRepository extends InventoryRepository {
   Future<Either<Failure, Dvd>> addDvd(Dvd dvd);
+
+  Future<Either<Failure, Dvd>> updateDvd(Dvd dvd);
+
+  Future<Either<Failure, List<Dvd>>> searchDvd(String queryData);
 }

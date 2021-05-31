@@ -14,8 +14,9 @@ abstract class DvdModelDao {
   @Query('SELECT * FROM DvdModel WHERE title LIKE :title')
   Future<List<DvdModel>> searchByTitle(String title);
 
-  @Query('SELECT * FROM DvdModel WHERE type = :type')
-  Future<List<DvdModel>> searchByType(String type);
+
+  @Query('SELECT * FROM DvdModel WHERE title LIKE :queryData OR subject LIKE :queryData OR publishDate LIKE :queryData')
+  Future<List<DvdModel>> searchDvd(String queryData);
 
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> saveDvd(DvdModel dvd);

@@ -68,11 +68,13 @@ class DetailsScreen extends StatelessWidget {
                               child:
                                   Text('Status : ${selectedInventory.status}'),
                             ),
+                            /*
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 8),
                               child: Text('Type : ${selectedInventory.type}'),
                             ),
+                            */
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 8),
@@ -117,6 +119,7 @@ class DetailsScreen extends StatelessWidget {
                                 ? () {
                                     BlocProvider.of<AuthorizationBloc>(context)
                                         .add(UpdateMember(
+                                            penalty: 0,
                                             inventoryId: selectedInventory.id,
                                             action: ACTION_RESERVED));
                                     BlocProvider.of<BookBloc>(context).add(
@@ -134,14 +137,23 @@ class DetailsScreen extends StatelessWidget {
                         child: ElevatedButton(
                             onPressed: getBookStatus(selectedInventory.status)
                                 ? () {
-                                    BlocProvider.of<AuthorizationBloc>(context)
-                                        .add(UpdateMember(
-                                            inventoryId: selectedInventory.id,
-                                            action: ACTION_LOANED));
-                                    BlocProvider.of<BookBloc>(context).add(
-                                        UpdateBook(
-                                            book: selectedInventory,
-                                            status: INVENTORY_STATUS_LOANED));
+                                    Book book=state.bookList.firstWhere((book) => book.id == id);
+
+                                   if(book.bookType=="Abc" ){
+                                    //Ders Kitabi turu kontrolu icin
+                                   }else{
+                                     BlocProvider.of<AuthorizationBloc>(context)
+                                         .add(UpdateMember(
+                                         penalty: 0,
+                                         inventoryId: selectedInventory.id,
+                                         action: ACTION_LOANED));
+
+                                     BlocProvider.of<BookBloc>(context).add(
+                                         UpdateBook(
+                                             book: selectedInventory,
+                                             status: INVENTORY_STATUS_LOANED));
+                                   }
+
                                   }
                                 : null,
                             child: Text('Borrow'))),

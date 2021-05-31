@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context)
-                          .pushNamed(AddInventoryScreen.routeName);
+                          .pushNamed(ReturnInventoryScreen.routeName);
                     },
                     child: Center(child: Text('Return Inventory')),
                   ),

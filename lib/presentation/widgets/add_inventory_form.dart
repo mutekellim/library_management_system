@@ -19,20 +19,17 @@ class AddInventoryForm extends StatefulWidget {
 
 class _AddInventoryFormState extends State<AddInventoryForm> {
   final _idController = TextEditingController();
-  //final _typeIdController = TextEditingController();
   final _isbnController = TextEditingController();
   final _titleController = TextEditingController();
   final _subjectController = TextEditingController();
   final _publisherController = TextEditingController();
   final _languageController = TextEditingController();
   final _publishDateController = TextEditingController();
-  final _typeController = TextEditingController();
-  final _statusController = TextEditingController();
 
   // Book specifics
   final _numberOfPagesController = TextEditingController();
   final _authorsController = TextEditingController();
-  final _bookTypeController = TextEditingController();
+  String _bookType = "Others";
 
   //Journal Specifics
   final _volumeController = TextEditingController();
@@ -51,24 +48,20 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
   void dispose() {
     super.dispose();
     _idController.dispose();
-    //_typeIdController.dispose();
     _isbnController.dispose();
     _titleController.dispose();
     _subjectController.dispose();
     _publisherController.dispose();
     _languageController.dispose();
     _publishDateController.dispose();
-    _typeController.dispose();
-    _statusController.dispose();
     _numberOfPagesController.dispose();
     _authorsController.dispose();
-    _bookTypeController.dispose();
+
   }
 
   Book _addBook() {
     return Book(
       id: int.parse(_idController.text.trim()),
-      //typeId: int.parse(_typeIdController.text.trim()),
       typeId: 1,
       isbn: _isbnController.text.trim(),
       title: _titleController.text.trim(),
@@ -76,18 +69,16 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
       publisher: _publisherController.text.trim(),
       language: _languageController.text.trim(),
       publishDate: _publishDateController.text.trim(),
-      type: _typeController.text.trim(),
-      status: _statusController.text.trim(),
+      status: INVENTORY_STATUS_AVAILABLE,
       numberOfPages: int.parse(_numberOfPagesController.text.trim()),
       authors: _authorsController.text.split(','),
-      bookType: _bookTypeController.text.trim(),
+      bookType: _bookType,
     );
   }
 
   Journal _addJournal() {
     return Journal(
       id: int.parse(_idController.text.trim()),
-      //typeId: int.parse(_typeIdController.text.trim()),
       typeId:2,
       isbn: _isbnController.text.trim(),
       title: _titleController.text.trim(),
@@ -95,8 +86,7 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
       publisher: _publisherController.text.trim(),
       language: _languageController.text.trim(),
       publishDate: _publishDateController.text.trim(),
-      type: _typeController.text.trim(),
-      status: _statusController.text.trim(),
+      status: INVENTORY_STATUS_AVAILABLE,
       volume: _volumeController.text.trim(),
       issue: _issueController.text.trim(),
     );
@@ -105,7 +95,6 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
   Dvd _addDvd() {
     return Dvd(
       id: int.parse(_idController.text.trim()),
-      //typeId: int.parse(_typeIdController.text.trim()),
       typeId:3,
       isbn: _isbnController.text.trim(),
       title: _titleController.text.trim(),
@@ -113,8 +102,7 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
       publisher: _publisherController.text.trim(),
       language: _languageController.text.trim(),
       publishDate: _publishDateController.text.trim(),
-      type: _typeController.text.trim(),
-      status: _statusController.text.trim(),
+      status: INVENTORY_STATUS_AVAILABLE,
       duration:int.parse(_durationController.text.trim()),
       director: _directorController.text.trim(),
     );
@@ -133,18 +121,6 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
             ),
           ),
         ),
-        /*
-        // Automatically added on _addBook, _addDvd_, _addJournal
-        TextFormField(
-          controller: _typeIdController,
-          decoration: new InputDecoration(
-            labelText: "Type Id",
-            labelStyle: TextStyle(
-              color: Colors.grey[900],
-            ),
-          ),
-        ),
-        */
         TextFormField(
           controller: _isbnController,
           decoration: new InputDecoration(
@@ -199,24 +175,6 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
             ),
           ),
         ),
-        TextFormField(
-          controller: _typeController,
-          decoration: new InputDecoration(
-            labelText: "Type",
-            labelStyle: TextStyle(
-              color: Colors.grey[900],
-            ),
-          ),
-        ),
-        TextFormField(
-          controller: _statusController,
-          decoration: new InputDecoration(
-            labelText: "Status",
-            labelStyle: TextStyle(
-              color: Colors.grey[900],
-            ),
-          ),
-        ),
 
         //book specifics
         Visibility(
@@ -245,14 +203,29 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
         ),
         Visibility(
           visible: widget.activeForm==INVENTORY_TYPE_BOOK?true:false,
-          child: TextFormField(
-            controller: _bookTypeController,
-            decoration: new InputDecoration(
-              labelText: "Book Type",
-              labelStyle: TextStyle(
-                color: Colors.grey[900],
-              ),
+          child:
+          DropdownButton<String>(
+            value: _bookType,
+            icon: const Icon(Icons.arrow_downward),
+            iconSize: 24,
+            elevation: 16,
+            style: const TextStyle(color: Colors.deepPurple),
+            underline: Container(
+              height: 2,
+              color: Colors.deepPurpleAccent,
             ),
+            onChanged: (String? newValue) {
+              setState(() {
+                _bookType = newValue!;
+              });
+            },
+            items: <String>['Others', 'Course Book']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
           ),
         ),
         //journal specifics
@@ -325,7 +298,7 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
               ..removeCurrentSnackBar()
               ..showSnackBar(SnackBar(
                   content: Text(
-                'Book is added successfully!',
+                'Inventory is added successfully!',
               )));
           },
           child: Text('Save'),
@@ -343,10 +316,7 @@ class _AddInventoryFormState extends State<AddInventoryForm> {
     _publisherController.clear();
     _languageController.clear();
     _publishDateController.clear();
-    _typeController.clear();
-    _statusController.clear();
     _numberOfPagesController.clear();
     _authorsController.clear();
-    _bookTypeController.clear();
   }
 }

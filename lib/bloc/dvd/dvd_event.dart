@@ -23,3 +23,36 @@ class AddDvd extends DvdEvent {
   @override
   String toString() => 'DvdAdd {dvd : $dvd}';
 }
+
+class SearchDvd extends DvdEvent {
+  final String queryData;
+
+  const SearchDvd({
+    required this.queryData,
+  });
+
+  @override
+  List<Object> get props => [queryData];
+
+  @override
+  String toString() => 'SearchJournal {queryData : $queryData}';
+}
+
+class UpdateDvd extends DvdEvent {
+  final Dvd dvd;
+  final String status;
+
+  const UpdateDvd({
+    required this.dvd,
+    required this.status,
+  });
+
+  @override
+  List<Object> get props => [
+    dvd,
+    status,
+  ];
+
+  @override
+  String toString() => 'UpdateDvd {dvd : $dvd, status: $status}';
+}

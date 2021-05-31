@@ -21,7 +21,6 @@ class Book extends Inventory {
     required String publisher,
     required String language,
     required String publishDate,
-    required String type,
     required String status,
     required this.numberOfPages,
     required this.authors,
@@ -35,7 +34,6 @@ class Book extends Inventory {
           publisher: publisher,
           language: language,
           publishDate: publishDate,
-          type: type,
           status: status,
         );
 
@@ -48,7 +46,6 @@ class Book extends Inventory {
     String? publisher,
     String? language,
     String? publishDate,
-    String? type,
     String? status,
     int? numberOfPages,
     List<dynamic>? authors,
@@ -63,7 +60,6 @@ class Book extends Inventory {
       publisher: publisher ?? this.publisher,
       language: language ?? this.language,
       publishDate: publishDate ?? this.publishDate,
-      type: type ?? this.type,
       status: status ?? this.status,
       numberOfPages: numberOfPages ?? this.numberOfPages,
       authors: authors ?? this.authors,
@@ -80,7 +76,6 @@ class Book extends Inventory {
         subject,
         publisher,
         publishDate,
-        type,
         status,
         numberOfPages,
         authors,
@@ -90,7 +85,7 @@ class Book extends Inventory {
   @override
   String toString() =>
       'Book {id : $id, typeId : $typeId, isbn:$isbn, title:$title, subject: $subject, publisher: $publisher, '
-      'publishDate: $publishDate, type: $type, status:$status, numberOfPages: $numberOfPages, '
+      'publishDate: $publishDate, status:$status, numberOfPages: $numberOfPages, '
       'authors: $authors, bookType: $bookType}';
 
   BookModel toModel() => BookModel(
@@ -103,7 +98,6 @@ class Book extends Inventory {
         publisher: publisher,
         language: language,
         publishDate: publishDate,
-        type: type,
         status: status,
         bookType: bookType,
         authors: json.encode(authors),
@@ -118,7 +112,6 @@ class Book extends Inventory {
         publisher: model.publisher,
         language: model.language,
         publishDate: model.publishDate,
-        type: model.type,
         status: model.status,
         numberOfPages: model.numberOfPages,
         authors: json.decode(model.authors) as List<dynamic>,

@@ -17,9 +17,7 @@ class Rule extends Equatable {
   final int nOfLoanForOfficer;
   final int nOfLoanForStudent;
 
-  final double penaltyAmountForAcademic;
-  final double penaltyAmountForOfficer;
-  final double penaltyAmountForStudent;
+  final double penaltyPrice;
 
   Rule({
     required this.ruleId,
@@ -36,9 +34,8 @@ class Rule extends Equatable {
     required this.nOfLoanForOfficer,
     required this.nOfLoanForStudent,
 
-    required this.penaltyAmountForAcademic,
-    required this.penaltyAmountForOfficer,
-    required this.penaltyAmountForStudent,
+    required this.penaltyPrice,
+
   });
 
   @override
@@ -53,9 +50,8 @@ class Rule extends Equatable {
       nOfLoanForAcademic,
       nOfLoanForOfficer,
       nOfLoanForStudent,
-      penaltyAmountForAcademic,
-      penaltyAmountForOfficer,
-      penaltyAmountForStudent,
+      penaltyPrice,
+
   ];
 
   @override
@@ -64,7 +60,7 @@ class Rule extends Equatable {
           'invBook: $invBook, invDvd: $invDvd, invJournal: $invJournal, '
           'loanPeriodForAcademic: $loanPeriodForAcademic, loanPeriodForOfficer: $loanPeriodForOfficer, loanPeriodForStudent: $loanPeriodForStudent, '
           'nOfLoanForAcademic: $nOfLoanForAcademic, nOfLoanForOfficer: $nOfLoanForOfficer, nOfLoanForStudent:, $nOfLoanForStudent, '
-          'penaltyAmountForAcademic: $penaltyAmountForAcademic, penaltyAmountForOfficer: $penaltyAmountForOfficer, penaltyAmountForStudent: $penaltyAmountForStudent }';
+          'penaltyPrice: $penaltyPrice}';
 
 
  RuleModel toModel() => RuleModel(
@@ -78,9 +74,7 @@ class Rule extends Equatable {
         nOfLoanForAcademic: nOfLoanForAcademic,
         nOfLoanForOfficer: nOfLoanForOfficer,
         nOfLoanForStudent: nOfLoanForStudent,
-        penaltyAmountForAcademic: penaltyAmountForAcademic,
-        penaltyAmountForOfficer: penaltyAmountForOfficer,
-        penaltyAmountForStudent:penaltyAmountForStudent,
+        penaltyPrice: penaltyPrice,
       );
 
   static Rule fromModel(RuleModel model) => Rule(
@@ -94,8 +88,6 @@ class Rule extends Equatable {
         nOfLoanForAcademic: model.nOfLoanForAcademic ,
         nOfLoanForOfficer: model.nOfLoanForOfficer,
         nOfLoanForStudent: model.nOfLoanForStudent ,
-        penaltyAmountForAcademic: model.penaltyAmountForAcademic,
-        penaltyAmountForOfficer: model.penaltyAmountForOfficer,
-        penaltyAmountForStudent: model.penaltyAmountForStudent,
+        penaltyPrice: model.penaltyPrice,
       );
 }

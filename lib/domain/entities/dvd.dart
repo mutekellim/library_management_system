@@ -18,7 +18,6 @@ class Dvd extends Inventory {
     required String publisher,
     required String language,
     required String publishDate,
-    required String type,
     required String status,
     required this.duration,
     required this.director,
@@ -31,9 +30,36 @@ class Dvd extends Inventory {
           publisher: publisher,
           language: language,
           publishDate: publishDate,
-          type: type,
           status: status,
         );
+
+  Dvd copyWith({
+    int? id,
+    int? typeId,
+    String? isbn,
+    String? title,
+    String? subject,
+    String? publisher,
+    String? language,
+    String? publishDate,
+    String? status,
+    int? duration,
+    String? director,
+  }) {
+    return Dvd(
+      id: id ?? this.id,
+      typeId: typeId ?? this.typeId,
+      isbn: isbn ?? this.isbn,
+      title: title ?? this.title,
+      subject: subject ?? this.subject,
+      publisher: publisher ?? this.publisher,
+      language: language ?? this.language,
+      publishDate: publishDate ?? this.publishDate,
+      status: status ?? this.status,
+      duration: duration ?? this.duration,
+      director: director ?? this.director,
+    );
+  }
 
   @override
   List<Object> get props => [
@@ -44,7 +70,6 @@ class Dvd extends Inventory {
         subject,
         publisher,
         publishDate,
-        type,
         status,
         duration,
         director,
@@ -53,7 +78,7 @@ class Dvd extends Inventory {
   @override
   String toString() =>
       'Dvd {id : $id, typeId : $typeId, isbn:$isbn, title:$title, subject: $subject, publisher: $publisher, '
-      'publishDate: $publishDate, type: $type, status:$status, duration: $duration, director: $director}';
+      'publishDate: $publishDate,  status:$status, duration: $duration, director: $director}';
 
   DvdModel toModel() => DvdModel(
     id: id,
@@ -64,7 +89,6 @@ class Dvd extends Inventory {
     publisher: publisher,
     language: language,
     publishDate: publishDate,
-    type: type,
     status: status,
     duration: duration,
     director: director,
@@ -80,7 +104,6 @@ class Dvd extends Inventory {
     publisher: model.publisher,
     language: model.language,
     publishDate: model.publishDate,
-    type: model.type,
     status: model.status,
     duration: model.duration,
     director: model.director,

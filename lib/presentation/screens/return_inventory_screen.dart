@@ -55,8 +55,8 @@ class _ReturnInventoryScreenState extends State<ReturnInventoryScreen> {
         padding: const EdgeInsets.all(20),
         child: BlocBuilder<AuthorizationBloc, AuthorizationState>(
             builder: (context, state) {
-          print(state.toString());
-          if (state is AuthorizationSuccess) {
+          //print(state.toString());
+          if ( state is AuthorizationSuccess) {
             return Column(
               children: [
                 Text('Balance : ${state.member.balanceAmount}'),
@@ -87,12 +87,18 @@ class _ReturnInventoryScreenState extends State<ReturnInventoryScreen> {
                         onPressed: () {
                           if (searchController.text.isNotEmpty) {
                             //TODO : date hesaplanarak balance update edilecek.
+                            Member member = state.member;
+
                             BlocProvider.of<AuthorizationBloc>(context).add(
                                 UpdateMember(
-                                    inventoryId:
-                                        int.parse(searchController.text.trim()),
-                                    action: ACTION_RETURN));
+                                    penalty: 0,
+                                    inventoryId:int.parse(searchController.text.trim()),
+                                    action: ACTION_RETURN)
+                            );
+
                             searchController.clear();
+                            Navigator.of(context)
+                                .pushNamed(ReturnInventoryScreen.routeName);
                           } else {
                             // give an alert to enter a search term.
                           }

@@ -20,8 +20,7 @@ class BookRepositoryImpl implements BookRepository {
   });
 
   @override
-  Future<Either<Failure, List<Book>>> searchByPubDate(
-      String publishDate) async {
+  Future<Either<Failure, List<Book>>> searchByPubDate( String publishDate) async {
     try {
       final bookList = await localDataSource.searchByPubDate(publishDate);
       return Right(
@@ -54,18 +53,17 @@ class BookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Future<Either<Failure, List<Book>>> searchByType(String type) async {
+  Future<Either<Failure, Book>> addBook(Book book) async {
     try {
-      final bookList = await localDataSource.searchByType(type);
-      return Right(
-          bookList.map((bookModel) => Book.fromModel(bookModel)).toList());
+      await localDataSource.saveBook(book.toModel());
+      return Right(book);
     } catch (_) {
       return Left(DatabaseFailure());
     }
   }
 
   @override
-  Future<Either<Failure, Book>> addBook(Book book) async {
+  Future<Either<Failure, Book>> updateBook(Book book) async {
     try {
       await localDataSource.saveBook(book.toModel());
       return Right(book);

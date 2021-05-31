@@ -67,26 +67,41 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          // BlocProvider.of<MemberBloc>(context).add(AddMember(
-          //     member: Member(
-          //   memberId: 1,
-          //   balanceAmount: 1,
-          //   noInvLoaned: 0,
-          //   cardId: 'a9',
-          //   memberType: 'memberType',
-          //   name: 'name',
-          //   surname: 'surname',
-          //   phone: 'phone',
-          //   mail: 'mail',
-          //   faculty: 'faculty',
-          //   department: 'department',
-          //   dateOfMembership: 'dateOfMembership',
-          //   reservedInventoryList: [],
-          //   borrowedInventoryList: [],
-          // )));
-          BlocProvider.of<AuthorizationBloc>(context)
-              .add(AuthorizationByCard(cardId: _passCode.text.trim()));
-          Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+          if(_passCode.text=="create"){
+            BlocProvider.of<MemberBloc>(context).add(
+              AddMember( member: Member(
+                  memberId: 1,
+                  balanceAmount: 1,
+                  noInvLoaned: 0,
+                  cardId: 'a1',
+                  memberType: 'memberType',
+                  name: 'name',
+                  surname: 'surname',
+                  phone: 'phone',
+                  mail: 'mail',
+                  faculty: 'faculty',
+                  department: 'department',
+                  dateOfMembership: 'dateOfMembership',
+                  reservedInventoryList: [],
+                  borrowedInventoryList: [],
+                )
+              )
+            );
+            _passCode.clear();
+          }
+          else if(_passCode.text.length>0){
+            BlocProvider.of<AuthorizationBloc>(context)
+                .add(AuthorizationByCard(cardId: _passCode.text.trim()));
+            Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+          }
+          else{
+            ScaffoldMessenger.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                  content: Text(
+                    'Please scan your library card!',
+                  )));
+          }
         },
         style: ElevatedButton.styleFrom(
           primary: Colors.white,

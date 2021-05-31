@@ -16,7 +16,6 @@ class Journal extends Inventory {
     required String publisher,
     required String language,
     required String publishDate,
-    required String type,
     required String status,
     required this.volume,
     required this.issue,
@@ -30,9 +29,37 @@ class Journal extends Inventory {
     publisher: publisher,
     language: language,
     publishDate: publishDate,
-    type: type,
     status: status,
+
   );
+
+  Journal copyWith({
+    int? id,
+    int? typeId,
+    String? isbn,
+    String? title,
+    String? subject,
+    String? publisher,
+    String? language,
+    String? publishDate,
+    String? status,
+    String? volume,
+    String? issue,
+  }) {
+    return Journal(
+      id: id ?? this.id,
+      typeId: typeId ?? this.typeId,
+      isbn: isbn ?? this.isbn,
+      title: title ?? this.title,
+      subject: subject ?? this.subject,
+      publisher: publisher ?? this.publisher,
+      language: language ?? this.language,
+      publishDate: publishDate ?? this.publishDate,
+      status: status ?? this.status,
+      volume: volume ?? this.volume,
+      issue: issue ?? this.issue,
+    );
+  }
 
   @override
   List<Object> get props => [
@@ -43,7 +70,6 @@ class Journal extends Inventory {
     subject,
     publisher,
     publishDate,
-    type,
     status,
     volume,
     issue,
@@ -52,7 +78,7 @@ class Journal extends Inventory {
   @override
   String toString() =>
       'Journal {id : $id, typeId : $typeId, isbn:$isbn, title:$title, subject: $subject, publisher: $publisher, '
-          'publishDate: $publishDate, type: $type, status:$status, volume: $volume, issue: $issue}';
+          'publishDate: $publishDate, status:$status, volume: $volume, issue: $issue}';
 
   JournalModel toModel() => JournalModel(
     id: id,
@@ -63,11 +89,23 @@ class Journal extends Inventory {
     publisher: publisher,
     language: language,
     publishDate: publishDate,
-    type: type,
     status: status,
     issue: issue,
     volume: volume,
 
   );
 
+  static Journal fromModel(JournalModel model) => Journal(
+    id: model.id,
+    typeId: model.typeId,
+    isbn: model.isbn,
+    title: model.title,
+    subject: model.subject,
+    publisher: model.publisher,
+    language: model.language,
+    publishDate: model.publishDate,
+    status: model.status,
+    issue: model.issue,
+    volume: model.volume,
+  );
 }

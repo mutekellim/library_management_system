@@ -30,9 +30,8 @@ class _RuleFormState extends State<RuleForm> {
   final _nOfLoanForOfficer = TextEditingController();
   final _nOfLoanForStudent = TextEditingController();
 
-  final _penaltyAmountForAcademic = TextEditingController();
-  final _penaltyAmountForOfficer = TextEditingController();
-  final _penaltyAmountForStudent = TextEditingController();
+  final _penaltyPrice = TextEditingController();
+
 
 
   @override
@@ -54,9 +53,7 @@ class _RuleFormState extends State<RuleForm> {
     _nOfLoanForOfficer.text = widget.rule!.nOfLoanForOfficer.toString();
     _nOfLoanForStudent.text = widget.rule!.nOfLoanForStudent.toString();
 
-    _penaltyAmountForAcademic.text = widget.rule!.penaltyAmountForAcademic.toString();
-    _penaltyAmountForOfficer.text = widget.rule!.penaltyAmountForOfficer.toString();
-    _penaltyAmountForStudent.text = widget.rule!.penaltyAmountForStudent.toString();
+    _penaltyPrice.text = widget.rule!.penaltyPrice.toString();
   }
   @override
   void dispose() {
@@ -69,9 +66,7 @@ class _RuleFormState extends State<RuleForm> {
     _nOfLoanForOfficer.dispose();
     _nOfLoanForStudent.dispose();
 
-    _penaltyAmountForAcademic.dispose();
-    _penaltyAmountForOfficer.dispose();
-    _penaltyAmountForStudent.dispose();
+    _penaltyPrice.dispose();
   }
 
   Rule _addOrUpdateRule() {
@@ -89,10 +84,7 @@ class _RuleFormState extends State<RuleForm> {
       nOfLoanForOfficer:  int.parse(_nOfLoanForOfficer.text.trim()),
       nOfLoanForStudent:  int.parse(_nOfLoanForStudent.text.trim()),
 
-      penaltyAmountForAcademic:  double.parse(_penaltyAmountForAcademic.text.trim()),
-      penaltyAmountForOfficer:  double.parse(_penaltyAmountForOfficer.text.trim()),
-      penaltyAmountForStudent:  double.parse(_penaltyAmountForStudent.text.trim()),
-
+      penaltyPrice:  double.parse(_penaltyPrice.text.trim()),
     );
   }
 
@@ -100,37 +92,54 @@ class _RuleFormState extends State<RuleForm> {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        Switch(
-          value: _invBook,
-          onChanged: (value) {
-            setState(() {
-              _invBook = value;
-            });
-          },
-          activeTrackColor: Colors.yellow,
-          activeColor: Colors.orangeAccent,
-        ),
-        Switch(
-          value: _invJournal,
-          onChanged: (value) {
-            setState(() {
-              _invJournal = value;
-            });
-          },
-          activeTrackColor: Colors.yellow,
-          activeColor: Colors.orangeAccent,
-        ),
-        Switch(
-          value: _invDvd,
-          onChanged: (value) {
-            setState(() {
-              _invDvd = value;
-            });
-          },
-          activeTrackColor: Colors.yellow,
-          activeColor: Colors.orangeAccent,
-        ),
+        Row(
+          children: [
+            Text("Books are allowed "),
+            Switch(
+              value: _invBook,
+              onChanged: (value) {
+                setState(() {
+                  _invBook = value;
+                });
+              },
+              activeTrackColor: Colors.yellow,
+              activeColor: Colors.orangeAccent,
+            ),
 
+          ],
+        ),
+        Row(
+          children: [
+            Text("Journals are allowed "),
+            Switch(
+              value: _invJournal,
+              onChanged: (value) {
+                setState(() {
+                  _invJournal = value;
+                });
+              },
+              activeTrackColor: Colors.yellow,
+              activeColor: Colors.orangeAccent,
+            ),
+
+          ],
+        ),
+        Row(
+          children: [
+            Text("DVDs are allowed "),
+            Switch(
+              value: _invDvd,
+              onChanged: (value) {
+                setState(() {
+                  _invDvd = value;
+                });
+              },
+              activeTrackColor: Colors.yellow,
+              activeColor: Colors.orangeAccent,
+            ),
+
+          ],
+        ),
         TextFormField(
           controller: _loanPeriodForAcademic,
           decoration: new InputDecoration(
@@ -188,27 +197,9 @@ class _RuleFormState extends State<RuleForm> {
         ),
 
         TextFormField(
-          controller: _penaltyAmountForAcademic,
+          controller: _penaltyPrice,
           decoration: new InputDecoration(
-            labelText: "Penalty Price for Academician",
-            labelStyle: TextStyle(
-              color: Colors.grey[900],
-            ),
-          ),
-        ),
-        TextFormField(
-          controller: _penaltyAmountForOfficer,
-          decoration: new InputDecoration(
-            labelText: "Penalty Price for Officer",
-            labelStyle: TextStyle(
-              color: Colors.grey[900],
-            ),
-          ),
-        ),
-        TextFormField(
-          controller: _penaltyAmountForStudent,
-          decoration: new InputDecoration(
-            labelText: "Penalty Price for Students",
+            labelText: "Penalty Price",
             labelStyle: TextStyle(
               color: Colors.grey[900],
             ),
@@ -244,9 +235,7 @@ class _RuleFormState extends State<RuleForm> {
     _nOfLoanForOfficer.clear();
     _nOfLoanForStudent.clear();
 
-    _penaltyAmountForAcademic.clear();
-    _penaltyAmountForOfficer.clear();
-    _penaltyAmountForStudent.clear();
+    _penaltyPrice.clear();
 
   }
 }

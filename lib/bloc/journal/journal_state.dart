@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:library_management_system/domain/entities/journal.dart';
 
 abstract class JournalState extends Equatable {
   const JournalState();
@@ -8,6 +9,8 @@ abstract class JournalState extends Equatable {
 }
 
 class JournalInitial extends JournalState {}
+
+class JournalLoadProgress extends JournalState {}
 
 class AddJournalSuccess extends JournalState {
   final String message;
@@ -27,6 +30,22 @@ class AddJournalSuccess extends JournalState {
 
   @override
   String toString() => 'AddJournalSuccess : {message : $message, journalId: $journalId}';
+}
+
+class JournalLoadSuccess extends JournalState {
+  final List<Journal> journalList;
+
+  const JournalLoadSuccess({
+    required this.journalList,
+  });
+
+  @override
+  List<Object> get props => [
+    journalList,
+  ];
+
+  @override
+  String toString() => 'JournalLoadSuccess : {journalList : $journalList}';
 }
 
 class JournalFailure extends JournalState {

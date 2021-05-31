@@ -14,8 +14,8 @@ abstract class JournalModelDao {
   @Query('SELECT * FROM JournalModel WHERE title LIKE :title')
   Future<List<JournalModel>> searchByTitle(String title);
 
-  @Query('SELECT * FROM JournalModel WHERE type = :type')
-  Future<List<JournalModel>> searchByType(String type);
+  @Query('SELECT * FROM JournalModel WHERE title LIKE :queryData OR subject LIKE :queryData OR publishDate LIKE :queryData')
+  Future<List<JournalModel>> searchJournal(String queryData);
 
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> saveJournal(JournalModel game);

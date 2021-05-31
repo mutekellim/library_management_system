@@ -9,4 +9,8 @@ import '../../domain/entities/entities.dart';
 ///
 abstract class JournalRepository extends InventoryRepository {
   Future<Either<Failure, Journal>> addJournal(Journal journal);
+
+  Future<Either<Failure, Journal>> updateJournal(Journal journal);
+
+  Future<Either<Failure, List<Journal>>> searchJournal(String queryData);
 }

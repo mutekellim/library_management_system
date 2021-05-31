@@ -54,21 +54,32 @@ class DvdRepositoryImpl implements DvdRepository {
   }
 
   @override
-  Future<Either<Failure, List<Dvd>>> searchByType(String type) async {
+  Future<Either<Failure, Dvd>> addDvd(Dvd dvd) async {
     try {
-      final dvdList = await localDataSource.searchByType(type);
-      return Right(
-          dvdList.map((dvdModel) => Dvd.fromModel(dvdModel)).toList());
+      await localDataSource.saveDvd(dvd.toModel());
+      return Right(dvd);
     } catch (_) {
       return Left(DatabaseFailure());
     }
   }
 
   @override
-  Future<Either<Failure, Dvd>> addDvd(Dvd dvd) async {
+  Future<Either<Failure, Dvd>> updateDvd(Dvd dvd) async {
     try {
       await localDataSource.saveDvd(dvd.toModel());
       return Right(dvd);
+    } catch (_) {
+      return Left(DatabaseFailure());
+    }
+  }
+
+
+  @override
+  Future<Either<Failure, List<Dvd>>> searchDvd(String queryData) async {
+    try {
+      final dvdList = await localDataSource.searchDvd(queryData);
+      return Right(
+          dvdList.map((dvdModel) => Dvd.fromModel(dvdModel)).toList());
     } catch (_) {
       return Left(DatabaseFailure());
     }

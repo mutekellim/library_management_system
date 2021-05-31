@@ -38,17 +38,31 @@ class JournalRepositoryImpl implements JournalRepository {
   }
 
   @override
-  Future<Either<Failure, List<Journal>>> searchByType(String type) {
-    // TODO: implement searchByType
-    throw UnimplementedError();
-  }
-
-
-  @override
   Future<Either<Failure, Journal>> addJournal(Journal journal) async {
     try {
       await localDataSource.saveJournal(journal.toModel());
       return Right(journal);
+    } catch (_) {
+      return Left(DatabaseFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Journal>> updateJournal(Journal journal) async {
+    try {
+      await localDataSource.saveJournal(journal.toModel());
+      return Right(journal);
+    } catch (_) {
+      return Left(DatabaseFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Journal>>> searchJournal(String queryData) async {
+    try {
+      final journalList = await localDataSource.searchJournal(queryData);
+      return Right(
+          journalList.map((journalModel) => Journal.fromModel(journalModel)).toList());
     } catch (_) {
       return Left(DatabaseFailure());
     }

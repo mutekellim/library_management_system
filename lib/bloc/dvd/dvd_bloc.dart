@@ -29,4 +29,19 @@ class DvdBloc extends Bloc<DvdEvent, DvdState> {
       (dvd) => AddDvdSuccess(message: ADD_SUCCESS, dvdId: dvd.id),
     );
   }
+
+  Stream<DvdState> _mapSearchDvdToState(SearchDvd event) async* {
+    yield DvdLoadProgress();
+    final Either<Failure, List<Dvd>> failureOrDvdList =
+    await dvdRepository.searchDvd(event.queryData);
+    yield failureOrDvdList.fold(
+          (failure) => DvdFailure(message: DATABASE_FAILURE_MESSAGE),
+          (dvdList) => DvdLoadSuccess(dvdList: dvdList),
+    );
+  }
+
+  Stream<DvdState> _mapUpdateBookToState(UpdateDvd event) async* {
+    await dvdRepository.addDvd(event.dvd.copyWith(status: event.status));
+    yield* _mapSearchDvdToState(SearchDvd(queryData: event.dvd.title));
+  }
 }
