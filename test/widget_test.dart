@@ -1,3 +1,4 @@
+// @dart=2.9
 // This is a basic Flutter widget test.
 //
 // To perform an interaction with a widget in your test, use the WidgetTester
@@ -5,26 +6,82 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:library_management_system/bloc/authorization/authorization.dart';
+import 'package:library_management_system/bloc/member/member.dart';
+import 'package:library_management_system/core/constants.dart';
+import 'package:library_management_system/core/errors/failures.dart';
+import 'package:library_management_system/domain/entities/entities.dart';
+import 'package:library_management_system/domain/repositories/book_repository.dart';
+import 'package:library_management_system/domain/repositories/member_repository.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
-import 'package:library_management_system/main.dart';
+class MockMemberRepository extends Mock implements MemberRepository {}
+
+class MockBookRepository extends Mock implements BookRepository {}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  MockMemberRepository mockMemberRepository;
+  BookRepository mockBookRepository;
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  setUp(() {
+    mockMemberRepository = MockMemberRepository();
+    mockBookRepository = MockBookRepository();
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  int memberId = 1000000001;
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  final member = Member(
+    memberId: memberId,
+    balanceAmount: 1,
+    noInvLoaned: 0,
+    cardId: 'a1',
+    memberType: 'memberType',
+    name: 'name',
+    surname: 'surname',
+    phone: 'phone',
+    mail: 'mail',
+    faculty: 'faculty',
+    department: 'department',
+    dateOfMembership: 'dateOfMembership',
+    reservedInventoryList: [],
+    borrowedInventoryList: [],
+  );
+
+  test('memberId int bir deger olmali', () {
+    expect(member.memberId.runtimeType, int);
+  });
+
+  test('memberId 10 haneli bir deger olmali', () {
+    expect(member.memberId.toString().length, 10);
+  });
+
+  test('memberin bakiyesi 0 in altindayken odunc alamamali', () async {
+    when(mockMemberRepository.addMember(any))
+        .thenAnswer((_) async => Left(DatabaseFailure()));
+
+    final result = await mockMemberRepository.addMember(member);
+
+    expect(result, Left(DatabaseFailure()));
+
+    verify(mockMemberRepository.addMember(member));
+
+    verifyNoMoreInteractions(mockMemberRepository);
+  });
+
+  test('kayitli olmayan envanterin aranmasi', () async {
+    when(mockBookRepository.searchBook(any))
+        .thenAnswer((_) async => Left(DatabaseFailure()));
+
+    final result = await mockBookRepository.searchBook('123');
+
+    expect(result, Left(DatabaseFailure()));
+
+    verify(mockBookRepository.searchBook('123'));
+
+    verifyNoMoreInteractions(mockBookRepository);
   });
 }
