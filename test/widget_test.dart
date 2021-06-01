@@ -6,6 +6,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:library_management_system/bloc/authorization/authorization.dart';
@@ -22,6 +23,36 @@ import 'package:mockito/mockito.dart';
 class MockMemberRepository extends Mock implements MemberRepository {}
 
 class MockBookRepository extends Mock implements BookRepository {}
+
+bool isEmail(String string) {
+  // Null or empty string is invalid
+  if (string == null || string.isEmpty) {
+    return false;
+  }
+
+  const pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+  final regExp = RegExp(pattern);
+
+  if (!regExp.hasMatch(string)) {
+    return false;
+  }
+  return true;
+}
+
+bool isPhone(String string) {
+  // Null or empty string is invalid
+  if (string == null || string.isEmpty) {
+    return false;
+  }
+
+  const pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+  final regExp = RegExp(pattern);
+
+  if (!regExp.hasMatch(string)) {
+    return false;
+  }
+  return true;
+}
 
 void main() {
   MockMemberRepository mockMemberRepository;
@@ -42,13 +73,28 @@ void main() {
     memberType: 'memberType',
     name: 'name',
     surname: 'surname',
-    phone: 'phone',
-    mail: 'mail',
+    phone: '+9005435670192',
+    mail: 'mail@mail.com',
     faculty: 'faculty',
     department: 'department',
     dateOfMembership: 'dateOfMembership',
     reservedInventoryList: [],
     borrowedInventoryList: [],
+  );
+
+  final book = Book(
+    id: 01,
+    typeId: 012,
+    isbn: '123123',
+    title: 'title',
+    subject: 'subject',
+    publisher: 'publisher',
+    language: 'language',
+    publishDate: '11-01-1992',
+    status: 'Available',
+    numberOfPages: 123,
+    authors: ['somebody'],
+    bookType: 'Others',
   );
 
   test('memberId int bir deger olmali', () {
@@ -83,5 +129,52 @@ void main() {
     verify(mockBookRepository.searchBook('123'));
 
     verifyNoMoreInteractions(mockBookRepository);
+  });
+
+  test('kayitli olmayan envanterin iadesi', () async {
+    when(mockBookRepository.updateBook(any))
+        .thenAnswer((_) async => Left(DatabaseFailure()));
+
+    final result = await mockBookRepository.updateBook(book);
+
+    expect(result, Left(DatabaseFailure()));
+
+    verify(mockBookRepository.updateBook(book));
+
+    verifyNoMoreInteractions(mockBookRepository);
+  });
+
+  test('kayitli olmayan envanterin odunc alinmasi', () async {
+    when(mockBookRepository.updateBook(any))
+        .thenAnswer((_) async => Left(DatabaseFailure()));
+
+    final result = await mockBookRepository.updateBook(book);
+
+    expect(result, Left(DatabaseFailure()));
+
+    verify(mockBookRepository.updateBook(book));
+
+    verifyNoMoreInteractions(mockBookRepository);
+  });
+
+  test('email validation', () async {
+
+    expect(isEmail(member.mail),true);
+  });
+
+  test('phone validation', () async {
+
+    expect(isPhone(member.phone),true);
+  });
+
+  test('book id null olmamali', () async {
+
+    expect(book.id != null ,true);
+
+  });
+
+  test('book pages null olmamali validation', () async {
+
+    expect(book.numberOfPages != null ,true);
   });
 }
