@@ -70,12 +70,17 @@ class _$AppDatabase extends AppDatabase {
 
   RuleModelDao? _ruleModelDaoInstance;
 
+  BorrowModelDao? _borrowModelDaoInstance;
+
+  ReservationModelDao? _reservationModelDaoInstance;
+
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
       version: 1,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
+        await callback?.onConfigure?.call(database);
       },
       onOpen: (database) async {
         await callback?.onOpen?.call(database);
@@ -97,6 +102,10 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `MemberModel` (`memberId` INTEGER NOT NULL, `balanceAmount` INTEGER NOT NULL, `noInvLoaned` INTEGER NOT NULL, `cardId` TEXT NOT NULL, `memberType` TEXT NOT NULL, `name` TEXT NOT NULL, `surname` TEXT NOT NULL, `phone` TEXT NOT NULL, `mail` TEXT NOT NULL, `faculty` TEXT NOT NULL, `department` TEXT NOT NULL, `dateOfMembership` TEXT NOT NULL, `reservedInventoryList` TEXT NOT NULL, `borrowedInventoryList` TEXT NOT NULL, PRIMARY KEY (`memberId`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `RuleModel` (`ruleId` INTEGER NOT NULL, `invBook` INTEGER NOT NULL, `invDvd` INTEGER NOT NULL, `invJournal` INTEGER NOT NULL, `loanPeriodForAcademic` INTEGER NOT NULL, `loanPeriodForOfficer` INTEGER NOT NULL, `loanPeriodForStudent` INTEGER NOT NULL, `nOfLoanForAcademic` INTEGER NOT NULL, `nOfLoanForOfficer` INTEGER NOT NULL, `nOfLoanForStudent` INTEGER NOT NULL, `penaltyPrice` REAL NOT NULL, PRIMARY KEY (`ruleId`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `BorrowModel` (`borrowId` INTEGER NOT NULL, `memberId` INTEGER NOT NULL, `inventoryId` INTEGER NOT NULL, `borrowDate` TEXT NOT NULL, PRIMARY KEY (`borrowId`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `ReservationModel` (`reservationId` INTEGER NOT NULL, `memberId` INTEGER NOT NULL, `inventoryId` INTEGER NOT NULL, `reservationDate` TEXT NOT NULL, PRIMARY KEY (`reservationId`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -129,6 +138,18 @@ class _$AppDatabase extends AppDatabase {
   @override
   RuleModelDao get ruleModelDao {
     return _ruleModelDaoInstance ??= _$RuleModelDao(database, changeListener);
+  }
+
+  @override
+  BorrowModelDao get borrowModelDao {
+    return _borrowModelDaoInstance ??=
+        _$BorrowModelDao(database, changeListener);
+  }
+
+  @override
+  ReservationModelDao get reservationModelDao {
+    return _reservationModelDaoInstance ??=
+        _$ReservationModelDao(database, changeListener);
   }
 }
 
@@ -565,5 +586,75 @@ class _$RuleModelDao extends RuleModelDao {
   @override
   Future<void> updateRule(RuleModel rule) async {
     await _ruleModelUpdateAdapter.update(rule, OnConflictStrategy.replace);
+  }
+}
+
+class _$BorrowModelDao extends BorrowModelDao {
+  _$BorrowModelDao(this.database, this.changeListener)
+      : _queryAdapter = QueryAdapter(database),
+        _borrowModelInsertionAdapter = InsertionAdapter(
+            database,
+            'BorrowModel',
+            (BorrowModel item) => <String, Object?>{
+                  'borrowId': item.borrowId,
+                  'memberId': item.memberId,
+                  'inventoryId': item.inventoryId,
+                  'borrowDate': item.borrowDate
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<BorrowModel> _borrowModelInsertionAdapter;
+
+  @override
+  Future<void> deleteBorrow(int borrowId) async {
+    await _queryAdapter.queryNoReturn(
+        'Delete * FROM ReservationModel WHERE borrowId = ?1',
+        arguments: [borrowId]);
+  }
+
+  @override
+  Future<void> saveBorrow(BorrowModel borrow) async {
+    await _borrowModelInsertionAdapter.insert(
+        borrow, OnConflictStrategy.replace);
+  }
+}
+
+class _$ReservationModelDao extends ReservationModelDao {
+  _$ReservationModelDao(this.database, this.changeListener)
+      : _queryAdapter = QueryAdapter(database),
+        _reservationModelInsertionAdapter = InsertionAdapter(
+            database,
+            'ReservationModel',
+            (ReservationModel item) => <String, Object?>{
+                  'reservationId': item.reservationId,
+                  'memberId': item.memberId,
+                  'inventoryId': item.inventoryId,
+                  'reservationDate': item.reservationDate
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<ReservationModel> _reservationModelInsertionAdapter;
+
+  @override
+  Future<void> deleteReservation(int reservationId) async {
+    await _queryAdapter.queryNoReturn(
+        'Delete * FROM ReservationModel WHERE reservationId = ?1',
+        arguments: [reservationId]);
+  }
+
+  @override
+  Future<void> saveReservation(ReservationModel reservation) async {
+    await _reservationModelInsertionAdapter.insert(
+        reservation, OnConflictStrategy.replace);
   }
 }

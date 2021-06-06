@@ -4,6 +4,7 @@ import 'package:library_management_system/bloc/authorization/authorization.dart'
 import 'package:library_management_system/bloc/book/book.dart';
 import 'package:library_management_system/bloc/member/member.dart';
 import 'package:library_management_system/bloc/rule/rule.dart';
+import 'package:library_management_system/globals.dart';
 import 'package:library_management_system/presentation/screens/return_inventory_screen.dart';
 import 'add_inventory_screen.dart';
 import 'add_member_screen.dart';
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Library Management System'),
@@ -56,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (context, state) {
           print(state.toString());
           if (state is AuthorizationSuccess) {
+            member=state.member;
             if (state.member.cardId.startsWith('m')) {
               return Column(
                 children: [

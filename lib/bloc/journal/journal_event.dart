@@ -9,6 +9,21 @@ abstract class JournalEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class AddJournal extends JournalEvent {
+  final Journal journal;
+
+  const AddJournal({
+    required this.journal,
+  });
+
+
+  @override
+  List<Object> get props => [journal];
+
+  @override
+  String toString() => 'JournalAdd {journal : $journal}';
+}
+
 class SearchJournal extends JournalEvent {
   final String queryData;
 
@@ -23,17 +38,21 @@ class SearchJournal extends JournalEvent {
   String toString() => 'SearchJournal {queryData : $queryData}';
 }
 
-class AddJournal extends JournalEvent {
+class UpdateJournal extends JournalEvent {
   final Journal journal;
+  final String status;
 
-  const AddJournal({
+  const UpdateJournal({
     required this.journal,
+    required this.status,
   });
 
+  @override
+  List<Object> get props => [
+    journal,
+    status,
+  ];
 
   @override
-  List<Object> get props => [journal];
-
-  @override
-  String toString() => 'JournalAdd {journal : $journal}';
+  String toString() => 'UpdateJournal {journal : $journal, status: $status}';
 }

@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:library_management_system/bloc/member/member.dart';
-import 'package:library_management_system/domain/entities/book.dart';
-import 'package:library_management_system/domain/entities/entities.dart';
+
 import 'package:library_management_system/presentation/screens/add_inventory_screen.dart';
 import 'package:library_management_system/presentation/screens/add_member_screen.dart';
 import 'package:library_management_system/presentation/screens/details_screen.dart';
@@ -13,14 +11,20 @@ import 'package:library_management_system/presentation/screens/login.dart';
 import 'package:library_management_system/presentation/screens/return_inventory_screen.dart';
 import 'package:library_management_system/presentation/screens/search_inventory_screen.dart';
 
+import 'bloc/borrow/borrow.dart';
+import 'bloc/member/member.dart';
+import 'bloc/reservation/reservation.dart';
 import 'bloc/book/book.dart';
 import 'bloc/journal/journal.dart';
 import 'bloc/dvd/dvd.dart';
 import 'bloc/rule/rule_bloc.dart';
 import 'bloc/authorization/authorization.dart';
 
+
 import 'dependency_injection.dart' as di;
 import 'presentation/screens/screens.dart';
+
+import 'globals.dart' as globals;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +56,13 @@ class MyApp extends StatelessWidget {
         BlocProvider<RuleBloc>(
           create: (context) => di.sl<RuleBloc>(),
         ),
+        BlocProvider<BorrowBloc>(
+          create: (context) => di.sl<BorrowBloc>(),
+        ),
+        BlocProvider<ReservationBloc>(
+          create: (context) => di.sl<ReservationBloc>(),
+        ),
+
       ],
       child: MaterialApp(
         title: 'LMS',

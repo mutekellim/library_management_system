@@ -1,51 +1,74 @@
 import 'package:get_it/get_it.dart';
-import 'package:library_management_system/bloc/dvd/dvd.dart';
-import 'package:library_management_system/bloc/journal/journal.dart';
-import 'package:library_management_system/bloc/member/member.dart';
-import 'package:library_management_system/bloc/rule/rule.dart';
 
 import 'package:library_management_system/data/sources/dao/dao.dart';
 
 import 'bloc/authorization/authorization_bloc.dart';
 import 'bloc/book/book.dart';
+import 'bloc/dvd/dvd.dart';
+import 'bloc/journal/journal.dart';
+import 'bloc/member/member.dart';
+import 'bloc/rule/rule.dart';
+import 'bloc/borrow/borrow.dart';
+import 'bloc/reservation/reservation.dart';
+
+import 'data/sources/database.dart';
 import 'domain/repositories/repositories.dart';
 import 'data/repositories/repositories.dart';
-import 'data/sources/dao/book_model_dao.dart';
-import 'data/sources/database.dart';
+import 'data/sources/dao/dao.dart';
+
+
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
   //Blocs
   sl.registerFactory(
-    () => BookBloc(
-      bookRepository: sl(),
-    ),
+        () =>
+        BookBloc(
+          bookRepository: sl(),
+        ),
   );
   sl.registerFactory(
-        () => JournalBloc(
-      journalRepository: sl(),
-    ),
+        () =>
+        JournalBloc(
+          journalRepository: sl(),
+        ),
   );
   sl.registerFactory(
-        () => DvdBloc(
-      dvdRepository: sl(),
-    ),
+        () =>
+        DvdBloc(
+          dvdRepository: sl(),
+        ),
   );
   sl.registerFactory(
-        () => MemberBloc(
-      memberRepository: sl(),
-    ),
+        () =>
+        MemberBloc(
+          memberRepository: sl(),
+        ),
   );
   sl.registerFactory(
-        () => RuleBloc(
-      ruleRepository: sl(),
-    ),
+        () =>
+        RuleBloc(
+          ruleRepository: sl(),
+        ),
   );
   sl.registerFactory(
-        () => AuthorizationBloc(
-      memberRepository: sl(),
-    ),
+        () =>
+        AuthorizationBloc(
+          memberRepository: sl(),
+        ),
+  );
+  sl.registerFactory(
+        () =>
+        BorrowBloc(
+          borrowRepository: sl(),
+        ),
+  );
+  sl.registerFactory(
+        () =>
+        ReservationBloc(
+          reservationRepository: sl(),
+        ),
   );
 
   //Repositories
@@ -74,9 +97,18 @@ Future<void> init() async {
       localDataSource: sl(),
     ),
   );
+  sl.registerLazySingleton<BorrowRepository>(
+        () => BorrowRepositoryImpl(
+      localDataSource: sl(),
+    ),
+  );
+  sl.registerLazySingleton<ReservationRepository>(
+        () => ReservationRepositoryImpl(
+      localDataSource: sl(),
+    ),
+  );
   //Data sources
-  final database =
-      await $FloorAppDatabase.databaseBuilder('library_database.db').build();
+  final database =  await $FloorAppDatabase.databaseBuilder('library_database.db').build();
 
   sl.registerLazySingleton<BookModelDao>(
     () => database.bookModelDao,
@@ -92,5 +124,11 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<RuleModelDao>(
         () => database.ruleModelDao,
+  );
+  sl.registerLazySingleton<BorrowModelDao>(
+        () => database.borrowModelDao,
+  );
+  sl.registerLazySingleton<ReservationModelDao>(
+        () => database.reservationModelDao,
   );
 }

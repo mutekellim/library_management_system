@@ -9,7 +9,6 @@ abstract class AuthorizationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-
 class AuthorizationInit extends AuthorizationEvent {}
 
 class AuthorizationByCard extends AuthorizationEvent {

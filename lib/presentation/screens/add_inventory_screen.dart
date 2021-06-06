@@ -6,6 +6,7 @@ import 'package:library_management_system/bloc/dvd/dvd.dart';
 import 'package:library_management_system/presentation/widgets/add_inventory_form.dart';
 
 import '../../core/constants.dart';
+import '../../globals.dart';
 import 'screens.dart';
 
 //TODO 3- Inventory listesinden secilen inventory'e ait form goruntulenecek.

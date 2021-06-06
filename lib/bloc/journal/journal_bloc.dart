@@ -19,6 +19,11 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
     if (event is AddJournal) {
       yield* _mapJournalAddToState(event);
     }
+    else if (event is SearchJournal) {
+      yield* _mapSearchJournalToState(event);
+    }else if (event is UpdateJournal) {
+      yield* _mapUpdateJournalToState(event);
+    }
   }
 
   Stream<JournalState> _mapJournalAddToState(AddJournal event) async* {
@@ -28,5 +33,20 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
       (failure) => JournalFailure(message: DATABASE_FAILURE_MESSAGE),
       (journal) => AddJournalSuccess(message: ADD_SUCCESS, journalId: journal.id),
     );
+  }
+
+  Stream<JournalState> _mapSearchJournalToState(SearchJournal event) async* {
+    yield JournalLoadProgress();
+    final Either<Failure, List<Journal>> failureOrBookList =
+    await journalRepository.searchJournal(event.queryData);
+    yield failureOrBookList.fold(
+          (failure) => JournalFailure(message: DATABASE_FAILURE_MESSAGE),
+          (journalList) => JournalLoadSuccess(journalList: journalList),
+    );
+  }
+
+  Stream<JournalState> _mapUpdateJournalToState(UpdateJournal event) async* {
+    await journalRepository.addJournal(event.journal.copyWith(status: event.status));
+    yield* _mapSearchJournalToState(SearchJournal(queryData: event.journal.title));
   }
 }

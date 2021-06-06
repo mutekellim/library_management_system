@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_management_system/core/constants.dart';
 import 'package:library_management_system/presentation/screens/details_screen.dart';
 
 import '../../domain/entities/entities.dart';
@@ -38,7 +39,7 @@ class ListItemBook extends StatelessWidget {
   }
 
   void navigateDetails(BuildContext context) {
-    Navigator.of(context).pushNamed(DetailsScreen.routeName, arguments: bookId);
+    Navigator.of(context).pushNamed(DetailsScreen.routeName, arguments: {'id':bookId,'invType': INVENTORY_TYPE_BOOK});
   }
 }
 
@@ -77,7 +78,7 @@ class ListItemDvd extends StatelessWidget {
   }
 
   void navigateDetails(BuildContext context) {
-    Navigator.of(context).pushNamed(DetailsScreen.routeName, arguments: dvdId);
+    Navigator.of(context).pushNamed(DetailsScreen.routeName, arguments: {'id':dvdId,'invType': INVENTORY_TYPE_DVD});
   }
 }
 
@@ -116,6 +117,6 @@ class ListItemJournal extends StatelessWidget {
   }
 
   void navigateDetails(BuildContext context) {
-    Navigator.of(context).pushNamed(DetailsScreen.routeName, arguments: journalId);
+    Navigator.of(context).pushNamed(DetailsScreen.routeName,  arguments: {'id':journalId,'invType': INVENTORY_TYPE_JOURNAL});
   }
 }
