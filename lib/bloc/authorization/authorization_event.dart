@@ -28,10 +28,12 @@ class AuthorizationByCard extends AuthorizationEvent {
 class UpdateMember extends AuthorizationEvent {
   final int inventoryId;
   final String action;
+  final int nOfInvLoaned;
   final double penalty;
 
   const UpdateMember({
     required this.inventoryId,
+    required this.nOfInvLoaned,
     required this.action,
     required this.penalty,
   });
@@ -39,11 +41,12 @@ class UpdateMember extends AuthorizationEvent {
   @override
   List<Object> get props => [
     inventoryId,
+    nOfInvLoaned,
     action,
     penalty
   ];
 
   @override
   String toString() =>
-      'UpdateMember {inventoryId : $inventoryId, action:$action, penalty:$penalty}';
+      'UpdateMember {inventoryId : $inventoryId, action:$action, penalty:$penalty, nOfInvLoaned:$nOfInvLoaned, }';
 }

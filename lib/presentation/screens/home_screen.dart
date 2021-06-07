@@ -55,101 +55,102 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: BlocBuilder<AuthorizationBloc, AuthorizationState>(
-            builder: (context, state) {
-          print(state.toString());
-          if (state is AuthorizationSuccess) {
-            member=state.member;
-            if (state.member.cardId.startsWith('m')) {
-              return Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(SearchInventoryScreen.routeName);
-                    },
-                    child: Center(child: Text('Search an Inventory')),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(ReturnInventoryScreen.routeName);
-                    },
-                    child: Center(child: Text('Return Inventory')),
-                  ),
-                ],
-              );
-            } else if (state.member.cardId.startsWith('a')) {
-              return Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      BlocProvider.of<RuleBloc>(context)
-                          .add(GetRule(ruleId: 1));
-                      Navigator.of(context).pushNamed(RuleScreen.routeName);
-                    },
-                    child: Center(child: Text('Update Rules')),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(AddMemberScreen.routeName);
-                    },
-                    child: Center(child: Text('Add Member')),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(AddInventoryScreen.routeName);
-                    },
-                    child: Center(child: Text('Add Inventory')),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(SearchInventoryScreen.routeName);
-                    },
-                    child: Center(child: Text('Search Inventory')),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(ReturnInventoryScreen.routeName);
-                    },
-                    child: Center(child: Text('Return Inventory')),
-                  ),
-                ],
-              );
-            } else if (state.member.cardId.startsWith('l')) {
-              return Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(AddMemberScreen.routeName);
-                    },
-                    child: Center(child: Text('Add Member')),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(AddInventoryScreen.routeName);
-                    },
-                    child: Center(child: Text('Add Inventory')),
-                  ),
-                ],
-              );
+          builder: (context, state) {
+        //print(state.toString());
+            if (state is AuthorizationSuccess) {
+              member=state.member;
+              print(member);
+              if (state.member.cardId.startsWith('m')) {
+                return Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(SearchInventoryScreen.routeName);
+                      },
+                      child: Center(child: Text('Search an Inventory')),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(ReturnInventoryScreen.routeName);
+                      },
+                      child: Center(child: Text('Return Inventory')),
+                    ),
+                  ],
+                );
+              } else if (state.member.cardId.startsWith('a')) {
+                return Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        BlocProvider.of<RuleBloc>(context)
+                            .add(GetRule(ruleId: 1));
+                        Navigator.of(context).pushNamed(RuleScreen.routeName);
+                      },
+                      child: Center(child: Text('Update Rules')),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(AddMemberScreen.routeName);
+                      },
+                      child: Center(child: Text('Add Member')),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(AddInventoryScreen.routeName);
+                      },
+                      child: Center(child: Text('Add Inventory')),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(SearchInventoryScreen.routeName);
+                      },
+                      child: Center(child: Text('Search Inventory')),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(ReturnInventoryScreen.routeName);
+                      },
+                      child: Center(child: Text('Return Inventory')),
+                    ),
+                  ],
+                );
+              } else if (state.member.cardId.startsWith('l')) {
+                return Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(AddMemberScreen.routeName);
+                      },
+                      child: Center(child: Text('Add Member')),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(AddInventoryScreen.routeName);
+                      },
+                      child: Center(child: Text('Add Inventory')),
+                    ),
+                  ],
+                );
+              } else {
+                return Column(
+                  children: [],
+                );
+              }
+            } else if (state is AuthorizationFailure) {
+              return Center(child: Text('${state.message}'));
             } else {
               return Column(
                 children: [],
               );
             }
-          } else if (state is AuthorizationFailure) {
-            return Center(child: Text('${state.message}'));
-          } else {
-            return Column(
-              children: [],
-            );
-          }
         }),
       ),
     );

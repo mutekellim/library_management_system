@@ -103,9 +103,9 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `RuleModel` (`ruleId` INTEGER NOT NULL, `invBook` INTEGER NOT NULL, `invDvd` INTEGER NOT NULL, `invJournal` INTEGER NOT NULL, `loanPeriodForAcademic` INTEGER NOT NULL, `loanPeriodForOfficer` INTEGER NOT NULL, `loanPeriodForStudent` INTEGER NOT NULL, `nOfLoanForAcademic` INTEGER NOT NULL, `nOfLoanForOfficer` INTEGER NOT NULL, `nOfLoanForStudent` INTEGER NOT NULL, `penaltyPrice` REAL NOT NULL, PRIMARY KEY (`ruleId`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `BorrowModel` (`borrowId` INTEGER NOT NULL, `memberId` INTEGER NOT NULL, `inventoryId` INTEGER NOT NULL, `borrowDate` TEXT NOT NULL, PRIMARY KEY (`borrowId`))');
+            'CREATE TABLE IF NOT EXISTS `BorrowModel` (`borrowId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `memberId` INTEGER NOT NULL, `inventoryId` INTEGER NOT NULL, `borrowDate` TEXT NOT NULL, `invType` INTEGER NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `ReservationModel` (`reservationId` INTEGER NOT NULL, `memberId` INTEGER NOT NULL, `inventoryId` INTEGER NOT NULL, `reservationDate` TEXT NOT NULL, PRIMARY KEY (`reservationId`))');
+            'CREATE TABLE IF NOT EXISTS `ReservationModel` (`reservationId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `memberId` INTEGER NOT NULL, `inventoryId` INTEGER NOT NULL, `reservationDate` INTEGER NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -599,7 +599,8 @@ class _$BorrowModelDao extends BorrowModelDao {
                   'borrowId': item.borrowId,
                   'memberId': item.memberId,
                   'inventoryId': item.inventoryId,
-                  'borrowDate': item.borrowDate
+                  'borrowDate': item.borrowDate,
+                  'invType': item.invType
                 });
 
   final sqflite.DatabaseExecutor database;

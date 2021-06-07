@@ -92,6 +92,7 @@ class _ReturnInventoryScreenState extends State<ReturnInventoryScreen> {
                             BlocProvider.of<AuthorizationBloc>(context).add(
                                 UpdateMember(
                                     penalty: 0,
+                                    nOfInvLoaned: member.noInvLoaned -1 ,
                                     inventoryId:int.parse(searchController.text.trim()),
                                     action: ACTION_RETURN)
                             );

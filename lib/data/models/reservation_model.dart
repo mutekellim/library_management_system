@@ -3,11 +3,11 @@ import 'package:floor/floor.dart';
 
 @entity
 class ReservationModel extends Equatable {
-  @primaryKey
+  @PrimaryKey(autoGenerate: true)
   final int reservationId;
   final int memberId;
   final int inventoryId;
-  final String reservationDate;
+  final int reservationDate;
 
   ReservationModel({
     required this.reservationId,

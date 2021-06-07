@@ -3,17 +3,19 @@ import 'package:floor/floor.dart';
 
 @entity
 class BorrowModel extends Equatable {
-  @primaryKey
+  @PrimaryKey(autoGenerate: true)
   final int borrowId;
   final int memberId;
   final int inventoryId;
   final String borrowDate;
+  final int invType;
 
   BorrowModel({
     required this.borrowId,
     required this.memberId,
     required this.inventoryId,
     required this.borrowDate,
+    required this.invType,
 
   });
 
@@ -23,10 +25,11 @@ class BorrowModel extends Equatable {
     memberId,
     inventoryId,
     borrowDate,
+    invType
   ];
 
   @override
   String toString() =>
       'BorrowModel { borrowId: $borrowId, '
-          'memberId: $memberId, inventoryDvd: $inventoryId, borrowDate: $borrowDate, }';
+          'memberId: $memberId, inventoryDvd: $inventoryId, borrowDate: $borrowDate, invType: $invType, }';
 }

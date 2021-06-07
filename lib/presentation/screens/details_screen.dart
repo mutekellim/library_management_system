@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
@@ -5,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/bloc/authorization/authorization.dart';
 import 'package:library_management_system/bloc/authorization/authorization_bloc.dart';
 import 'package:library_management_system/bloc/book/book.dart';
+import 'package:library_management_system/bloc/borrow/borrow.dart';
 import 'package:library_management_system/bloc/journal/journal.dart';
 import 'package:library_management_system/bloc/dvd/dvd.dart';
 
@@ -24,7 +26,8 @@ class DetailsScreen extends StatelessWidget {
 
     if(args['invType']==INVENTORY_TYPE_BOOK) {
       return BlocBuilder<BookBloc, BookState>(builder: (context, state) {
-        final selectedInventory = (state as BookLoadSuccess)
+       if(state is BookLoadSuccess){
+        final selectedInventory = state
             .bookList
             .firstWhere((book) => book.id == args['id']);
         return Scaffold(
@@ -113,44 +116,58 @@ class DetailsScreen extends StatelessWidget {
                       // TODO : make active if status is not available
                       Expanded(
                           child: ElevatedButton(
-        onPressed: !getStatus(
-        selectedInventory.status) ? () {
-        BlocProvider.of<AuthorizationBloc>(context)
-            .add(UpdateMember(
-        penalty: 0,
-        inventoryId: selectedInventory.id,
-        action: ACTION_RESERVED));
-        BlocProvider.of<BookBloc>(context).add(
-        UpdateBook(
-        book: selectedInventory,
-        status: INVENTORY_STATUS_RESERVED));
-        }
-            : null,
-        child: Text('Reserve'))),
+                              onPressed: !getStatus(
+                                  selectedInventory.status) ? () {
+                                BlocProvider.of<AuthorizationBloc>(context)
+                                    .add(UpdateMember(
+                                    penalty: 0,
+                                    nOfInvLoaned: member!.noInvLoaned+1,
+                                    inventoryId: selectedInventory.id,
+                                    action: ACTION_RESERVED)
+                                );
+                                BlocProvider.of<BookBloc>(context)
+                                    .add(UpdateBook(
+                                    book: selectedInventory,
+                                    status: INVENTORY_STATUS_RESERVED)
+                                );
+                              } : null,
+                              child: Text('Reserve'))),
                       SizedBox(
                         width: 20,
                       ),
                       // TODO : make active if status is available
                       Expanded(
                           child: ElevatedButton(
-                              onPressed: getStatus(selectedInventory.status) ? () {
+                              onPressed: getStatus(selectedInventory.status)
+                                  ? () {
                                 Book book = state.bookList.firstWhere((
                                     book) => book.id == args['id']);
 
-                                if (book.bookType == "Course Book" && member!.memberType!="Academician") {
+                                if (book.bookType == "Course Book" &&
+                                    member!.memberType != "Academician") {
                                   ScaffoldMessenger.of(context)
                                     ..removeCurrentSnackBar()
                                     ..showSnackBar(SnackBar(
                                         content: Text(
                                           'Course Books are only for academicians!',
                                         )));
-
                                 } else {
                                   BlocProvider.of<AuthorizationBloc>(context)
                                       .add(UpdateMember(
                                       penalty: 0,
                                       inventoryId: selectedInventory.id,
+                                      nOfInvLoaned: member!.noInvLoaned+1,
                                       action: ACTION_LOANED));
+
+                                  BlocProvider.of<BorrowBloc>(context)
+                                    .add(AddBorrow(borrow: new Borrow(
+                                      borrowId: 0,
+                                      memberId: member!.memberId,
+                                      inventoryId: selectedInventory.id,
+                                      borrowDate: DateTime.now().toString(),
+                                      invType: selectedInventory.typeId),
+                                    )
+                                  );
 
                                   BlocProvider.of<BookBloc>(context).add(
                                       UpdateBook(
@@ -167,10 +184,14 @@ class DetailsScreen extends StatelessWidget {
             ),
           ),
         );
+      }else{
+         return Container();
+       }
       });
+
     }
     else if(args['invType']==INVENTORY_TYPE_DVD){
-      return BlocBuilder<DvdBloc, DvdState>(builder: (context, state) {
+      return BlocBuilder<DvdBloc, DvdState> (builder: (context, state) {
         final selectedInventory = (state as DvdLoadSuccess)
             .dvdList
             .firstWhere((dvd) => dvd.id == args['id']);
@@ -270,6 +291,7 @@ class DetailsScreen extends StatelessWidget {
                                     .add(UpdateMember(
                                     penalty: 0,
                                     inventoryId: selectedInventory.id,
+                                    nOfInvLoaned: member!.noInvLoaned+1,
                                     action: ACTION_RESERVED));
                                 BlocProvider.of<DvdBloc>(context).add(
                                     UpdateDvd(
@@ -293,6 +315,7 @@ class DetailsScreen extends StatelessWidget {
                                 BlocProvider.of<AuthorizationBloc>(context)
                                     .add(UpdateMember(
                                     penalty: 0,
+                                    nOfInvLoaned: member!.noInvLoaned+1,
                                     inventoryId: selectedInventory.id,
                                     action: ACTION_LOANED));
 
@@ -420,6 +443,7 @@ class DetailsScreen extends StatelessWidget {
                                 BlocProvider.of<AuthorizationBloc>(context)
                                     .add(UpdateMember(
                                     penalty: 0,
+                                    nOfInvLoaned: member!.noInvLoaned+1,
                                     inventoryId: selectedInventory.id,
                                     action: ACTION_RESERVED));
                                 BlocProvider.of<JournalBloc>(context).add(
@@ -444,6 +468,7 @@ class DetailsScreen extends StatelessWidget {
                                   BlocProvider.of<AuthorizationBloc>(context)
                                       .add(UpdateMember(
                                       penalty: 0,
+                                      nOfInvLoaned: member!.noInvLoaned+1,
                                       inventoryId: selectedInventory.id,
                                       action: ACTION_LOANED));
 

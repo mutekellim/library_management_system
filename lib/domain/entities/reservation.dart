@@ -8,7 +8,7 @@ class Reservation extends Equatable {
   final int reservationId;
   final int memberId;
   final int inventoryId;
-  final String reservationDate;
+  final int reservationDate;
 
   Reservation({
     required this.reservationId,
@@ -21,7 +21,7 @@ class Reservation extends Equatable {
     int? reservationId,
     int? memberId,
     int? inventoryId,
-    String? reservationDate,
+    int? reservationDate,
 
   }) =>
       Reservation(
