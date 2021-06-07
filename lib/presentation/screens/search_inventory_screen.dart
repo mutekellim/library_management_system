@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/core/constants.dart';
 
+import '../../globals.dart';
 import '../widgets/list_item.dart';
 import '../../bloc/book/book.dart';
 import '../../bloc/dvd/dvd.dart';
@@ -19,9 +20,12 @@ class SearchInventoryScreen extends StatefulWidget {
 class _SearchInventoryScreenState extends State<SearchInventoryScreen> {
   final searchController = TextEditingController();
   String _inventoryType=INVENTORY_TYPE_BOOK;
+  List<String> invTypes=[INVENTORY_TYPE_BOOK];
 
   @override
   void dispose() {
+
+    print(invTypes.length);
     super.dispose();
     searchController.dispose();
   }
@@ -133,6 +137,13 @@ class _SearchInventoryScreenState extends State<SearchInventoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if(gRule!.invJournal>0){
+      invTypes.add(INVENTORY_TYPE_JOURNAL);
+    }
+    if(gRule!.invDvd>0){
+      invTypes.add(INVENTORY_TYPE_DVD);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Search Inventory'),
@@ -157,7 +168,7 @@ class _SearchInventoryScreenState extends State<SearchInventoryScreen> {
                   _inventoryType = newValue!;
                 });
               },
-              items: <String>[INVENTORY_TYPE_BOOK, INVENTORY_TYPE_JOURNAL , INVENTORY_TYPE_DVD]
+              items: invTypes
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,

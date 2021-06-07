@@ -11,9 +11,7 @@ abstract class BorrowModelDao {
   @Query('Delete * FROM ReservationModel WHERE borrowId = :borrowId')
   Future<void> deleteBorrow(int borrowId);
 
-  /*
-  @Query('SELECT * FROM BorrowModel WHERE borrowId = :borrowId')
-  Future<BorrowModel?> getBorrow(String borrowId);
+  @Query('SELECT * FROM BorrowModel WHERE memberId = :memberId')
+  Future<List<BorrowModel>> getBorrows(int memberId);
 
-  */
 }

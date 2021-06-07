@@ -28,8 +28,7 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
     }
   }
 
-  Stream<AuthorizationState> _mapAuthorizationByCardToState(
-      AuthorizationByCard event) async* {
+  Stream<AuthorizationState> _mapAuthorizationByCardToState( AuthorizationByCard event) async* {
     final Either<Failure, Member> failureOrMember =
         await memberRepository.getMemberByCardId(event.cardId);
     yield failureOrMember.fold(
@@ -40,8 +39,7 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
     });
   }
 
-  Stream<AuthorizationState> _mapUpdateMemberToState(
-      UpdateMember event) async* {
+  Stream<AuthorizationState> _mapUpdateMemberToState( UpdateMember event) async* {
     final Either<Failure, Member> failureOrMember = await memberRepository
         .addMember(updateMember(event.action, event.inventoryId)!);
     yield failureOrMember.fold(

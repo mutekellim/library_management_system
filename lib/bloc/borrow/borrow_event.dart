@@ -37,4 +37,18 @@ class RemoveBorrow extends BorrowEvent {
   String toString() => 'RemoveBorrow {borrow : $borrow}';
 }
 
+class GetBorrows extends BorrowEvent {
+  final int memberId;
+
+  const GetBorrows({
+    required this.memberId,
+  });
+
+  @override
+  List<Object> get props => [memberId];
+
+  @override
+  String toString() => 'GetBorrows {memberId : $memberId }';
+}
+
 

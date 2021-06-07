@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:library_management_system/domain/entities/borrow.dart';
 
 abstract class BorrowState extends Equatable {
   const BorrowState();
@@ -47,6 +48,22 @@ class RemoveBorrowSuccess extends BorrowState {
 
   @override
   String toString() => 'AddBorrowSuccess : {message : $message, borrowId: $borrowId}';
+}
+
+class BorrowLoadSuccess extends BorrowState {
+  final List<Borrow> borrowList;
+
+  const BorrowLoadSuccess({
+    required this.borrowList,
+  });
+
+  @override
+  List<Object> get props => [
+    borrowList,
+  ];
+
+  @override
+  String toString() => 'BorrowLoadSuccess : {borrowList : $borrowList}';
 }
 
 class BorrowFailure extends BorrowState {

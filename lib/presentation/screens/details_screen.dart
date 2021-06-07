@@ -13,8 +13,11 @@ import 'package:library_management_system/bloc/dvd/dvd.dart';
 import '../../domain/entities/entities.dart';
 import '../../core/constants.dart';
 import '../../globals.dart';
+
 class DetailsScreen extends StatelessWidget {
   static const routeName = '/details-screen';
+  int getMaxLoan(String memberType)=>
+    memberType=="Academician"?gRule!.nOfLoanForAcademic:memberType=="Student"?gRule!.nOfLoanForStudent:gRule!.nOfLoanForOfficer;
 
   bool getStatus(String status) =>
       status == INVENTORY_STATUS_AVAILABLE ? true : false;
@@ -121,7 +124,7 @@ class DetailsScreen extends StatelessWidget {
                                 BlocProvider.of<AuthorizationBloc>(context)
                                     .add(UpdateMember(
                                     penalty: 0,
-                                    nOfInvLoaned: member!.noInvLoaned+1,
+                                    nOfInvLoaned: gMember!.noInvLoaned+1,
                                     inventoryId: selectedInventory.id,
                                     action: ACTION_RESERVED)
                                 );
@@ -142,27 +145,42 @@ class DetailsScreen extends StatelessWidget {
                                   ? () {
                                 Book book = state.bookList.firstWhere((
                                     book) => book.id == args['id']);
-
-                                if (book.bookType == "Course Book" &&
-                                    member!.memberType != "Academician") {
+                                int maxLoan=getMaxLoan(gMember!.memberType);
+                                if (book.bookType == "Course Book" && gMember!.memberType != "Academician") {
                                   ScaffoldMessenger.of(context)
                                     ..removeCurrentSnackBar()
                                     ..showSnackBar(SnackBar(
                                         content: Text(
                                           'Course Books are only for academicians!',
                                         )));
-                                } else {
+                                }
+                                else if(gMember!.balanceAmount<= 0) {
+                                  ScaffoldMessenger.of(context)
+                                    ..removeCurrentSnackBar()
+                                    ..showSnackBar(SnackBar(
+                                        content: Text(
+                                          'Sorry, your credit is not sufficient!',
+                                        )));
+                                } else if(gMember!.borrowedInventoryList.length+1>maxLoan) {
+                                  ScaffoldMessenger.of(context)
+                                    ..removeCurrentSnackBar()
+                                    ..showSnackBar(SnackBar(
+                                        content: Text(
+                                          'Sorry, you are allowed to borrow maximum $maxLoan books!',
+                                        )));
+                                }
+                                else {
                                   BlocProvider.of<AuthorizationBloc>(context)
                                       .add(UpdateMember(
                                       penalty: 0,
                                       inventoryId: selectedInventory.id,
-                                      nOfInvLoaned: member!.noInvLoaned+1,
+                                      nOfInvLoaned: gMember!.noInvLoaned+1,
                                       action: ACTION_LOANED));
 
                                   BlocProvider.of<BorrowBloc>(context)
                                     .add(AddBorrow(borrow: new Borrow(
                                       borrowId: 0,
-                                      memberId: member!.memberId,
+                                      memberId: gMember!.memberId,
                                       inventoryId: selectedInventory.id,
                                       borrowDate: DateTime.now().toString(),
                                       invType: selectedInventory.typeId),
@@ -291,7 +309,7 @@ class DetailsScreen extends StatelessWidget {
                                     .add(UpdateMember(
                                     penalty: 0,
                                     inventoryId: selectedInventory.id,
-                                    nOfInvLoaned: member!.noInvLoaned+1,
+                                    nOfInvLoaned: gMember!.noInvLoaned+1,
                                     action: ACTION_RESERVED));
                                 BlocProvider.of<DvdBloc>(context).add(
                                     UpdateDvd(
@@ -315,7 +333,7 @@ class DetailsScreen extends StatelessWidget {
                                 BlocProvider.of<AuthorizationBloc>(context)
                                     .add(UpdateMember(
                                     penalty: 0,
-                                    nOfInvLoaned: member!.noInvLoaned+1,
+                                    nOfInvLoaned: gMember!.noInvLoaned+1,
                                     inventoryId: selectedInventory.id,
                                     action: ACTION_LOANED));
 
@@ -443,7 +461,7 @@ class DetailsScreen extends StatelessWidget {
                                 BlocProvider.of<AuthorizationBloc>(context)
                                     .add(UpdateMember(
                                     penalty: 0,
-                                    nOfInvLoaned: member!.noInvLoaned+1,
+                                    nOfInvLoaned: gMember!.noInvLoaned+1,
                                     inventoryId: selectedInventory.id,
                                     action: ACTION_RESERVED));
                                 BlocProvider.of<JournalBloc>(context).add(
@@ -468,7 +486,7 @@ class DetailsScreen extends StatelessWidget {
                                   BlocProvider.of<AuthorizationBloc>(context)
                                       .add(UpdateMember(
                                       penalty: 0,
-                                      nOfInvLoaned: member!.noInvLoaned+1,
+                                      nOfInvLoaned: gMember!.noInvLoaned+1,
                                       inventoryId: selectedInventory.id,
                                       action: ACTION_LOANED));
 

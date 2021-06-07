@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/bloc/authorization/authorization.dart';
-import 'package:library_management_system/bloc/book/book.dart';
-import 'package:library_management_system/bloc/member/member.dart';
 import 'package:library_management_system/bloc/rule/rule.dart';
 import 'package:library_management_system/globals.dart';
 import 'package:library_management_system/presentation/screens/return_inventory_screen.dart';
@@ -25,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Library Management System'),
@@ -54,12 +51,19 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: BlocBuilder<AuthorizationBloc, AuthorizationState>(
-          builder: (context, state) {
+        child: BlocBuilder<AuthorizationBloc, AuthorizationState>(builder: (context, state) {
         //print(state.toString());
+
+          // ignore: close_sinks
+            RuleBloc ruleBloc = BlocProvider.of<RuleBloc>(context);
+            ruleBloc.add(GetRule(ruleId: 1));
+            RuleState ruleState= ruleBloc.state;
+            if(ruleState is GetRuleSuccess){
+              gRule=ruleState.rule;
+            }
+
             if (state is AuthorizationSuccess) {
-              member=state.member;
-              print(member);
+              gMember=state.member;
               if (state.member.cardId.startsWith('m')) {
                 return Column(
                   children: [

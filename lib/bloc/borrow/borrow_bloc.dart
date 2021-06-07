@@ -22,6 +22,9 @@ class BorrowBloc extends Bloc<BorrowEvent, BorrowState> {
     else if (event is RemoveBorrow) {
       yield* _mapBorrowRemoveToState(event);
     }
+    else if (event is GetBorrows) {
+      yield* _mapBorrowGetToState(event);
+    }
 
   }
 
@@ -42,4 +45,14 @@ class BorrowBloc extends Bloc<BorrowEvent, BorrowState> {
           (borrow) => RemoveBorrowSuccess(message: ADD_SUCCESS, borrowId: borrow.borrowId),
     );
   }
+
+  Stream<BorrowState> _mapBorrowGetToState(GetBorrows event) async* {
+
+    final Either<Failure, List<Borrow>> failureOrBorrowList = await borrowRepository.getBorrows(event.memberId);
+    yield failureOrBorrowList.fold(
+          (failure) => BorrowFailure(message: DATABASE_FAILURE_MESSAGE),
+          (borrowList) => BorrowLoadSuccess(borrowList: borrowList),
+    );
+  }
+
 }

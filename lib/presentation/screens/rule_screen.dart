@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/bloc/rule/rule.dart';
+import 'package:library_management_system/globals.dart';
 import 'package:library_management_system/presentation/widgets/rule_form.dart';
 
 import '../../core/constants.dart';
@@ -46,6 +47,7 @@ class _RuleScreenState extends State<RuleScreen> {
           return RuleForm(
             rule: null,
             onSave: (rule) {
+              gRule=rule;
               BlocProvider.of<RuleBloc>(context).add(UpdateRule(rule: rule));
             },
           );

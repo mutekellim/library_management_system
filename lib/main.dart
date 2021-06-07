@@ -17,11 +17,12 @@ import 'bloc/reservation/reservation.dart';
 import 'bloc/book/book.dart';
 import 'bloc/journal/journal.dart';
 import 'bloc/dvd/dvd.dart';
-import 'bloc/rule/rule_bloc.dart';
+import 'bloc/rule/rule.dart';
 import 'bloc/authorization/authorization.dart';
 
 
 import 'dependency_injection.dart' as di;
+import 'globals.dart';
 import 'presentation/screens/screens.dart';
 
 import 'globals.dart' as globals;

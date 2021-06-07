@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/bloc/authorization/authorization.dart';
 import 'package:library_management_system/bloc/member/member.dart';
+import 'package:library_management_system/bloc/rule/rule.dart';
 import 'package:library_management_system/domain/entities/entities.dart';
 import 'package:library_management_system/presentation/screens/home_screen.dart';
 
@@ -74,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   balanceAmount: 1,
                   noInvLoaned: 0,
                   cardId: 'a1',
-                  memberType: 'memberType',
+                  memberType: 'Admin',
                   name: 'name',
                   surname: 'surname',
                   phone: 'phone',

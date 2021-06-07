@@ -34,17 +34,20 @@ class _AddInventoryScreenState extends State<AddInventoryScreen> {
               });
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: INVENTORY_TYPE_BOOK,
                 child: Text('Book'),
+                enabled: gRule!.invBook>0?true:false,
               ),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: INVENTORY_TYPE_JOURNAL,
                 child: Text('Journal'),
+                enabled: gRule!.invJournal>0?true:false,
               ),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: INVENTORY_TYPE_DVD,
                 child: Text('Dvd'),
+                enabled: gRule!.invDvd>0?true:false,
               ),
             ],
           ),

@@ -1,5 +1,6 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:dartz/dartz.dart';
+import 'package:library_management_system/globals.dart';
 
 import '../sources/dao/dao.dart';
 import '../../core/errors/failures.dart';
@@ -28,6 +29,17 @@ class BorrowRepositoryImpl extends BorrowRepository {
     try {
       await localDataSource.deleteBorrow(borrowId);
       return Right(borrowId);
+    } catch (_) {
+      return Left(DatabaseFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Borrow>>> getBorrows(int memberId) async {
+    try {
+      final borrowList = await localDataSource.getBorrows(memberId);
+      return Right(
+          borrowList.map((borrowModel) => Borrow.fromModel(borrowModel)).toList());
     } catch (_) {
       return Left(DatabaseFailure());
     }

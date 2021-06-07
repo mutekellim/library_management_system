@@ -10,4 +10,5 @@ import '../../domain/entities/entities.dart';
 abstract class BorrowRepository {
   Future<Either<Failure, Borrow>> addBorrow(Borrow borrow);
   Future<Either<Failure, int>> removeBorrow(int borrowId);
+  Future<Either<Failure, List<Borrow>>> getBorrows(int memberId);
 }
