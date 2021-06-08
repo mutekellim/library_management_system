@@ -1,15 +1,19 @@
+import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/bloc/authorization/authorization.dart';
 import 'package:library_management_system/bloc/book/book.dart';
+import 'package:library_management_system/bloc/borrow/borrow.dart';
 import 'package:library_management_system/bloc/member/member.dart';
 import 'package:library_management_system/bloc/rule/rule.dart';
 import 'package:library_management_system/core/constants.dart';
 import 'package:library_management_system/domain/entities/entities.dart';
+import '../../globals.dart';
 import 'add_inventory_screen.dart';
 import 'add_member_screen.dart';
 
 import 'screens.dart';
+
 
 class ReturnInventoryScreen extends StatefulWidget {
   static const String routeName = '/return-inventory-screen';
@@ -20,6 +24,10 @@ class ReturnInventoryScreen extends StatefulWidget {
 
 class _ReturnInventoryScreenState extends State<ReturnInventoryScreen> {
   final searchController = TextEditingController();
+  static const String routeName = '/return-inventory-screen';
+  int getLoanPeriod(String memberType)=>
+      memberType=="Academician"?gRule!.loanPeriodForAcademic:memberType=="Student"?gRule!.loanPeriodForStudent:gRule!.loanPeriodForAcademic;
+  double penaltyPrice = gRule!.penaltyPrice;
 
   @override
   void dispose() {
@@ -87,15 +95,37 @@ class _ReturnInventoryScreenState extends State<ReturnInventoryScreen> {
                         onPressed: () {
                           if (searchController.text.isNotEmpty) {
                             //TODO : date hesaplanarak balance update edilecek.
+
                             Member member = state.member;
 
-                            BlocProvider.of<AuthorizationBloc>(context).add(
-                                UpdateMember(
-                                    penalty: 0,
-                                    nOfInvLoaned: member.noInvLoaned -1 ,
-                                    inventoryId:int.parse(searchController.text.trim()),
-                                    action: ACTION_RETURN)
-                            );
+                            // ignore: close_sinks
+                            var borrowBloc= BlocProvider.of<BorrowBloc>(context);
+                            borrowBloc.add(GetBorrowByInv(inventoryId:int.parse(searchController.text.trim()), invType:1));
+                            BorrowState borrowState= borrowBloc.state;
+
+                            if(borrowState is GetBorrowByInvSuccess) {
+                              Borrow borrow=borrowState.borrow;
+                              DateTime dtBorrow= DateTime.parse(borrow.borrowDate);
+                              DateTime dtNow=DateTime.now();
+                              final daysPassed = dtNow.difference(dtBorrow).inDays;
+                              final int penaltyDays = daysPassed - getLoanPeriod(member.memberType);
+
+                              borrowBloc.add(RemoveBorrow(inventoryId: int.parse( searchController.text.trim()), invType: 1));
+                              borrowState= borrowBloc.state;
+                              if(borrowState is RemoveBorrowSuccess){
+
+                                // Book Status Update required
+                                // BlocProvider.of<BookBloc>(context).add( );
+
+                                BlocProvider.of<AuthorizationBloc>(context).add(
+                                    UpdateMember(
+                                        penalty:penaltyDays>0 ? penaltyDays * penaltyPrice : 0,
+                                        nOfInvLoaned: member.noInvLoaned -1 ,
+                                        inventoryId:int.parse(searchController.text.trim()),
+                                        action: ACTION_RETURN)
+                                );
+                              }
+                            }
 
                             searchController.clear();
                             Navigator.of(context)

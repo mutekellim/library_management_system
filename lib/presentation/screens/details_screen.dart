@@ -182,6 +182,7 @@ class DetailsScreen extends StatelessWidget {
                                       borrowId: 0,
                                       memberId: gMember!.memberId,
                                       inventoryId: selectedInventory.id,
+                                      title:selectedInventory.title,
                                       borrowDate: DateTime.now().toString(),
                                       invType: selectedInventory.typeId),
                                     )

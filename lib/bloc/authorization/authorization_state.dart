@@ -11,7 +11,6 @@ abstract class AuthorizationState extends Equatable {
 
 class AuthorizationInitial extends AuthorizationState {}
 
-
 class AuthorizationSuccess extends AuthorizationState {
   final Member member;
 

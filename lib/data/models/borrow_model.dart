@@ -7,6 +7,7 @@ class BorrowModel extends Equatable {
   final int borrowId;
   final int memberId;
   final int inventoryId;
+  final String title;
   final String borrowDate;
   final int invType;
 
@@ -14,6 +15,7 @@ class BorrowModel extends Equatable {
     required this.borrowId,
     required this.memberId,
     required this.inventoryId,
+    required this.title,
     required this.borrowDate,
     required this.invType,
 
@@ -24,6 +26,7 @@ class BorrowModel extends Equatable {
     borrowId,
     memberId,
     inventoryId,
+    title,
     borrowDate,
     invType
   ];
@@ -31,5 +34,5 @@ class BorrowModel extends Equatable {
   @override
   String toString() =>
       'BorrowModel { borrowId: $borrowId, '
-          'memberId: $memberId, inventoryDvd: $inventoryId, borrowDate: $borrowDate, invType: $invType, }';
+          'memberId: $memberId, inventoryDvd: $inventoryId, title: $title, borrowDate: $borrowDate, invType: $invType, }';
 }

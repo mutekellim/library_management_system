@@ -24,17 +24,20 @@ class AddBorrow extends BorrowEvent {
 }
 
 class RemoveBorrow extends BorrowEvent {
-  final Borrow borrow;
+  final int inventoryId;
+  final int invType;
 
   const RemoveBorrow({
-    required this.borrow,
+    required this.inventoryId,
+    required this.invType,
+
   });
 
   @override
-  List<Object> get props => [borrow];
+  List<Object> get props => [inventoryId,invType];
 
   @override
-  String toString() => 'RemoveBorrow {borrow : $borrow}';
+  String toString() => 'RemoveBorrow {inventoryId: $inventoryId, invType: $invType, }';
 }
 
 class GetBorrows extends BorrowEvent {
@@ -51,4 +54,17 @@ class GetBorrows extends BorrowEvent {
   String toString() => 'GetBorrows {memberId : $memberId }';
 }
 
+class GetBorrowByInv extends BorrowEvent {
+  final int inventoryId;
+  final int invType;
+  const GetBorrowByInv({
+    required this.inventoryId,
+    required this.invType,
+  });
 
+  @override
+  List<Object> get props => [inventoryId, invType];
+
+  @override
+  String toString() => 'GetBorrowByInv {inventoryId : $inventoryId, invType:$invType }';
+}

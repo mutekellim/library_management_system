@@ -8,6 +8,7 @@ class Borrow extends Equatable {
   final int borrowId;
   final int memberId;
   final int inventoryId;
+  final String title;
   final String borrowDate;
   final int invType;
 
@@ -15,6 +16,7 @@ class Borrow extends Equatable {
     required this.borrowId,
     required this.memberId,
     required this.inventoryId,
+    required this.title,
     required this.borrowDate,
     required this.invType
   });
@@ -23,6 +25,7 @@ class Borrow extends Equatable {
     int? borrowId,
     int? memberId,
     int? inventoryId,
+    String? title,
     String? borrowDate,
     int? invType,
 
@@ -32,6 +35,7 @@ class Borrow extends Equatable {
         borrowId: borrowId ?? this.borrowId,
         memberId: memberId ?? this.memberId,
         inventoryId: inventoryId ?? this.inventoryId,
+        title: title ?? this.title,
         borrowDate: borrowDate ?? this.borrowDate,
         invType: invType ?? this.invType,
       );
@@ -41,19 +45,21 @@ class Borrow extends Equatable {
         borrowId,
         memberId,
         inventoryId,
+        title,
         borrowDate,
         invType
       ];
 
   @override
   String toString() =>
-      'Borrow {borrowId: $borrowId, memberId: $memberId, '
-      'inventoryId: $inventoryId, borrowDate: $borrowDate, invType: $invType }';
+      'Borrow {borrowId: $borrowId, memberId: $memberId,  inventoryId: $inventoryId, '
+      'title: $title, borrowDate: $borrowDate, invType: $invType }';
 
   BorrowModel toModel() => BorrowModel(
     borrowId: borrowId,
     memberId: memberId,
     inventoryId: inventoryId,
+    title: title,
     borrowDate: borrowDate,
     invType: invType,
   );
@@ -62,6 +68,7 @@ class Borrow extends Equatable {
     borrowId: model.borrowId,
     memberId: model.memberId,
     inventoryId: model.inventoryId,
+    title: model.title,
     borrowDate: model.borrowDate,
     invType: model.invType,
   );

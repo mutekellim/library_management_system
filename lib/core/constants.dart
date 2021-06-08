@@ -30,6 +30,10 @@ const String DATABASE_FAILURE_MESSAGE = 'Database Failure';
 
 const String ADD_SUCCESS = 'Successfully Added';
 
+/// Remove success message
+
+const String REMOVE_SUCCESS = 'Successfully Removed';
+
 /// Update success message
 ///
 const String UPDATE_SUCCESS = 'Successfully Updated';

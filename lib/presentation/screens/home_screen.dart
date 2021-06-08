@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_management_system/bloc/authorization/authorization.dart';
+import 'package:library_management_system/bloc/borrow/borrow.dart';
+import 'package:library_management_system/bloc/borrow/borrow_bloc.dart';
 import 'package:library_management_system/bloc/rule/rule.dart';
 import 'package:library_management_system/globals.dart';
 import 'package:library_management_system/presentation/screens/return_inventory_screen.dart';
@@ -64,6 +66,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
             if (state is AuthorizationSuccess) {
               gMember=state.member;
+              print(gMember);
+
+              // ignore: close_sinks
+              var borrowBloc= BlocProvider.of<BorrowBloc>(context);
+              borrowBloc.add(GetBorrows(memberId: gMember!.memberId));
+              BorrowState borrowState= borrowBloc.state;
+
+              if(borrowState is BorrowLoadSuccess) {
+                print(borrowState.borrowList);
+              }
               if (state.member.cardId.startsWith('m')) {
                 return Column(
                   children: [

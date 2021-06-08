@@ -25,7 +25,9 @@ class BorrowBloc extends Bloc<BorrowEvent, BorrowState> {
     else if (event is GetBorrows) {
       yield* _mapBorrowGetToState(event);
     }
-
+    else if (event is GetBorrowByInv) {
+      yield* _mapBorrowGetByInvToState(event);
+    }
   }
 
   Stream<BorrowState> _mapBorrowAddToState(AddBorrow event) async* {
@@ -38,11 +40,10 @@ class BorrowBloc extends Bloc<BorrowEvent, BorrowState> {
   }
 
   Stream<BorrowState> _mapBorrowRemoveToState(RemoveBorrow event) async* {
-    final Either<Failure, Borrow> failureOrBorrow =
-    await borrowRepository.addBorrow(event.borrow);
-    yield failureOrBorrow.fold(
+    final Either<Failure, int?> failureOrCount = await borrowRepository.removeBorrow(event.inventoryId, event.invType);
+    yield failureOrCount.fold(
           (failure) => BorrowFailure(message: DATABASE_FAILURE_MESSAGE),
-          (borrow) => RemoveBorrowSuccess(message: ADD_SUCCESS, borrowId: borrow.borrowId),
+          (count) => RemoveBorrowSuccess(message: REMOVE_SUCCESS, count: count ),
     );
   }
 
@@ -55,4 +56,12 @@ class BorrowBloc extends Bloc<BorrowEvent, BorrowState> {
     );
   }
 
+  Stream<BorrowState> _mapBorrowGetByInvToState(GetBorrowByInv event) async* {
+
+    final Either<Failure, Borrow> failureOrBorrow = await borrowRepository.getBorrowByInv(event.inventoryId, event.invType);
+    yield failureOrBorrow.fold(
+          (failure) => BorrowFailure(message: DATABASE_FAILURE_MESSAGE),
+          (borrow) => GetBorrowByInvSuccess(borrow: borrow),
+    );
+  }
 }

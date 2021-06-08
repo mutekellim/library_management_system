@@ -32,22 +32,22 @@ class AddBorrowSuccess extends BorrowState {
 
 class RemoveBorrowSuccess extends BorrowState {
   final String message;
-
-  final int borrowId;
+  final int? count;
 
   const RemoveBorrowSuccess({
     required this.message,
-    required this.borrowId,
+    required this.count,
   });
 
   @override
   List<Object> get props => [
     message,
-    borrowId,
+    count!,
+
   ];
 
   @override
-  String toString() => 'AddBorrowSuccess : {message : $message, borrowId: $borrowId}';
+  String toString() => 'RemoveBorrowSuccess : {message : $message, count: $count, }';
 }
 
 class BorrowLoadSuccess extends BorrowState {
@@ -64,6 +64,22 @@ class BorrowLoadSuccess extends BorrowState {
 
   @override
   String toString() => 'BorrowLoadSuccess : {borrowList : $borrowList}';
+}
+
+class GetBorrowByInvSuccess extends BorrowState {
+  final Borrow borrow;
+
+  const GetBorrowByInvSuccess({
+    required this.borrow,
+  });
+
+  @override
+  List<Object> get props => [
+    borrow,
+  ];
+
+  @override
+  String toString() => 'GetBorrowByInvSuccess : {borrow : $borrow}';
 }
 
 class BorrowFailure extends BorrowState {
