@@ -29,13 +29,13 @@ class UpdateMember extends AuthorizationEvent {
   final int inventoryId;
   final String action;
   final int nOfInvLoaned;
-  final double penalty;
+  final int balanceAmount;
 
   const UpdateMember({
     required this.inventoryId,
     required this.nOfInvLoaned,
     required this.action,
-    required this.penalty,
+    required this.balanceAmount,
   });
 
   @override
@@ -43,10 +43,10 @@ class UpdateMember extends AuthorizationEvent {
     inventoryId,
     nOfInvLoaned,
     action,
-    penalty
+    balanceAmount
   ];
 
   @override
   String toString() =>
-      'UpdateMember {inventoryId : $inventoryId, action:$action, penalty:$penalty, nOfInvLoaned:$nOfInvLoaned, }';
+      'UpdateMember {inventoryId : $inventoryId, action:$action, balanceAmount:$balanceAmount, nOfInvLoaned:$nOfInvLoaned, }';
 }

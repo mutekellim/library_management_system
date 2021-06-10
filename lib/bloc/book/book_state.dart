@@ -48,6 +48,22 @@ class BookLoadSuccess extends BookState {
   String toString() => 'BookLoadSuccess : {bookList : $bookList}';
 }
 
+class GetBookSuccess extends BookState {
+  final List<Book> bookList;
+
+  const GetBookSuccess({
+    required this.bookList,
+  });
+
+  @override
+  List<Object> get props => [
+    bookList,
+  ];
+
+  @override
+  String toString() => 'GetBookSuccess : {bookList : $bookList}';
+}
+
 class BookFailure extends BookState {
   final String message;
 

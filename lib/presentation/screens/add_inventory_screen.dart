@@ -66,7 +66,7 @@ class _AddInventoryScreenState extends State<AddInventoryScreen> {
   Widget addBook() {
     return BlocBuilder<BookBloc, BookState>(
       builder: (context, state) {
-        if (state is BookInitial || state is AddBookSuccess || state is BookLoadSuccess) {
+        if (state is BookInitial || state is AddBookSuccess || state is BookLoadSuccess || state is GetBookSuccess) {
           // Form widget to add book
           return AddInventoryForm(
             activeForm: INVENTORY_TYPE_BOOK,

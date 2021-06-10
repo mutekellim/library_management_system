@@ -17,6 +17,9 @@ abstract class BookModelDao {
   @Query('SELECT * FROM BookModel WHERE title LIKE :queryData OR subject LIKE :queryData OR publishDate LIKE :queryData')
   Future<List<BookModel>> searchBook(String queryData);
 
+  @Query('SELECT * FROM BookModel WHERE id= :bookId')
+  Future<List<BookModel>> getBook(int bookId);
+
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> saveBook(BookModel game);
 }

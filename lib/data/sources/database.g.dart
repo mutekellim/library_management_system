@@ -103,7 +103,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `RuleModel` (`ruleId` INTEGER NOT NULL, `invBook` INTEGER NOT NULL, `invDvd` INTEGER NOT NULL, `invJournal` INTEGER NOT NULL, `loanPeriodForAcademic` INTEGER NOT NULL, `loanPeriodForOfficer` INTEGER NOT NULL, `loanPeriodForStudent` INTEGER NOT NULL, `nOfLoanForAcademic` INTEGER NOT NULL, `nOfLoanForOfficer` INTEGER NOT NULL, `nOfLoanForStudent` INTEGER NOT NULL, `penaltyPrice` REAL NOT NULL, PRIMARY KEY (`ruleId`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `BorrowModel` (`borrowId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `memberId` INTEGER NOT NULL, `inventoryId` INTEGER NOT NULL, `title` TEXT NOT NULL, `borrowDate` TEXT NOT NULL, `invType` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `BorrowModel` (`memberId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `inventoryId` INTEGER NOT NULL, `title` TEXT NOT NULL, `borrowDate` TEXT NOT NULL, `invType` INTEGER NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `ReservationModel` (`reservationId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `memberId` INTEGER NOT NULL, `inventoryId` INTEGER NOT NULL, `reservationDate` INTEGER NOT NULL)');
 
@@ -248,6 +248,25 @@ class _$BookModelDao extends BookModelDao {
         'SELECT * FROM BookModel WHERE title LIKE ?1 OR subject LIKE ?1 OR publishDate LIKE ?1',
         mapper: (Map<String, Object?> row) => BookModel(id: row['id'] as int, typeId: row['typeId'] as int, numberOfPages: row['numberOfPages'] as int, isbn: row['isbn'] as String, title: row['title'] as String, subject: row['subject'] as String, publisher: row['publisher'] as String, language: row['language'] as String, publishDate: row['publishDate'] as String, status: row['status'] as String, bookType: row['bookType'] as String, authors: row['authors'] as String),
         arguments: [queryData]);
+  }
+
+  @override
+  Future<List<BookModel>> getBook(int bookId) async {
+    return _queryAdapter.queryList('SELECT * FROM BookModel WHERE id= ?1',
+        mapper: (Map<String, Object?> row) => BookModel(
+            id: row['id'] as int,
+            typeId: row['typeId'] as int,
+            numberOfPages: row['numberOfPages'] as int,
+            isbn: row['isbn'] as String,
+            title: row['title'] as String,
+            subject: row['subject'] as String,
+            publisher: row['publisher'] as String,
+            language: row['language'] as String,
+            publishDate: row['publishDate'] as String,
+            status: row['status'] as String,
+            bookType: row['bookType'] as String,
+            authors: row['authors'] as String),
+        arguments: [bookId]);
   }
 
   @override
@@ -596,7 +615,6 @@ class _$BorrowModelDao extends BorrowModelDao {
             database,
             'BorrowModel',
             (BorrowModel item) => <String, Object?>{
-                  'borrowId': item.borrowId,
                   'memberId': item.memberId,
                   'inventoryId': item.inventoryId,
                   'title': item.title,
@@ -613,10 +631,9 @@ class _$BorrowModelDao extends BorrowModelDao {
   final InsertionAdapter<BorrowModel> _borrowModelInsertionAdapter;
 
   @override
-  Future<int?> deleteBorrow(int inventoryId, invType) async {
-    await _queryAdapter.query(
-        'Delete FROM ReservationModel WHERE inventoryId = ?1 AND invType = ?2',
-        mapper: (Map<String, Object?> row) => row as int,
+  Future<int?> deleteBorrow(int inventoryId, int invType) async {
+    await _queryAdapter.queryNoReturn(
+        'Delete FROM BorrowModel WHERE inventoryId = ?1 AND invType = ?2',
         arguments: [inventoryId, invType]);
   }
 
@@ -625,7 +642,6 @@ class _$BorrowModelDao extends BorrowModelDao {
     return _queryAdapter.queryList(
         'SELECT * FROM BorrowModel WHERE memberId = ?1',
         mapper: (Map<String, Object?> row) => BorrowModel(
-            borrowId: row['borrowId'] as int,
             memberId: row['memberId'] as int,
             inventoryId: row['inventoryId'] as int,
             title: row['title'] as String,
@@ -637,9 +653,8 @@ class _$BorrowModelDao extends BorrowModelDao {
   @override
   Future<List<BorrowModel>> getBorrowByInv(int inventoryId, int invType) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM BorrowModel WHERE inventoryId = ?1 AND invType= ?2',
+        'SELECT * FROM BorrowModel WHERE inventoryId = ?1 AND invType = ?2',
         mapper: (Map<String, Object?> row) => BorrowModel(
-            borrowId: row['borrowId'] as int,
             memberId: row['memberId'] as int,
             inventoryId: row['inventoryId'] as int,
             title: row['title'] as String,

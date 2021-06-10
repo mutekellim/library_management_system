@@ -11,7 +11,9 @@ import '../../domain/entities/entities.dart';
 abstract class BookRepository extends InventoryRepository {
   Future<Either<Failure, Book>> addBook(Book book);
 
-  Future<Either<Failure, Book>> updateBook(Book book);
-
   Future<Either<Failure, List<Book>>> searchBook(String queryData);
+
+  Future<Either<Failure, List<Book>>> getBook(int bookId);
+
+  Future<Either<Failure, Book>> updateBook(Book book);
 }

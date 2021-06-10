@@ -37,6 +37,20 @@ class SearchBook extends BookEvent {
   String toString() => 'SearchBook {queryData : $queryData}';
 }
 
+class GetBook extends BookEvent {
+  final int bookId;
+
+  const GetBook({
+    required this.bookId,
+  });
+
+  @override
+  List<Object> get props => [bookId];
+
+  @override
+  String toString() => 'GetBook {id : $bookId}';
+}
+
 class UpdateBook extends BookEvent {
   final Book book;
   final String status;

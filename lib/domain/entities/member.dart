@@ -20,7 +20,7 @@ class Member extends Equatable {
   final String dateOfMembership;
 
   final List<dynamic> reservedInventoryList;
-  final List<dynamic> borrowedInventoryList;
+  late final List<dynamic> borrowedInventoryList;
 
   Member({
     required this.memberId,

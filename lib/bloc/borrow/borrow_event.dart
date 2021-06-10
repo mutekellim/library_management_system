@@ -30,11 +30,10 @@ class RemoveBorrow extends BorrowEvent {
   const RemoveBorrow({
     required this.inventoryId,
     required this.invType,
-
   });
 
   @override
-  List<Object> get props => [inventoryId,invType];
+  List<Object> get props => [inventoryId, invType];
 
   @override
   String toString() => 'RemoveBorrow {inventoryId: $inventoryId, invType: $invType, }';

@@ -21,9 +21,14 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       yield* _mapBookAddToState(event);
     } else if (event is SearchBook) {
       yield* _mapSearchBookToState(event);
-    } else if (event is UpdateBook) {
+    }
+    else if (event is GetBook) {
+      yield* _mapGetBookToState(event);
+    }
+    else if (event is UpdateBook) {
       yield* _mapUpdateBookToState(event);
     }
+
   }
 
   Stream<BookState> _mapBookAddToState(AddBook event) async* {
@@ -37,11 +42,19 @@ class BookBloc extends Bloc<BookEvent, BookState> {
 
   Stream<BookState> _mapSearchBookToState(SearchBook event) async* {
     yield BookLoadProgress();
-    final Either<Failure, List<Book>> failureOrBookList =
-        await bookRepository.searchBook(event.queryData);
+    final Either<Failure, List<Book>> failureOrBookList = await bookRepository.searchBook(event.queryData);
     yield failureOrBookList.fold(
       (failure) => BookFailure(message: DATABASE_FAILURE_MESSAGE),
       (bookList) => BookLoadSuccess(bookList: bookList),
+    );
+  }
+
+  Stream<BookState> _mapGetBookToState(GetBook event) async* {
+
+    final Either<Failure, List<Book>> failureOrBookList = await bookRepository.getBook(event.bookId);
+    yield failureOrBookList.fold(
+          (failure) => BookFailure(message: DATABASE_FAILURE_MESSAGE),
+          (bookList) => GetBookSuccess(bookList: bookList),
     );
   }
 

@@ -9,6 +9,7 @@ import 'package:library_management_system/presentation/screens/return_inventory_
 import 'add_inventory_screen.dart';
 import 'add_member_screen.dart';
 
+import 'login.dart';
 import 'screens.dart';
 
 //TODO 1- Kart numarasi girisi burada olacak.
@@ -59,23 +60,16 @@ class _HomeScreenState extends State<HomeScreen> {
           // ignore: close_sinks
             RuleBloc ruleBloc = BlocProvider.of<RuleBloc>(context);
             ruleBloc.add(GetRule(ruleId: 1));
-            RuleState ruleState= ruleBloc.state;
-            if(ruleState is GetRuleSuccess){
-              gRule=ruleState.rule;
-            }
+            ruleBloc.listen((ruleState) {
+              if(ruleState is GetRuleSuccess){
+                gRule=ruleState.rule;
+              }
+            });
 
             if (state is AuthorizationSuccess) {
               gMember=state.member;
               print(gMember);
 
-              // ignore: close_sinks
-              var borrowBloc= BlocProvider.of<BorrowBloc>(context);
-              borrowBloc.add(GetBorrows(memberId: gMember!.memberId));
-              BorrowState borrowState= borrowBloc.state;
-
-              if(borrowState is BorrowLoadSuccess) {
-                print(borrowState.borrowList);
-              }
               if (state.member.cardId.startsWith('m')) {
                 return Column(
                   children: [
@@ -88,6 +82,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     ElevatedButton(
                       onPressed: () {
+                        setState(() {
+
+                        });
+
                         Navigator.of(context)
                             .pushNamed(ReturnInventoryScreen.routeName);
                       },
@@ -129,6 +127,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     ElevatedButton(
                       onPressed: () {
+                        setState(() {
+
+                        });
                         Navigator.of(context)
                             .pushNamed(ReturnInventoryScreen.routeName);
                       },
@@ -148,10 +149,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     ElevatedButton(
                       onPressed: () {
+
                         Navigator.of(context)
                             .pushNamed(AddInventoryScreen.routeName);
                       },
                       child: Center(child: Text('Add Inventory')),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(SearchInventoryScreen.routeName);
+                      },
+                      child: Center(child: Text('Search Inventory')),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+
+                        });
+                        Navigator.of(context)
+                            .pushNamed(ReturnInventoryScreen.routeName);
+                      },
+                      child: Center(child: Text('Return Inventory')),
                     ),
                   ],
                 );
@@ -161,7 +180,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
             } else if (state is AuthorizationFailure) {
-              return Center(child: Text('${state.message}'));
+
+              return Center(child: Text('Invalid Card! \n\n${state.message}'));
             } else {
               return Column(
                 children: [],

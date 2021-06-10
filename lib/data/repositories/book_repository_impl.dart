@@ -82,4 +82,15 @@ class BookRepositoryImpl implements BookRepository {
       return Left(DatabaseFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<Book>>> getBook(int bookId) async {
+    try {
+      final bookList = await localDataSource.getBook(bookId);
+      return Right(
+          bookList.map((bookModel) => Book.fromModel(bookModel)).toList());
+    } catch (_) {
+      return Left(DatabaseFailure());
+    }
+  }
 }

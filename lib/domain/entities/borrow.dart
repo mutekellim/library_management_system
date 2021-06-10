@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import '../../data/models/models.dart';
 
 class Borrow extends Equatable {
-  final int borrowId;
   final int memberId;
   final int inventoryId;
   final String title;
@@ -13,7 +12,6 @@ class Borrow extends Equatable {
   final int invType;
 
   Borrow({
-    required this.borrowId,
     required this.memberId,
     required this.inventoryId,
     required this.title,
@@ -22,7 +20,6 @@ class Borrow extends Equatable {
   });
 
   Borrow copyWith({
-    int? borrowId,
     int? memberId,
     int? inventoryId,
     String? title,
@@ -32,7 +29,6 @@ class Borrow extends Equatable {
 
   }) =>
       Borrow(
-        borrowId: borrowId ?? this.borrowId,
         memberId: memberId ?? this.memberId,
         inventoryId: inventoryId ?? this.inventoryId,
         title: title ?? this.title,
@@ -42,7 +38,6 @@ class Borrow extends Equatable {
 
   @override
   List<Object> get props => [
-        borrowId,
         memberId,
         inventoryId,
         title,
@@ -52,11 +47,10 @@ class Borrow extends Equatable {
 
   @override
   String toString() =>
-      'Borrow {borrowId: $borrowId, memberId: $memberId,  inventoryId: $inventoryId, '
+      'Borrow { memberId: $memberId,  inventoryId: $inventoryId, '
       'title: $title, borrowDate: $borrowDate, invType: $invType }';
 
   BorrowModel toModel() => BorrowModel(
-    borrowId: borrowId,
     memberId: memberId,
     inventoryId: inventoryId,
     title: title,
@@ -65,7 +59,6 @@ class Borrow extends Equatable {
   );
 
   static Borrow fromModel(BorrowModel model) => Borrow(
-    borrowId: model.borrowId,
     memberId: model.memberId,
     inventoryId: model.inventoryId,
     title: model.title,

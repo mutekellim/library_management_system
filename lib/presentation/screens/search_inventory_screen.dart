@@ -46,7 +46,7 @@ class _SearchInventoryScreenState extends State<SearchInventoryScreen> {
   Widget _buildBookListBody(BuildContext context) {
     return BlocBuilder<BookBloc, BookState>(builder: (context, state) {
       print('STATE : $state');
-      if (state is BookInitial || state is AddBookSuccess) {
+      if (state is BookInitial || state is AddBookSuccess || state is GetBookSuccess  ) {
         return Center(child: Text('Please enter a search term above!'));
       }
       if (state is BookLoadProgress) {

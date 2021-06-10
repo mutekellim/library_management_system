@@ -7,6 +7,7 @@ import 'package:library_management_system/bloc/rule/rule.dart';
 import 'package:library_management_system/domain/entities/entities.dart';
 import 'package:library_management_system/presentation/screens/home_screen.dart';
 
+import '../../globals.dart';
 import '../../styles/constants.dart';
 import 'screens.dart';
 
@@ -72,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
             BlocProvider.of<MemberBloc>(context).add(
               AddMember( member: Member(
                   memberId: 1,
-                  balanceAmount: 1,
+                  balanceAmount: 100,
                   noInvLoaned: 0,
                   cardId: 'a1',
                   memberType: 'Admin',
@@ -85,14 +86,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   dateOfMembership: 'dateOfMembership',
                   reservedInventoryList: [],
                   borrowedInventoryList: [],
-                )
-              )
+                ))
+            );
+
+            BlocProvider.of<RuleBloc>(context).add(
+                AddRule( rule:  Rule(
+                    ruleId: 1,
+                    loanPeriodForAcademic: 15,
+                    loanPeriodForOfficer: 15,
+                    loanPeriodForStudent: 15,
+                    invDvd: 0,
+                    invBook: 1,
+                    invJournal: 1,
+                    nOfLoanForAcademic: 5,
+                    nOfLoanForOfficer: 5,
+                    nOfLoanForStudent: 3,
+                    penaltyPrice: 1.0
+                ))
             );
             _passCode.clear();
           }
           else if(_passCode.text.length>0){
+
             BlocProvider.of<AuthorizationBloc>(context)
                 .add(AuthorizationByCard(cardId: _passCode.text.trim()));
+
             Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
           }
           else{

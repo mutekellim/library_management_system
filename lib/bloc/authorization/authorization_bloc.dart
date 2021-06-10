@@ -41,14 +41,14 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
 
   Stream<AuthorizationState> _mapUpdateMemberToState( UpdateMember event) async* {
     final Either<Failure, Member> failureOrMember = await memberRepository
-        .addMember(updateMember(event.action, event.inventoryId)!);
+        .addMember(updateMember(event.action, event.inventoryId, event.nOfInvLoaned, event.balanceAmount)!);
     yield failureOrMember.fold(
       (failure) => AuthorizationFailure(message: DATABASE_FAILURE_MESSAGE),
       (member) => AuthorizationSuccess(member: member),
     );
   }
 
-  Member? updateMember(String action, int id) {
+  Member? updateMember(String action, int id, int noInvLoaned, int balanceAmount) {
     if (action == ACTION_RESERVED) {
       return _member?.copyWith(
           reservedInventoryList: _member!.reservedInventoryList..add(id));
@@ -57,7 +57,7 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
           borrowedInventoryList: _member!.borrowedInventoryList..add(id));
     } else if (action == ACTION_RETURN) {
       return _member?.copyWith(
-          borrowedInventoryList: _member!.borrowedInventoryList..remove(id));
+          borrowedInventoryList: _member!.borrowedInventoryList..remove(id), noInvLoaned:noInvLoaned, balanceAmount:balanceAmount );
     }
   }
 }

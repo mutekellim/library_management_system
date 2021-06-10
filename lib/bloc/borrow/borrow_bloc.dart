@@ -35,7 +35,7 @@ class BorrowBloc extends Bloc<BorrowEvent, BorrowState> {
     await borrowRepository.addBorrow(event.borrow);
     yield failureOrBorrow.fold(
           (failure) => BorrowFailure(message: DATABASE_FAILURE_MESSAGE),
-          (borrow) => AddBorrowSuccess(message: ADD_SUCCESS, borrowId: borrow.borrowId),
+          (borrow) => AddBorrowSuccess(message: ADD_SUCCESS, borrowId: borrow.inventoryId),
     );
   }
 
@@ -57,7 +57,7 @@ class BorrowBloc extends Bloc<BorrowEvent, BorrowState> {
   }
 
   Stream<BorrowState> _mapBorrowGetByInvToState(GetBorrowByInv event) async* {
-
+    print("visited");
     final Either<Failure, Borrow> failureOrBorrow = await borrowRepository.getBorrowByInv(event.inventoryId, event.invType);
     yield failureOrBorrow.fold(
           (failure) => BorrowFailure(message: DATABASE_FAILURE_MESSAGE),

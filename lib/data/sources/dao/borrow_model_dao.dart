@@ -14,6 +14,6 @@ abstract class BorrowModelDao {
   @Query('SELECT * FROM BorrowModel WHERE memberId = :memberId')
   Future<List<BorrowModel>> getBorrows(int memberId);
 
-  @Query('SELECT * FROM BorrowModel WHERE inventoryId = :inventoryId ND invType = :invType')
+  @Query('SELECT * FROM BorrowModel WHERE inventoryId = :inventoryId AND invType = :invType')
   Future<List<BorrowModel>> getBorrowByInv(int inventoryId, int invType);
 }
